@@ -39,9 +39,9 @@ class AddStudentActivity : AppCompatActivity() {
         createButton.setOnClickListener {
             val newStudent: Student =
                 Student(idTextField.text.toString(),
-                        nameTextField.text.toString(),
-                        phoneNumberTextField.text.toString(),
-                        addressTextField.text.toString(),checkedInput.isChecked)
+                    nameTextField.text.toString(),
+                    phoneNumberTextField.text.toString(),
+                    addressTextField.text.toString(),checkedInput.isChecked)
 
             Student.addStudent(newStudent)
             val intent = Intent(this, StudentListActivity::class.java)
