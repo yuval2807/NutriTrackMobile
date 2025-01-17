@@ -13,3 +13,12 @@
 .externalNativeBuild
 .cxx
 local.properties
+build/
+.idea
+*.hprof
+.cxx/
+*.keystore
+!debug.keystore
+!release.keystore
+index*.bundle
+keystore.properties
