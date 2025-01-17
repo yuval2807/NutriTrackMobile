@@ -27,10 +27,6 @@ class StudentListActivity : AppCompatActivity() {
 
         adapter = com.example.colman24class1.StudentAdapter(Student.getAllStudents()) { student ->
             // Handle click on student item
-//            val intent = Intent(this, Student::class.java)
-//            intent.putExtra("student_id", student.id)
-//            startActivity(intent)
-
             val intent = Intent(this, StudentDetailsActivity::class.java)
             intent.putExtra("student_id", student.id) // Pass student ID to the details activity
             startActivity(intent)
