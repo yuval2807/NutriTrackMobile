@@ -27,8 +27,12 @@ class StudentListActivity : AppCompatActivity() {
 
         adapter = com.example.colman24class1.StudentAdapter(Student.getAllStudents()) { student ->
             // Handle click on student item
-            val intent = Intent(this, Student::class.java)
-            intent.putExtra("student_id", student.id)
+//            val intent = Intent(this, Student::class.java)
+//            intent.putExtra("student_id", student.id)
+//            startActivity(intent)
+
+            val intent = Intent(this, StudentDetailsActivity::class.java)
+            intent.putExtra("student_id", student.id) // Pass student ID to the details activity
             startActivity(intent)
         }
         recyclerView.adapter = adapter
@@ -38,6 +42,7 @@ class StudentListActivity : AppCompatActivity() {
         fabAddStudent.setOnClickListener {
             startActivity(Intent(this, AddStudentActivity::class.java))
         }
+
     }
 
     override fun onResume() {
@@ -62,6 +67,7 @@ class StudentAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.student_list_item, parent, false)
+
         return StudentViewHolder(view)
     }
 
