@@ -5,7 +5,7 @@ data class Student(
     var name: String,
     var phone: String,
     var address: String,
-    var isChecked: Boolean
+    var isChecked: Boolean = false
 ) {
     companion object {
         private var counter = 0
@@ -14,12 +14,11 @@ data class Student(
         private val studentsList = mutableListOf<Student>()
 
         fun getAllStudents(): List<Student> {
-//            return listOf(
-//                Student("1", "Alice", "0500000", "Tel Aviv",false),
-//                Student("2", "Bob", "0500000", "Tel Aviv",true),
-//                Student("3", "Charlie", "0500000", "Tel Aviv",false)
-//            )
-            return studentsList
+            return listOf(
+                Student("1", "Alice", "0500000", "Tel Aviv",false),
+                Student("2", "Bob", "0500000", "Tel Aviv",true),
+                Student("3", "Charlie", "0500000", "Tel Aviv",false)
+            )
         }
 
         fun addStudent(student: Student) {
