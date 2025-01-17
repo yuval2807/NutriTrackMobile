@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="studentImage" type="id"/>
+    <item name="studentName" type="id"/>
+    <item name="studentId" type="id"/>
+    <item name="studentCheckBox" type="id"/>
+    <item name="mainActivity_showStudentList_button" type="id"/>
+    <item name="mainActivity_addStudent_button" type="id"/>
+</resources>

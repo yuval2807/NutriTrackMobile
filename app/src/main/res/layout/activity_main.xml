@@ -7,17 +7,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/mainActivity_addStudent_button"
+
+        <Button
+            android:id="@+id/mainActivity_addStudent_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="140dp"
+            android:background="#6F0D0D"
+            android:text="click me to switch page"
+            android:textColorHighlight="#540808"
+            android:textColorLink="#950A0A"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:layout_editor_absoluteY="427dp"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+        android:id="@+id/mainActivity_showStudentList_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="140dp"
         android:background="#6F0D0D"
-        android:text="click me to switch page"
+        android:text="click me to show all students"
         android:textColorHighlight="#540808"
         android:textColorLink="#950A0A"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="427dp" />
+        tools:layout_editor_absoluteY="341dp"
+        tools:ignore="MissingConstraints" />
+
 
     <FrameLayout
         android:id="@+id/mainActivity_frameLayout"
@@ -25,7 +41,8 @@
         android:layout_height="354dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="16dp">
+        tools:layout_editor_absoluteY="7dp"
+        tools:ignore="MissingConstraints">
 
     </FrameLayout>
 

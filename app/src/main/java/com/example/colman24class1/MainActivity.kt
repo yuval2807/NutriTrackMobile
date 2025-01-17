@@ -1,5 +1,6 @@
 package com.example.colman24class1
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     var buttonThree: Button? = null
     var buttonFour: Button? = null
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,11 +37,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-    // TODO: 1. Button to navigate to Add Student
+    // TODO: 1. Button to navigate to Add com.example.colman24class1.Student
     // TODO: 2. Create a button listener
     // TODO: 3. Create an intent
 
         val addStudentButton: Button = findViewById<Button>(R.id.mainActivity_addStudent_button)
+        val showStudentListButton: Button = findViewById<Button>(R.id.mainActivity_showStudentList_button)
 
 //    class MyListener { }
 //    val listener = MyListener();
@@ -50,16 +53,27 @@ class MainActivity : AppCompatActivity() {
 //    })
 // addStudentButton.setOnClickListener(listener)
 
-    addStudentButton.setOnClickListener {
-        val intent = Intent(this, AddStudentActivity::class.java)
-        startActivity(intent)
+//    addStudentButton.setOnClickListener {
+//        val intent = Intent(this, AddStudentActivity::class.java)
+//        startActivity(intent)
+//
+////        if (fragment == null) {
+////            addFragment()
+////        } else {
+////            removeFragment()
+////        }
+//    }
+
+        showStudentListButton.setOnClickListener {
+            val intent = Intent(this, StudentListActivity::class.java)
+            startActivity(intent)
 
 //        if (fragment == null) {
 //            addFragment()
 //        } else {
 //            removeFragment()
 //        }
-    }
+        }
 
          fragmentOne = BlueFragment.newInstance("1");
          fragmentTwo = BlueFragment.newInstance("2");
