@@ -78,7 +78,7 @@ class StudentAdapter(
 
         holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
             student.isChecked = isChecked
-            Student.updateStudent(student)
+            Student.updateStudent(student.id ,student)
         }
     }
 

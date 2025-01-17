@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddStudentActivity">
+    tools:context=".EditStudentActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -36,6 +36,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:text = ""
         android:inputType="text"
         app:layout_constraintBaseline_toBaselineOf="@+id/studentNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +59,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:text = ""
         android:inputType="text"
         app:layout_constraintBaseline_toBaselineOf="@+id/studentIdTextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,6 +82,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:text = ""
         android:inputType="phone"
         app:layout_constraintBaseline_toBaselineOf="@+id/studentPhoneTextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
-        android:text="Phone"
+        android:text="Address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/studentPhoneView" />
 
@@ -102,7 +105,8 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:inputType="phone"
+        android:text = ""
+        android:inputType="text"
         app:layout_constraintBaseline_toBaselineOf="@+id/studentAddressTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/studentAddressTextView" />

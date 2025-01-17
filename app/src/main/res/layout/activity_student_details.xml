@@ -108,28 +108,28 @@
         app:layout_constraintStart_toEndOf="@+id/studentAddressTextView" />
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/editButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="4dp"
-        android:text="Save"
+        android:text="Edit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
+        app:layout_constraintEnd_toStartOf="@+id/backButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/cancelButton"
+        android:id="@+id/backButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="8dp"
-        android:text="Cancel"
-        app:layout_constraintBaseline_toBaselineOf="@+id/saveButton"
+        android:text="Back"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/saveButton" />
+        app:layout_constraintStart_toEndOf="@+id/editButton" />
 
     <CheckBox
         android:id="@+id/student_checked_input"
@@ -147,7 +147,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/saveButton"
+        app:layout_constraintBottom_toTopOf="@+id/cancelButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

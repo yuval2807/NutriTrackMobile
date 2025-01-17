@@ -6,8 +6,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.colman24class1.R
-import com.example.colman24class1.Student
+
 
 class StudentDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,16 +26,16 @@ class StudentDetailsActivity : AppCompatActivity() {
             findViewById<CheckBox>(R.id.student_checked_input).isChecked = it.isChecked
         }
 
-        // Edit button click handler
-//        findViewById<Button>(R.id.editButton).setOnClickListener {
-//            val intent = Intent(this, EditStudentActivity::class.java)
-//            intent.putExtra("student_id", studentId)
-//            startActivity(intent)
-//        }
-//
-//        // Back button click handler
-//        findViewById<Button>(R.id.backButton).setOnClickListener {
-//            finish()
-//        }
+//         Edit button click handler
+        findViewById<Button>(R.id.editButton).setOnClickListener {
+            val intent = Intent(this, EditStudentActivity::class.java)
+            intent.putExtra("student_id", studentId) // Pass student ID to the details activity
+            startActivity(intent)
+        }
+
+        // Back button click handler
+        findViewById<Button>(R.id.backButton).setOnClickListener {
+            finish()
+        }
     }
 }

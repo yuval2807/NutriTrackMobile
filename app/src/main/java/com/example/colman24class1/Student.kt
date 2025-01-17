@@ -21,8 +21,8 @@ data class Student(
             studentsList.add(student)
         }
 
-        fun updateStudent(updatedStudent: Student) {
-            val index = studentsList.indexOfFirst { it.id == updatedStudent.id }
+        fun updateStudent(studentId:String, updatedStudent: Student) {
+            val index = studentsList.indexOfFirst { it.id == studentId }
             if (index != -1) {
                 studentsList[index] = updatedStudent
             }

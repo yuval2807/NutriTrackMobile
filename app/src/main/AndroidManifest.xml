@@ -22,6 +22,9 @@
             android:name=".StudentDetailsActivity"
             android:exported="false" />
         <activity
+            android:name=".EditStudentActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
