@@ -14,11 +14,6 @@ data class Student(
         private val studentsList = mutableListOf<Student>()
 
         fun getAllStudents(): List<Student> {
-            //            return listOf(
-//                Student("1", "Alice", "0500000", "Tel Aviv",false),
-//                Student("2", "Bob", "0500000", "Tel Aviv",true),
-//                Student("3", "Charlie", "0500000", "Tel Aviv",false)
-//            )
             return studentsList
         }
 
@@ -26,8 +21,8 @@ data class Student(
             studentsList.add(student)
         }
 
-        fun updateStudent(updatedStudent: Student) {
-            val index = studentsList.indexOfFirst { it.id == updatedStudent.id }
+        fun updateStudent(studentId:String, updatedStudent: Student) {
+            val index = studentsList.indexOfFirst { it.id == studentId }
             if (index != -1) {
                 studentsList[index] = updatedStudent
             }
