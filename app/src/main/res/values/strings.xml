@@ -5,4 +5,8 @@
     <string name="student_photo">Student photo</string>
     <string name="create_user">Create user</string>
     <string name="address">Address</string>
+    <string name="new_student">New Student</string>
+    <string name="students_list">Students List</string>
+    <string name="students_details">Student Details</string>
+    <string name="edit_student">Edit Student</string>
 </resources>

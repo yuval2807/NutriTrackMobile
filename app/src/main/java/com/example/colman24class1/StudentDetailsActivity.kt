@@ -5,13 +5,29 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 
 
 class StudentDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student_details)
+
+        val toolbar = findViewById<Toolbar>(R.id.student_details_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true) // Enable the back button
+        }
+
+        // Handle back button press using OnBackPressedDispatcher
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Perform any custom logic here if needed
+                finish() // Close the activity
+            }
+        })
 
         // Get student ID from intent
         val studentId = intent.getStringExtra("student_id")
@@ -37,5 +53,10 @@ class StudentDetailsActivity : AppCompatActivity() {
         findViewById<Button>(R.id.backButton).setOnClickListener {
             finish()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish() // Handle toolbar back button
+        return true
     }
 }
