@@ -8,12 +8,28 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
 
 class EditStudentActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_student) // We can reuse the add_student layout
+
+        val toolbar = findViewById<Toolbar>(R.id.edit_student_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true) // Enable the back button
+        }
+
+        // Handle back button press using OnBackPressedDispatcher
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Perform any custom logic here if needed
+                finish() // Close the activity
+            }
+        })
 
         val studentId = intent.getStringExtra("student_id")
         val student = studentId?.let { Student.getStudentById(it) }
@@ -70,5 +86,10 @@ class EditStudentActivity : AppCompatActivity() {
         findViewById<Button>(R.id.cancelButton).setOnClickListener {
             finish()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish() // Handle toolbar back button
+        return true
     }
 }

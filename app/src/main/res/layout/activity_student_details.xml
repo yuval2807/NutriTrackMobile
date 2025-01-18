@@ -7,11 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".StudentDetailsActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/student_details_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#EEBBA3E3"
+        android:elevation="4dp"
+        android:paddingTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back_button"
+        app:title="@string/students_details"
+        app:titleTextColor="@android:color/white" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="146dp"
         android:layout_height="93dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="110dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

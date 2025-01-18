@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -20,6 +22,20 @@ class StudentListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_student_list)
+
+        val toolbar = findViewById<Toolbar>(R.id.student_list_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true) // Enable the back button
+        }
+
+        // Handle back button press using OnBackPressedDispatcher
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Perform any custom logic here if needed
+                finish() // Close the activity
+            }
+        })
 
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.studentsRecyclerView)
@@ -45,6 +61,11 @@ class StudentListActivity : AppCompatActivity() {
         super.onResume()
         // Refresh the list when returning to this activity
         adapter.updateStudents(Student.getAllStudents())
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish() // Handle toolbar back button
+        return true
     }
 }
 
