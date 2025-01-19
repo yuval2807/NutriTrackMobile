@@ -63,7 +63,6 @@
         android:layout_height="50dp"
         android:layout_marginStart="130dp"
         android:layout_marginTop="208dp"
-        android:hint="@android:string/unknownName"
         android:inputType="textShortMessage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -74,7 +73,6 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="130dp"
                 android:layout_marginTop="20dp"
-                android:hint="@android:string/autofill"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name_input" />
 
@@ -84,7 +82,8 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="130dp"
                 android:layout_marginTop="20dp"
-                android:hint="@android:string/emptyPhoneNumber"
+                android:hint=""
+                android:inputType="phone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/id_input" />
 
@@ -94,7 +93,6 @@
         android:layout_height="50dp"
         android:layout_marginStart="130dp"
         android:layout_marginTop="20dp"
-        android:hint="@string/address"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone_num_input" />
