@@ -71,16 +71,16 @@ class EditStudentActivity : AppCompatActivity() {
             finish()
         }
 
-        // Delete button click handler
-//        findViewById<Button>(R.id.deleteButton).setOnClickListener {
-//            studentId?.let { id ->
-//                Student.deleteStudent(id)
-//                // Return to list screen
-//                val intent = Intent(this, StudentListActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
-//        }
+         //Delete button click handler
+        findViewById<Button>(R.id.delete_button).setOnClickListener {
+            studentId?.let { id ->
+                Student.deleteStudent(id)
+                // Return to list screen
+                val intent = Intent(this, StudentListActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
 
         // Cancel button click handler
         findViewById<Button>(R.id.cancelButton).setOnClickListener {
