@@ -39,6 +39,8 @@ class StudentDetailsActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.studentIdView).text = it.id
             findViewById<TextView>(R.id.studentPhoneView).text = it.phone
             findViewById<TextView>(R.id.studentAddressView).text = it.address
+            findViewById<TextView>(R.id.studentBirthDateView).text = it.birthDate
+            findViewById<TextView>(R.id.studentBirthTimeView).text = it.birthTime
             findViewById<CheckBox>(R.id.student_checked_input).isChecked = it.isChecked
         }
 
