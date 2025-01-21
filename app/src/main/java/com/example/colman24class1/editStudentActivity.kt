@@ -62,13 +62,8 @@ class EditStudentActivity : AppCompatActivity() {
 
             if (studentId != null) {
                 Student.updateStudent(studentId, updatedStudent)
+                showSaveSuccessDialog(updatedStudent)
             }
-            
-            // Return to details screen
-            val intent = Intent(this, StudentDetailsActivity::class.java)
-            intent.putExtra("student_id", updatedStudent.id)
-            startActivity(intent)
-            finish()
         }
 
         // Delete button click handler
@@ -91,5 +86,22 @@ class EditStudentActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish() // Handle toolbar back button
         return true
+    }
+
+    private fun showSaveSuccessDialog(updatedStudent: Student) {
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Save Successful")
+            .setMessage("The student details have been saved successfully.")
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton("OK") { _, _ ->
+                // Navigate to the StudentDetailsActivity after pressing OK
+                val intent = Intent(this, StudentDetailsActivity::class.java)
+                intent.putExtra("student_id", updatedStudent.id) // Pass the updated student ID
+                startActivity(intent)
+                finish() // Close the current activity
+            }
+            .create()
+
+        dialog.show()
     }
 }
