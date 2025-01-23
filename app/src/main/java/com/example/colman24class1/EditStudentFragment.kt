@@ -55,10 +55,8 @@ class EditStudentFragment : Fragment() {
 
             if (studentId != null) {
                 Student.updateStudent(studentId, updatedStudent)
+                showSaveSuccessDialog(updatedStudent)
             }
-
-            // Navigate to details screen
-            navigateToStudentDetails(updatedStudent.id)
         }
 
         // Delete button click handler
@@ -95,6 +93,25 @@ class EditStudentFragment : Fragment() {
         super.onResume()
         (activity as? MainActivity)?.setToolbarTitle("Edit Student")
     }
+
+    private fun showSaveSuccessDialog(updatedStudent: Student) {
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("Save Successful")
+            .setMessage("The student details have been saved successfully.")
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton("OK") { _, _ ->
+                // Navigate to the StudentDetailsFragment
+                val detailsFragment = StudentDetailsFragment.newInstance(updatedStudent.id)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.mainActivity_frameLayout, detailsFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+            .create()
+
+        dialog.show()
+    }
+
 
     companion object {
         fun newInstance(studentId: String): EditStudentFragment {
