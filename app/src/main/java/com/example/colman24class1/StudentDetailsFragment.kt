@@ -2,6 +2,9 @@ package com.example.colman24class1
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -26,6 +29,7 @@ class StudentDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true) // Enable menu for this fragment
 
         val student = studentId?.let { Student.getStudentById(it) }
 
@@ -38,11 +42,6 @@ class StudentDetailsFragment : Fragment() {
             view.findViewById<CheckBox>(R.id.student_checked_input).isChecked = it.isChecked
             view.findViewById<TextView>(R.id.studentBirthDateView).text = it.birthDate
             view.findViewById<TextView>(R.id.studentBirthTimeView).text = it.birthTime
-        }
-
-        // Edit button click handler
-        view.findViewById<Button>(R.id.editButton).setOnClickListener {
-            navigateToEditStudent()
         }
 
         // Back button click handler
@@ -58,7 +57,16 @@ class StudentDetailsFragment : Fragment() {
             .addToBackStack(null)
             .commit()
     }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_student_details, menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_edit -> navigateToEditStudent()
 
+        }
+        return super.onOptionsItemSelected(item)
+    }
     override fun onResume() {
         super.onResume()
         (activity as? MainActivity)?.setToolbarTitle("Student Details")
