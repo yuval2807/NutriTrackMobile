@@ -73,22 +73,27 @@ class EditStudentActivity : AppCompatActivity() {
 
             if (studentId != null) {
                 Student.updateStudent(studentId, updatedStudent)
+                showSaveSuccessDialog(updatedStudent)
             }
-            
-            // Return to details screen
-            val intent = Intent(this, StudentDetailsActivity::class.java)
-            intent.putExtra("student_id", updatedStudent.id)
-            startActivity(intent)
-            finish()
         }
 
         birthDateView.setOnClickListener {
             showDatePicker()
         }
 
-        // Setup time picker
         birthTimeView.setOnClickListener {
             showTimePicker()
+        }
+
+         //Delete button click handler
+        findViewById<Button>(R.id.delete_button).setOnClickListener {
+            studentId?.let { id ->
+                Student.deleteStudent(id)
+                // Return to list screen
+                val intent = Intent(this, StudentListActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
 
         // Cancel button click handler
@@ -101,6 +106,7 @@ class EditStudentActivity : AppCompatActivity() {
         finish() // Handle toolbar back button
         return true
     }
+
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -136,6 +142,23 @@ class EditStudentActivity : AppCompatActivity() {
             minute,
             true // 24-hour format
         ).show()
+    }
+
+    private fun showSaveSuccessDialog(updatedStudent: Student) {
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Save Successful")
+            .setMessage("The student details have been saved successfully.")
+            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton("OK") { _, _ ->
+                // Navigate to the StudentDetailsActivity after pressing OK
+                val intent = Intent(this, StudentDetailsActivity::class.java)
+                intent.putExtra("student_id", updatedStudent.id) // Pass the updated student ID
+                startActivity(intent)
+                finish() // Close the current activity
+            }
+            .create()
+
+        dialog.show()
     }
 }
 

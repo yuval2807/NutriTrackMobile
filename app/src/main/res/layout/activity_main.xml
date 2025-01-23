@@ -7,87 +7,43 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-        <Button
-            android:id="@+id/mainActivity_addStudent_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="140dp"
-            android:background="#6F0D0D"
-            android:text="click me to switch page"
-            android:textColorHighlight="#540808"
-            android:textColorLink="#950A0A"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="427dp"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-        android:id="@+id/mainActivity_showStudentList_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="140dp"
-        android:background="#6F0D0D"
-        android:text="click me to show all students"
-        android:textColorHighlight="#540808"
-        android:textColorLink="#950A0A"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_activity_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#EEBBA3E3"
+        android:elevation="4dp"
+        android:paddingTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="341dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back_button"
+        app:title="@string/new_student"
+        app:titleTextColor="@android:color/white" />
 
 
     <FrameLayout
         android:id="@+id/mainActivity_frameLayout"
-        android:layout_width="409dp"
-        android:layout_height="354dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="412dp"
+        android:layout_height="665dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="7dp"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintTop_toBottomOf="@+id/main_activity_toolbar">
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/button"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddStudent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginBottom="16dp"
-        android:text="1"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="747dp"
+        android:contentDescription="Add new student"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button2" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="9dp"
-        android:text="4"
-        app:layout_constraintBottom_toBottomOf="@+id/button3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button3" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
