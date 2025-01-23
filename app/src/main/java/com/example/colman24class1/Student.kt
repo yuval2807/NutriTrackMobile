@@ -5,6 +5,8 @@ data class Student(
     var name: String,
     var phone: String,
     var address: String,
+    var birthDate:String,
+    var birthTime:String,
     var isChecked: Boolean
 ) {
     companion object {

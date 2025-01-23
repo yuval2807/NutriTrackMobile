@@ -1,6 +1,8 @@
 package com.example.colman24class1
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +12,11 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.textfield.TextInputEditText
+import java.util.Calendar
 
 class EditStudentActivity : AppCompatActivity() {
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,13 +45,17 @@ class EditStudentActivity : AppCompatActivity() {
         val phoneNumberTextField: EditText = findViewById(R.id.studentPhoneView)
         val addressTextField: EditText = findViewById(R.id.studentAddressView)
         val checkedInput: CheckBox = findViewById(R.id.student_checked_input)
-        
+        val birthDateView : TextInputEditText= findViewById(R.id.studentBirthDateView)
+        val birthTimeView:TextView = findViewById(R.id.studentBirthTimeView)
+
         // Populate fields with existing student data
         student?.let {
             nameTextField.setText(it.name)
             idTextField.setText(it.id)
             phoneNumberTextField.setText(it.phone)
             addressTextField.setText(it.address)
+            birthDateView.setText(it.birthDate)
+            birthTimeView.setText(it.birthTime)
             checkedInput.isChecked = it.isChecked
         }
 
@@ -57,6 +66,8 @@ class EditStudentActivity : AppCompatActivity() {
                 nameTextField.text.toString(),
                 phoneNumberTextField.text.toString(),
                 addressTextField.text.toString(),
+                birthDateView.text.toString(),
+                birthTimeView.text.toString(),
                 checkedInput.isChecked
             )
 
@@ -64,6 +75,14 @@ class EditStudentActivity : AppCompatActivity() {
                 Student.updateStudent(studentId, updatedStudent)
                 showSaveSuccessDialog(updatedStudent)
             }
+        }
+
+        birthDateView.setOnClickListener {
+            showDatePicker()
+        }
+
+        birthTimeView.setOnClickListener {
+            showTimePicker()
         }
 
          //Delete button click handler
@@ -88,6 +107,43 @@ class EditStudentActivity : AppCompatActivity() {
         return true
     }
 
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val birthDateView = findViewById<TextInputEditText>(R.id.studentBirthDateView)
+
+        DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                birthDateView.setText(selectedDate)
+            },
+            year,
+            month,
+            day
+        ).show()
+    }
+
+    private fun showTimePicker() {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+        val birthTimeView = findViewById<TextView>(R.id.studentBirthTimeView)
+
+        TimePickerDialog(
+            this,
+            { _, selectedHour, selectedMinute ->
+                val selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
+                birthTimeView.text = selectedTime
+            },
+            hour,
+            minute,
+            true // 24-hour format
+        ).show()
+    }
+
     private fun showSaveSuccessDialog(updatedStudent: Student) {
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("Save Successful")
@@ -105,3 +161,4 @@ class EditStudentActivity : AppCompatActivity() {
         dialog.show()
     }
 }
+

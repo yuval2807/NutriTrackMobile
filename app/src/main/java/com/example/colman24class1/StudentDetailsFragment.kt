@@ -36,6 +36,8 @@ class StudentDetailsFragment : Fragment() {
             view.findViewById<TextView>(R.id.studentPhoneView).text = it.phone
             view.findViewById<TextView>(R.id.studentAddressView).text = it.address
             view.findViewById<CheckBox>(R.id.student_checked_input).isChecked = it.isChecked
+            view.findViewById<TextView>(R.id.studentBirthDateView).text = it.birthDate
+            view.findViewById<TextView>(R.id.studentBirthTimeView).text = it.birthTime
         }
 
         // Edit button click handler
