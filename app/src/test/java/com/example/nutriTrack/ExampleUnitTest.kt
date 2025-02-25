@@ -1,4 +1,4 @@
-package com.example.colman24class1
+package com.example.nutriTrack
 
 import org.junit.Test
 

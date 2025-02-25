@@ -1,4 +1,4 @@
-package com.example.colman24class1
+package com.example.nutriTrack.Model
 
 data class Student(
     var id: String,

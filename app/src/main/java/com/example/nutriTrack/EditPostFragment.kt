@@ -1,4 +1,4 @@
-package com.example.colman24class1
+package com.example.nutriTrack
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -11,10 +11,11 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.nutriTrack.Model.Student
 import com.google.android.material.textfield.TextInputEditText
 import java.util.Calendar
 
-class EditStudentFragment : Fragment() {
+class EditPostFragment : Fragment() {
 
     private lateinit var nameTextField: EditText
     private lateinit var idTextField: EditText
@@ -25,7 +26,7 @@ class EditStudentFragment : Fragment() {
     private lateinit var birthTimeView: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_edit_student, container, false)
+        return inflater.inflate(R.layout.fragment_edit_post, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,7 +96,7 @@ class EditStudentFragment : Fragment() {
     }
 
     private fun navigateToStudentDetails(studentId: String) {
-        val detailsFragment = StudentDetailsFragment.newInstance(studentId)
+        val detailsFragment = ProfileFragment.newInstance(studentId)
         parentFragmentManager.beginTransaction()
             .replace(R.id.mainActivity_frameLayout, detailsFragment)
             .addToBackStack(null)
@@ -104,7 +105,7 @@ class EditStudentFragment : Fragment() {
 
     private fun navigateToStudentList() {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.mainActivity_frameLayout, StudentListFragment())
+            .replace(R.id.mainActivity_frameLayout, PostListFragment())
             .addToBackStack(null)
             .commit()
     }
@@ -155,7 +156,7 @@ class EditStudentFragment : Fragment() {
             .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
             .setPositiveButton("OK") { _, _ ->
                 // Navigate to the StudentDetailsFragment
-                val detailsFragment = StudentDetailsFragment.newInstance(updatedStudent.id)
+                val detailsFragment = ProfileFragment.newInstance(updatedStudent.id)
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.mainActivity_frameLayout, detailsFragment)
                     .addToBackStack(null)
@@ -168,8 +169,8 @@ class EditStudentFragment : Fragment() {
 
 
     companion object {
-        fun newInstance(studentId: String): EditStudentFragment {
-            val fragment = EditStudentFragment()
+        fun newInstance(studentId: String): EditPostFragment {
+            val fragment = EditPostFragment()
             val args = Bundle()
             args.putString("student_id", studentId)
             fragment.arguments = args

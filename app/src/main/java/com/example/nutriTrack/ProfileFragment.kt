@@ -1,4 +1,4 @@
-package com.example.colman24class1
+package com.example.nutriTrack
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,9 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.nutriTrack.Model.Student
 
-class StudentDetailsFragment : Fragment() {
+class ProfileFragment : Fragment() {
 
     private var studentId: String? = null
 
@@ -24,7 +25,7 @@ class StudentDetailsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_student_details, container, false)
+        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,14 +52,14 @@ class StudentDetailsFragment : Fragment() {
     }
 
     private fun navigateToEditStudent() {
-        val editFragment = EditStudentFragment.newInstance(studentId ?: "")
+        val editFragment = EditPostFragment.newInstance(studentId ?: "")
         parentFragmentManager.beginTransaction()
             .replace(R.id.mainActivity_frameLayout, editFragment)
             .addToBackStack(null)
             .commit()
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_student_details, menu)
+        inflater.inflate(R.menu.menu_post_details, menu)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -73,7 +74,7 @@ class StudentDetailsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(studentId: String) = StudentDetailsFragment().apply {
+        fun newInstance(studentId: String) = ProfileFragment().apply {
             arguments = Bundle().apply {
                 putString("student_id", studentId)
             }

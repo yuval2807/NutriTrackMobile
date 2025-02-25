@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "colman24Class1"
+rootProject.name = "nutriTrack"
 include(":app")
  

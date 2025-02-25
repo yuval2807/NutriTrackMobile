@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.colman24class1"
+    namespace = "com.example.nutriTrack"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.colman24class1"
+        applicationId = "com.example.nutriTrack"
         minSdk = 29
         targetSdk = 35
         versionCode = 1

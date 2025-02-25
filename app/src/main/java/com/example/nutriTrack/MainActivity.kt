@@ -1,4 +1,4 @@
-package com.example.colman24class1
+package com.example.nutriTrack
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
 
-    private var studentListFragment: StudentListFragment? = null
+    private var postListFragment: PostListFragment? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            studentListFragment = StudentListFragment();
-            addFragment(studentListFragment)
+            postListFragment = PostListFragment();
+            addFragment(postListFragment)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.title = title
     }
 
-    fun addFragment(fragment: StudentListFragment?) {
+    fun addFragment(fragment: PostListFragment?) {
         fragment?.let {
             supportFragmentManager.beginTransaction().apply {
                 add(R.id.mainActivity_frameLayout, fragment)
@@ -64,15 +64,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun removeFragment(fragment: StudentListFragment? ) {
+    fun removeFragment(fragment: PostListFragment? ) {
         fragment?.let {
             supportFragmentManager.beginTransaction().apply {
                 remove(it)
                 commit();
             }
         }
-
-        //fragment = null;
-
     }
 }

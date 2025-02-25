@@ -1,4 +1,4 @@
-package com.example.colman24class1
+package com.example.nutriTrack
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -10,13 +10,14 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.nutriTrack.Model.Student
 import com.google.android.material.textfield.TextInputEditText
 import java.util.Calendar
 
-class AddStudentFragment : Fragment() {
+class AddPostFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_add_student, container, false)
+        return inflater.inflate(R.layout.fragment_add_post, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,7 +53,7 @@ class AddStudentFragment : Fragment() {
 
             // Navigate back to the student list
             parentFragmentManager.beginTransaction()
-                .replace(R.id.mainActivity_frameLayout, StudentListFragment())
+                .replace(R.id.mainActivity_frameLayout, PostListFragment())
                 .addToBackStack(null)
                 .commit()
         }
@@ -74,7 +75,7 @@ class AddStudentFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = AddStudentFragment()
+        fun newInstance() = AddPostFragment()
     }
 
     private fun showDatePicker(birthDateView:TextInputEditText) {
