@@ -85,7 +85,7 @@ class EditPostFragment : Fragment() {
             studentId?.let { id ->
                 Student.deleteStudent(id)
                 // Navigate to list screen
-                navigateToStudentList()
+//                navigateToStudentList()
             }
         }
 
@@ -95,25 +95,25 @@ class EditPostFragment : Fragment() {
         }
     }
 
-    private fun navigateToStudentDetails(studentId: String) {
-        val detailsFragment = ProfileFragment.newInstance(studentId)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.mainActivity_frameLayout, detailsFragment)
-            .addToBackStack(null)
-            .commit()
-    }
+//    private fun navigateToStudentDetails(studentId: String) {
+//        val detailsFragment = ProfileFragment.newInstance(studentId)
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.mainActivity_frameLayout, detailsFragment)
+//            .addToBackStack(null)
+//            .commit()
+//    }
+//
+//    private fun navigateToStudentList() {
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.mainActivity_frameLayout, PostListFragment())
+//            .addToBackStack(null)
+//            .commit()
+//    }
 
-    private fun navigateToStudentList() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.mainActivity_frameLayout, PostListFragment())
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        (activity as? MainActivity)?.setToolbarTitle("Edit Student")
-    }
+//    override fun onResume() {
+//        super.onResume()
+////        (activity as? MainActivity)?.setToolbarTitle("Edit Student")
+//    }
 
     private fun showDatePicker(birthDateView:TextInputEditText) {
         val calendar = Calendar.getInstance()
@@ -157,10 +157,10 @@ class EditPostFragment : Fragment() {
             .setPositiveButton("OK") { _, _ ->
                 // Navigate to the StudentDetailsFragment
                 val detailsFragment = ProfileFragment.newInstance(updatedStudent.id)
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.mainActivity_frameLayout, detailsFragment)
-                    .addToBackStack(null)
-                    .commit()
+//                parentFragmentManager.beginTransaction()
+//                    .replace(R.id.mainActivity_frameLayout, detailsFragment)
+//                    .addToBackStack(null)
+//                    .commit()
             }
             .create()
 

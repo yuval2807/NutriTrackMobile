@@ -51,11 +51,11 @@ class AddPostFragment : Fragment() {
 
             Student.addStudent(newStudent)
 
-            // Navigate back to the student list
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.mainActivity_frameLayout, PostListFragment())
-                .addToBackStack(null)
-                .commit()
+//            // Navigate back to the student list
+//            parentFragmentManager.beginTransaction()
+//                .replace(R.id.mainActivity_frameLayout, PostListFragment())
+//                .addToBackStack(null)
+//                .commit()
         }
 
         birthDateView.setOnClickListener {
@@ -66,12 +66,6 @@ class AddPostFragment : Fragment() {
         birthTimeView.setOnClickListener {
             this.showTimePicker(birthTimeView)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Refresh the list when returning to this fragment
-        (activity as? MainActivity)?.setToolbarTitle("New Student")
     }
 
     companion object {

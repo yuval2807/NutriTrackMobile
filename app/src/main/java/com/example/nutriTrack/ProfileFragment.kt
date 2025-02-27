@@ -30,7 +30,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true) // Enable menu for this fragment
+//        setHasOptionsMenu(true) // Enable menu for this fragment
 
         val student = studentId?.let { Student.getStudentById(it) }
 
@@ -53,25 +53,25 @@ class ProfileFragment : Fragment() {
 
     private fun navigateToEditStudent() {
         val editFragment = EditPostFragment.newInstance(studentId ?: "")
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.mainActivity_frameLayout, editFragment)
-            .addToBackStack(null)
-            .commit()
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.mainActivity_frameLayout, editFragment)
+//            .addToBackStack(null)
+//            .commit()
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_post_details, menu)
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_edit -> navigateToEditStudent()
-
-        }
-        return super.onOptionsItemSelected(item)
-    }
-    override fun onResume() {
-        super.onResume()
-        (activity as? MainActivity)?.setToolbarTitle("Student Details")
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.action_edit -> navigateToEditStudent()
+//
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
+//    override fun onResume() {
+//        super.onResume()
+//        (activity as? MainActivity)?.setToolbarTitle("Student Details")
+//    }
 
     companion object {
         fun newInstance(studentId: String) = ProfileFragment().apply {
