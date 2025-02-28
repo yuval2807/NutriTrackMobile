@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/addNewPost"
-        android:name="com.example.nutriTrack.AddPostFragment"
+        android:name="com.example.nutriTrack.AddNewPostFragment"
         android:label="My Profile"
         tools:layout="@layout/fragment_add_new_post" >
     </fragment>
