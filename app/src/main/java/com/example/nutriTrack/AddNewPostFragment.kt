@@ -56,8 +56,8 @@ class AddNewPostFragment : Fragment() {
         }
 
         // Simulate saving post (you can replace this with database logic)
-        val newPost = Post("test", title, description, category, image )
-        Post.addPost(newPost)
+//        val newPost = Post("test", title, description, category, image )
+//        Post.addPost(newPost)
         // Display a success message
         Toast.makeText(requireContext(), "Post saved successfully!", Toast.LENGTH_SHORT).show()
     }
