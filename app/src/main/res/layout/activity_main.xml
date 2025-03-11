@@ -2,32 +2,30 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/main_activity_toolbar"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/main_navhost"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#EEBBA3E3"
-        android:elevation="4dp"
-        android:paddingTop="8dp"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@+id/main_bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white" />
+        app:navGraph="@navigation/nav_graph" />
 
-
-    <FrameLayout
-        android:id="@+id/mainActivity_frameLayout"
-        android:layout_width="412dp"
-        android:layout_height="665dp"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/main_bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_activity_toolbar">
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/footer_menu" />
 
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

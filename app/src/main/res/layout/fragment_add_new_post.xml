@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddNewPostFragment">
+
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    android:id="@+id/post_card_view"
+    app:cardElevation="4dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:rotationX="0">
+
+        <!-- User Info Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+
+            <!-- User Avatar -->
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_user_avatar" />
+
+            <!-- Username & Date -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingStart="8dp">
+
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="29.1.25"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <AutoCompleteTextView
+                android:id="@+id/et_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dropDownWidth="wrap_content"
+                android:hint="Select category"
+                android:inputType="none"
+                android:padding="8dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Post Image -->
+        <ImageView
+            android:id="@+id/iv_post_image"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@android:color/darker_gray"
+            android:scaleType="centerCrop" />
+
+        <!-- Post Title & Description -->
+        <!--        <com.google.android.material.textfield.TextInputEditText-->
+        <!--            android:id="@+id/et_post_title"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:hint="Enter post title"-->
+        <!--            android:textSize="18sp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:background="@null"-->
+        <!--            android:padding="4dp" />-->
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="@string/enter_post_title"
+            android:padding="4dp"
+            android:textColorHint="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:boxBackgroundColor="@color/nutriTrack_cards"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="0dp"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_post_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColorHint="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_maslul_description"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="@string/enter_post_description"
+            android:textColorHint="@color/black"
+            app:boxBackgroundColor="@color/nutriTrack_cards"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_post_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:breakStrategy="high_quality"
+                android:gravity="top"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:maxHeight="300dp"
+                android:minHeight="150dp"
+                android:overScrollMode="always"
+                android:padding="8dp"
+                android:scrollbars="vertical"
+                android:singleLine="false"
+                android:textColorHint="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="horizontal"
+            android:paddingTop="12dp" />
+
+        <Button
+            android:id="@+id/btn_save_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/nutriTrack_dark_green"
+            android:gravity="center"
+            android:text="save"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/post_card_view" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+</FrameLayout>

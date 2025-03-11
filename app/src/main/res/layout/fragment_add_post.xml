@@ -12,20 +12,6 @@
             android:layout_height="match_parent">
 
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/add_user_toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            android:background="#EEBBA3E3"-->
-<!--            android:elevation="4dp"-->
-<!--            android:paddingTop="8dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:navigationIcon="@drawable/ic_back_button"-->
-<!--            app:title="@string/new_student"-->
-<!--            app:titleTextColor="@android:color/white" />-->
-
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="100dp"
@@ -36,7 +22,7 @@
                 app:layout_constraintHorizontal_bias="0.051"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/avatar" />
+                app:srcCompat="@drawable/ic_user_avatar" />
             <Button
                 android:id="@+id/create_button"
                 android:layout_width="0dp"

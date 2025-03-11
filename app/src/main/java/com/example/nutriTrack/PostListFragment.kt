@@ -21,7 +21,7 @@ class PostListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true) // Enable menu for this fragment
+//        setHasOptionsMenu(true) // Enable menu for this fragment
 
         // Initialize RecyclerView
         recyclerView = view.findViewById(R.id.recycler_view)
@@ -37,26 +37,26 @@ class PostListFragment : Fragment() {
 //        recyclerView.adapter = adapter
 
     }
-    private fun navigateToAddStudent() {
-        val addStudentFragment = AddPostFragment()
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.mainActivity_frameLayout, addStudentFragment)
-            .addToBackStack(null)
-            .commit()
-    }
+//    private fun navigateToAddStudent() {
+//        val addStudentFragment = AddPostFragment()
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.mainActivity_frameLayout, addStudentFragment)
+//            .addToBackStack(null)
+//            .commit()
+//    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_post_list, menu)
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_add -> navigateToAddStudent()
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.action_add -> navigateToAddStudent()
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
     override fun onResume() {
         super.onResume()
         // Refresh the list when returning to this fragment
 //        adapter.updateStudents(Student.getAllStudents())
-        (activity as? MainActivity)?.setToolbarTitle("Students List")
+//        (activity as? MainActivity)?.setToolbarTitle("Students List")
     }
 }

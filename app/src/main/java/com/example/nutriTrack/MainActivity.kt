@@ -1,75 +1,30 @@
 package com.example.nutriTrack
 
-import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private var postListFragment: PostListFragment? = null
-
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            postListFragment = PostListFragment();
-            addFragment(postListFragment)
-        }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.main_navhost) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        val toolbar = findViewById<Toolbar>(R.id.main_activity_toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true) // Enable the back button
-        }
-
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (supportFragmentManager.backStackEntryCount > 0) {
-                    supportFragmentManager.popBackStack()
-                } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                }
-            }
-        })
-
- }
-
-    fun setToolbarTitle(title: String) {
-        supportActionBar?.title = title
-    }
-
-    fun addFragment(fragment: PostListFragment?) {
-        fragment?.let {
-            supportFragmentManager.beginTransaction().apply {
-                add(R.id.mainActivity_frameLayout, fragment)
-                    .addToBackStack(null).commit();
-            }
-        }
-
-    }
-
-    fun removeFragment(fragment: PostListFragment? ) {
-        fragment?.let {
-            supportFragmentManager.beginTransaction().apply {
-                remove(it)
-                commit();
-            }
-        }
+        val bottomNavView = findViewById<BottomNavigationView>(R.id.main_bottomNavigationView)
+        NavigationUI.setupWithNavController(
+            bottomNavView,
+            navController
+        )
     }
 }
