@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriTrack.Model.Post
-import com.example.nutriTrack.R
 
 
 interface OnItemClickListener {
