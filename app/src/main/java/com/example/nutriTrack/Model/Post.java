@@ -1,7 +1,5 @@
 package com.example.nutriTrack.Model;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import java.util.HashMap;
 import java.util.Map;
