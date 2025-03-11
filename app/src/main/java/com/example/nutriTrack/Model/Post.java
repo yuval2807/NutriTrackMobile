@@ -1,6 +1,8 @@
 package com.example.nutriTrack.Model;
 
 import androidx.annotation.NonNull;
+import androidx.collection.MutableObjectList;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +10,7 @@ import java.util.Map;
 public class Post {
     public static final String COLLECTION_NAME = "posts";
 
-//    @PrimaryKey
+    //    @PrimaryKey
     @NonNull
     String id;
     String title;
@@ -16,13 +18,16 @@ public class Post {
     String description;
     String imageUrl;
     Boolean isDeleted;
+    String user;
 
-    public Post(@NonNull String id, String title, Category dif, String description) {
+    public Post(@NonNull String id, String title, Category category, String description, String imageUrl,String user) {
         this.id = id;
         this.title = title;
-        this.category = dif;
+        this.category = category;
         this.description = description;
+        this.imageUrl= imageUrl;
         this.isDeleted = false;
+        this.user = user;
     }
 
     public Post() {
@@ -31,6 +36,7 @@ public class Post {
         this.category = Category.Nutrition;
         this.description = "";
         this.isDeleted = false;
+        this.user = "";
     }
 
     public enum Category {
@@ -46,9 +52,10 @@ public class Post {
         String description = (String) postJson.get("description");
         String imageUrl = (String) postJson.get("imageUrl");
         Boolean isDeleted = (Boolean) postJson.get("isDeleted");
+        String user = (String) postJson.get("user");
 
 
-        Post postItem = new Post(docId,title,category,description);
+        Post postItem = new Post(docId,title,category,description, imageUrl, user);
 
         postItem.setImageUrl(imageUrl);
         postItem.setId(docId);
@@ -64,6 +71,7 @@ public class Post {
         json.put("description", description);
         json.put("imageUrl", imageUrl);
         json.put("isDeleted", isDeleted);
+        json.put("user", user);
 
         return json;
     }
@@ -117,4 +125,13 @@ public class Post {
         this.imageUrl = imageUrl;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
 }
+
+

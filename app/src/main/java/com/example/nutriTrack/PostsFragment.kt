@@ -39,10 +39,10 @@ class PostsFragment : Fragment() {
 
     private fun loadPosts() {
         postList.clear()
-        postList.add(Post("User1", "Healthy Eating", Category.Nutrition,"Tips for balanced meals"))
-        postList.add(Post("User2", "Workout Routines", Category.Sports,"Best exercises for strength"))
-        postList.add(Post("User3", "Workout Routines", Category.Sports,"Best exercises for strength"))
-        postList.add(Post("User4", "Workout Routines", Category.Sports,"Best exercises for strength"))
+        postList.add(Post("User1", "Healthy Eating", Category.Nutrition,"Tips for balanced meals","",""))
+        postList.add(Post("User2", "Workout Routines", Category.Sports,"Best exercises for strength","",""))
+        postList.add(Post("User3", "Workout Routines", Category.Sports,"Best exercises for strength","",""))
+        postList.add(Post("User4", "Workout Routines", Category.Sports,"Best exercises for strength","",""))
         postListAdapter.setData(postList)
     }
 }

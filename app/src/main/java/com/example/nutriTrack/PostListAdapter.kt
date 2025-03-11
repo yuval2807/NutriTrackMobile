@@ -69,7 +69,7 @@ class PostsListViewHolder(
         // if (!post.getImageUrl().isNullOrEmpty()) {
         //     Picasso.get().load(post.getImageUrl()).into(image)
         // } else {
-        //     image.setImageResource(R.drawable.no_image_maslul)
+        //     image.setImageResource(R.drawable.no_image)
         // }
     }
 }
