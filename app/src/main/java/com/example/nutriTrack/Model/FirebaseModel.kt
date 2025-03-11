@@ -24,19 +24,7 @@ class FirebaseModel {
                 true -> {
                     val posts: MutableList<Post> = mutableListOf()
                     for (json in it.result) {
-                        val id = json.getString("id") ?: ""
-                        val title = json.getString("title") ?: ""
-                        val description = json.getString("description") ?: ""
-                        val category = json.getString("category") ?: ""
-                        val image = json.getString("image") ?: ""
-
-                        posts.add(Post(
-                            id = id,
-                            title = title,
-                            description = description,
-                            category = category,
-                            image = image
-                        ))
+                        posts.add(Post.fromJSON(json.data))
                     }
 
                     returnValue = posts
@@ -49,15 +37,7 @@ class FirebaseModel {
 
     fun add(post: Post) {
 
-        val json = hashMapOf(
-            "id" to post.id,
-            "title" to post.title,
-            "description" to post.description,
-            "category" to post.category,
-            "image" to post.image,
-        )
-
-        database.collection("posts").document(post.id).set(json)
+        database.collection("posts").document(post.id).set(post.json)
             .addOnCompleteListener {
 
             }

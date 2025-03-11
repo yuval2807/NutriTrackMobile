@@ -41,5 +41,32 @@ data class Post(
         fun getPostById(postId: String): Post? {
             return postsList.find { it.id == postId }
         }
+
+        fun fromJSON(json: Map<String, Any>): Post {
+            val id = json["id"] as? String ?: ""
+            val title = json["title"] as? String ?: ""
+            val description = json["description"] as? String ?: ""
+            val category = json["category"] as? String ?: ""
+            val image = json["image"] as? String ?: ""
+
+            return Post(
+                id = id,
+                title = title,
+                description = description,
+                category = category,
+                image = image
+            )
+        }
     }
-}
+
+    val json: Map<String, Any>
+        get() = hashMapOf(
+                "id" to id,
+                "title" to title,
+                "description" to description,
+                "category" to category,
+                "image" to image,
+            )
+
+    }
+
