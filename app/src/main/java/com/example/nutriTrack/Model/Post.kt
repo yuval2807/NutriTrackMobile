@@ -7,18 +7,22 @@ data class Post(
     var category:String,
     var image: String,
 
-) {
+    ) {
     companion object {
         private var counter = 0
 
+        private val firebaseModel = FirebaseModel()
+
         // Static list to store students (our in-memory "database")
-        private val postsList = mutableListOf<Post>()
+        private var postsList = mutableListOf<Post>()
 
         fun getAllStudents(): List<Post> {
+            postsList = firebaseModel.getAllPosts()
             return postsList
         }
 
         fun addPost(post: Post) {
+            firebaseModel.add(post)
             postsList.add(post)
         }
 
@@ -30,6 +34,7 @@ data class Post(
         }
 
         fun deletePost(postId: String) {
+            firebaseModel.delete(postId)
             postsList.removeIf { it.id == postId }
         }
 
