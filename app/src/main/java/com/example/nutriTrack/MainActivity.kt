@@ -12,53 +12,36 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.Firebase
 //import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private var postListFragment: PostListFragment? = null
-
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            postListFragment = PostListFragment();
-            addFragment(postListFragment)
-        }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.main_navhost) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        val toolbar = findViewById<Toolbar>(R.id.main_activity_toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true) // Enable the back button
-        }
-
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (supportFragmentManager.backStackEntryCount > 0) {
-                    supportFragmentManager.popBackStack()
-                } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                }
-            }
-        })
-
+        val bottomNavView = findViewById<BottomNavigationView>(R.id.main_bottomNavigationView)
+        NavigationUI.setupWithNavController(
+            bottomNavView,
+            navController
+        )
         val db = Firebase.firestore
 
         // Create a new user with a first and last name
         val user = hashMapOf(
-            "first" to "Ada",
+            "first" to "Inbar",
             "last" to "Lovelace",
-            "born" to 1815,
+            "born" to 2003,
         )
 
 // Add a new document with a generated ID
@@ -71,28 +54,5 @@ class MainActivity : AppCompatActivity() {
                 Log.w("TAG", "Error adding document", e)
             }
 
-    }
-
-    fun setToolbarTitle(title: String) {
-        supportActionBar?.title = title
-    }
-
-    fun addFragment(fragment: PostListFragment?) {
-        fragment?.let {
-            supportFragmentManager.beginTransaction().apply {
-                add(R.id.mainActivity_frameLayout, fragment)
-                    .addToBackStack(null).commit();
-            }
-        }
-
-    }
-
-    fun removeFragment(fragment: PostListFragment? ) {
-        fragment?.let {
-            supportFragmentManager.beginTransaction().apply {
-                remove(it)
-                commit();
-            }
-        }
     }
 }
