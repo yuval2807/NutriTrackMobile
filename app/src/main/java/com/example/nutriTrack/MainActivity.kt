@@ -3,11 +3,15 @@ package com.example.nutriTrack
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.Firebase
+//import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,7 +52,26 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
- }
+        val db = Firebase.firestore
+
+        // Create a new user with a first and last name
+        val user = hashMapOf(
+            "first" to "Ada",
+            "last" to "Lovelace",
+            "born" to 1815,
+        )
+
+// Add a new document with a generated ID
+        db.collection("users")
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("TAG", "Error adding document", e)
+            }
+
+    }
 
     fun setToolbarTitle(title: String) {
         supportActionBar?.title = title
