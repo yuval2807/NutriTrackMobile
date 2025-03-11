@@ -1,5 +1,7 @@
 package com.example.nutriTrack.Model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +49,6 @@ public class Post {
         String imageUrl = (String) postJson.get("imageUrl");
         Boolean isDeleted = (Boolean) postJson.get("isDeleted");
 
-
         Post postItem = new Post(docId,title,category,description);
 
         postItem.setImageUrl(imageUrl);
@@ -60,7 +61,7 @@ public class Post {
         Map<String, Object> json = new HashMap<>();
         json.put("id", id);
         json.put("title", title);
-        json.put("difficulty", category);
+        json.put("category", category);
         json.put("description", description);
         json.put("imageUrl", imageUrl);
         json.put("isDeleted", isDeleted);

@@ -1,5 +1,8 @@
 package com.example.nutriTrack.Model
 
+import android.util.Log
+import com.example.nutriTrack.Model.Post.COLLECTION_NAME
+import com.example.nutriTrack.Model.Post.Category
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.memoryCacheSettings
@@ -17,27 +20,37 @@ class FirebaseModel {
         database.firestoreSettings = setting
     }
 
-    fun getAllPosts(): MutableList<Post> {
+    fun getAllPosts(callback: (MutableList<Post>) -> Unit) {
         var returnValue: MutableList<Post> = mutableListOf()
-        database.collection("posts").get().addOnCompleteListener {
-            when (it.isSuccessful) {
+        database.collection("posts").get().addOnCompleteListener {task ->
+            when (task.isSuccessful) {
                 true -> {
-                    val posts: MutableList<Post> = mutableListOf()
-                    for (json in it.result) {
-                        posts.add(Post.fromJSON(json.data))
+                    val posts = mutableListOf<Post>()
+
+                    for (document in task.result!!) {
+
+                        val post = Post.createPost(document.data, "123")
+                        posts.add(post)
                     }
 
+                    Log.d("Firestore", "After work: ${posts[0]}")
+
                     returnValue = posts
+                    callback(posts)
                 }
-                false -> {}
+                false -> {
+                    //callback(MutableList())
+                    returnValue.add(Post("User1", "Healthy Eating", Category.Nutrition,"Tips for balanced meals"))
+
+                }
+
             }
         }
-        return returnValue
     }
 
     fun add(post: Post) {
 
-        database.collection("posts").document(post.id).set(post.json)
+        database.collection(COLLECTION_NAME).document(post.id).set(post.toJson())
             .addOnCompleteListener {
 
             }

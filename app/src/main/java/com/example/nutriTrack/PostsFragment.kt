@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.Model.Post.Category
 import com.example.nutriTrack.PostListAdapter
@@ -39,10 +40,11 @@ class PostsFragment : Fragment() {
 
     private fun loadPosts() {
         postList.clear()
-        postList.add(Post("User1", "Healthy Eating", Category.Nutrition,"Tips for balanced meals"))
-        postList.add(Post("User2", "Workout Routines", Category.Sports,"Best exercises for strength"))
-        postList.add(Post("User3", "Workout Routines", Category.Sports,"Best exercises for strength"))
-        postList.add(Post("User4", "Workout Routines", Category.Sports,"Best exercises for strength"))
-        postListAdapter.setData(postList)
+        val firebaseModel = FirebaseModel()
+        firebaseModel.getAllPosts { posts ->
+            postList = posts
+            postListAdapter.setData(postList)
+        }
+
     }
 }
