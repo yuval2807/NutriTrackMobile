@@ -9,7 +9,9 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Post
+import com.example.nutriTrack.Model.Post.Category
 import com.google.android.material.textfield.TextInputEditText
 
 
@@ -56,8 +58,11 @@ class AddNewPostFragment : Fragment() {
         }
 
         // Simulate saving post (you can replace this with database logic)
-//        val newPost = Post("test", title, description, category, image )
-//        Post.addPost(newPost)
+        val newPost = Post("123", title, Category.valueOf(category), description )
+        //Post.addPost(newPost)
+        val firebaseModel = FirebaseModel()
+        firebaseModel.add(newPost)
+
         // Display a success message
         Toast.makeText(requireContext(), "Post saved successfully!", Toast.LENGTH_SHORT).show()
     }
