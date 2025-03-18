@@ -10,10 +10,14 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Post
+import com.example.nutriTrack.Model.Post.Category
 import com.google.android.material.textfield.TextInputEditText
 import java.io.ByteArrayOutputStream
 import java.sql.Timestamp
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 class AddNewPostFragment : Fragment() {
@@ -57,9 +61,6 @@ class AddNewPostFragment : Fragment() {
         saveButton = view.findViewById(R.id.btn_save_post)
         takePictureButton = view.findViewById(R.id.btn_take_picture)
         pickImageButton = view.findViewById(R.id.btn_pick_image)
-        postImageView = view.findViewById(R.id.iv_post_image)
-
-        // Set up category dropdown
         val categories = resources.getStringArray(R.array.categories_array)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
         categoryDropdown.setAdapter(adapter)
@@ -74,7 +75,6 @@ class AddNewPostFragment : Fragment() {
             galleryLauncher.launch("image/*")
         }
 
-        // Save Post
         saveButton.setOnClickListener {
             savePost()
         }
@@ -93,14 +93,23 @@ class AddNewPostFragment : Fragment() {
             return
         }
 
-        if (title.isEmpty() || description.isEmpty() || categoryText.isEmpty()) {
+        if (title.isEmpty() || description.isEmpty() || category.toString().isEmpty()) {
             Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
 
         val postId = UUID.randomUUID().toString()
+        val current = LocalDateTime.now()
 
-        val post = Post(postId, title, category, description, postImageUri?.toString() ?: "")
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        val formatted = current.format(formatter)
+        val newPost = Post(postId, title, category, description, postImageUri?.toString() ?: "","user1",formatted)
+
+        val firebaseModel = FirebaseModel()
+        firebaseModel.add(newPost)
+
+        // Display a success message
+
 
         if (postImageBitmap != null) {
             val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
@@ -124,29 +133,6 @@ class AddNewPostFragment : Fragment() {
         Toast.makeText(requireContext(), "Post saved successfully!", Toast.LENGTH_SHORT).show()
     }
 
-//    //firebaseStorageUpload
-//    fun uploadImage(name: String, bitmap: Bitmap, listener: Model.Listener<String?>) {
-//        val storageRef: StorageReference = storage.getReference()
-//        val imagesRef: StorageReference = storageRef.child("images/$name.jpg")
 //
-//        val baos = ByteArrayOutputStream()
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//        val data = baos.toByteArray()
-//
-//        val uploadTask: UploadTask = imagesRef.putBytes(data)
-//        uploadTask.addOnFailureListener(object : OnFailureListener() {
-//            override fun onFailure(exception: Exception) {
-//                listener.onComplete(null)
-//            }
-//        }).addOnSuccessListener(object : OnSuccessListener<UploadTask.TaskSnapshot?>() {
-//            override fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot?) {
-//                imagesRef.getDownloadUrl().addOnSuccessListener(object : OnSuccessListener<Uri?>() {
-//                    override fun onSuccess(uri: Uri) {
-//                        listener.onComplete(uri.toString())
-//                    }
-//                })
-//            }
-//        })
-//    }
 }
 

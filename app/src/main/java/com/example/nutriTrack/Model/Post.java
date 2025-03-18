@@ -1,8 +1,6 @@
 package com.example.nutriTrack.Model;
 
 import androidx.annotation.NonNull;
-import androidx.collection.MutableObjectList;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +8,7 @@ import java.util.Map;
 public class Post {
     public static final String COLLECTION_NAME = "posts";
 
-    //    @PrimaryKey
+//    @PrimaryKey
     @NonNull
     String id;
     String title;
@@ -19,8 +17,9 @@ public class Post {
     String imageUrl;
     Boolean isDeleted;
     String user;
+    String date;
 
-    public Post(@NonNull String id, String title, Category category, String description, String imageUrl,String user) {
+    public Post(@NonNull String id, String title, Category category, String description, String imageUrl,String user, String date) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -28,6 +27,7 @@ public class Post {
         this.imageUrl= imageUrl;
         this.isDeleted = false;
         this.user = user;
+        this.date = date;
     }
 
     public Post() {
@@ -37,6 +37,7 @@ public class Post {
         this.description = "";
         this.isDeleted = false;
         this.user = "";
+        this.date = "";
     }
 
     public enum Category {
@@ -53,9 +54,9 @@ public class Post {
         String imageUrl = (String) postJson.get("imageUrl");
         Boolean isDeleted = (Boolean) postJson.get("isDeleted");
         String user = (String) postJson.get("user");
+        String date = (String) postJson.get("date");
 
-
-        Post postItem = new Post(docId,title,category,description, imageUrl, user);
+        Post postItem = new Post(docId,title,category,description, imageUrl, user,date);
 
         postItem.setImageUrl(imageUrl);
         postItem.setId(docId);
@@ -67,11 +68,12 @@ public class Post {
         Map<String, Object> json = new HashMap<>();
         json.put("id", id);
         json.put("title", title);
-        json.put("difficulty", category);
+        json.put("category", category);
         json.put("description", description);
         json.put("imageUrl", imageUrl);
         json.put("isDeleted", isDeleted);
         json.put("user", user);
+        json.put("date", date);
 
         return json;
     }
@@ -86,7 +88,7 @@ public class Post {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -94,7 +96,7 @@ public class Post {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
@@ -102,7 +104,7 @@ public class Post {
     }
 
     public Category getCategory() {
-        return category;
+        return this.category;
     }
 
     public void setCategory(Category category) {
@@ -110,15 +112,15 @@ public class Post {
     }
 
     public Boolean getDeleted() {
-        return isDeleted;
+        return this.isDeleted;
     }
 
     public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+        this.isDeleted = deleted;
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return this.imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
@@ -126,12 +128,18 @@ public class Post {
     }
 
     public String getUser() {
-        return user;
+        return this.user;
     }
 
     public void setUser(String user) {
         this.user = user;
     }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }
-
-
