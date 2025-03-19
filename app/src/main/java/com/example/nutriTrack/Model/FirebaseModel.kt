@@ -1,5 +1,7 @@
 package com.example.nutriTrack.Model
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import com.example.nutriTrack.Model.Post.COLLECTION_NAME
 import com.example.nutriTrack.Model.Post.Category
@@ -10,10 +12,15 @@ import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.memoryCacheSettings
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+
+import java.io.ByteArrayOutputStream
 
 class FirebaseModel {
 
     private val database = Firebase.firestore
+    private var storage = Firebase.storage
 
     init {
         val setting = firestoreSettings {
@@ -21,6 +28,8 @@ class FirebaseModel {
         }
 
         database.firestoreSettings = setting
+        storage = FirebaseStorage.getInstance()
+
     }
 
     fun getAllPosts(callback: (MutableList<Post>) -> Unit) {
@@ -36,7 +45,7 @@ class FirebaseModel {
                         posts.add(post)
                     }
 
-                    Log.d("Firestore", "After work: ${posts[0]}")
+                    Log.d("Firestore", "After work: ${posts}")
 
                     returnValue = posts
                     callback(posts)
@@ -51,13 +60,11 @@ class FirebaseModel {
         }
     }
 
-    fun add(post: Post) {
+    fun addPost(post: Post) {
         database.collection(COLLECTION_NAME).document(post.id).set(post.toJson())
             .addOnCompleteListener {
-
             }
 
-        // Add post case - get new free id
         var postId: String = post.getId()
         if (postId == "") {
             val rootRef = FirebaseFirestore.getInstance()
@@ -68,16 +75,31 @@ class FirebaseModel {
         database.collection(COLLECTION_NAME)
             .document(postId)
             .set(post.toJson())
-            .addOnSuccessListener(OnSuccessListener<Void> { unused: Void? ->
-//                listener.onComplete(
-//                    null
-//                )
-            })
-//            .addOnFailureListener(OnFailureListener { e: Exception? -> listener.onComplete(null) })
 
     }
 
-    fun delete(postId: String) {
+    fun uploadImage(bitmap: Bitmap, name: String, callback: (String?) -> Unit) {
+//        val storageRef: StorageReference = storage.getReference()
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/$name.jpg")
+
+//        val imagesRef: StorageReference = storageRef.child("images/$name.jpg")
+
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        val uploadTask = storageRef.putBytes(data)
+        uploadTask.addOnFailureListener(OnFailureListener { callback(null) })
+            .addOnSuccessListener(
+                OnSuccessListener<Any?> {
+                    storageRef.downloadUrl.addOnSuccessListener(OnSuccessListener<Uri> { uri ->
+                        callback(uri.toString())
+                    })
+                })
+    }
+
+    fun delete(postId: Post, callback: (String?) -> Unit) {
+
     }
 
 

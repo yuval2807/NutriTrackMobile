@@ -10,11 +10,11 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.example.nutriTrack.Model.FirebaseModel
+import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
-import com.example.nutriTrack.Model.Post.Category
 import com.google.android.material.textfield.TextInputEditText
-import java.io.ByteArrayOutputStream
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -32,13 +32,21 @@ class AddNewPostFragment : Fragment() {
     private var postImageUri: Uri? = null
 
     // Camera Launcher
+//    private val cameraLauncher =
+//        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+//            bitmap?.let {
+//                postImageBitmap = it
+//                postImageView.setImageBitmap(it)
+//            } ?: Toast.makeText(requireContext(), "Failed to capture photo", Toast.LENGTH_SHORT).show()
+//        }
+
     private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            bitmap?.let {
-                postImageBitmap = it
-                postImageView.setImageBitmap(it)
-            } ?: Toast.makeText(requireContext(), "Failed to capture photo", Toast.LENGTH_SHORT).show()
-        }
+    registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        bitmap?.let {
+            postImageBitmap = bitmap
+            postImageView.setImageBitmap(bitmap)
+        } ?: Toast.makeText(requireContext(), "Failed to capture photo", Toast.LENGTH_SHORT).show()
+    }
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -58,6 +66,7 @@ class AddNewPostFragment : Fragment() {
         titleEditText = view.findViewById(R.id.et_post_title)
         descriptionEditText = view.findViewById(R.id.et_post_description)
         categoryDropdown = view.findViewById(R.id.et_category)
+        postImageView = view.findViewById(R.id.iv_post_image)
         saveButton = view.findViewById(R.id.btn_save_post)
         takePictureButton = view.findViewById(R.id.btn_take_picture)
         pickImageButton = view.findViewById(R.id.btn_pick_image)
@@ -106,33 +115,26 @@ class AddNewPostFragment : Fragment() {
         val newPost = Post(postId, title, category, description, postImageUri?.toString() ?: "","user1",formatted)
 
         val firebaseModel = FirebaseModel()
-        firebaseModel.add(newPost)
 
-        // Display a success message
-
-
-        if (postImageBitmap != null) {
+        if ( postImageBitmap  != null) {
             val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
-            //Model is changing to firebase model
-//            Model.instance().uploadImage(imgId, bitmap) { imageUrl ->
+            Model.shared.add(newPost, bitmap, Model.Storage.CLOUDINARY) {
+//                binding?.progressBar?.visibility = View.GONE
+//                Navigation.findNavController(view).popBackStack()
+            }
+
+//            firebaseModel.uploadImage(imgId, bitmap) { imageUrl ->
 //                if (imageUrl != null) {
-//                    post.setImageUrl(imageUrl)
+//                    newPost.setImageUrl(imageUrl)
 //                }
-//                Model.instance().addPost(post)
+//                firebaseModel.addPost(newPost)
 //
 //            }
-
-
+//        } else {
+//            firebaseModel.addPost(newPost)
+//        }
         }
-                // Add post to list
-//        Post.addPost(post)
-
-
-        // Simulate saving the post
-        Toast.makeText(requireContext(), "Post saved successfully!", Toast.LENGTH_SHORT).show()
     }
-
-//
 }
 
