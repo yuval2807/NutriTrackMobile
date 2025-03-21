@@ -1,9 +1,14 @@
 package com.example.nutriTrack.Model
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.example.nutriTrack.Model.Post.COLLECTION_NAME
 import com.example.nutriTrack.Model.Post.Category
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -13,12 +18,16 @@ import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.memoryCacheSettings
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+
+import java.io.ByteArrayOutputStream
 
 class FirebaseModel {
 
     private val database = Firebase.firestore
     private val auth: FirebaseAuth = Firebase.auth
-
+    private var storage = Firebase.storage
 
     init {
         val setting = firestoreSettings {
@@ -26,6 +35,7 @@ class FirebaseModel {
         }
 
         database.firestoreSettings = setting
+        storage = FirebaseStorage.getInstance()
     }
 
     fun getAllPosts(callback: (MutableList<Post>) -> Unit) {
@@ -41,14 +51,14 @@ class FirebaseModel {
                         posts.add(post)
                     }
 
-                    Log.d("Firestore", "After work: ${posts[0]}")
+                    Log.d("Firestore", "After work: ${posts}")
 
                     returnValue = posts
                     callback(posts)
                 }
                 false -> {
                     //callback(MutableList())
-                    returnValue.add(Post("User1", "Healthy Eating", Category.Nutrition,"Tips for balanced meals"))
+                    returnValue.add(Post("1234", "Healthy Eating", Category.Nutrition,"Tips for balanced meals","","User1", "3.3.25"))
 
                 }
 
@@ -56,32 +66,45 @@ class FirebaseModel {
         }
     }
 
-    fun add(post: Post) {
+    fun addPost(post: Post) {
 
         database.collection(COLLECTION_NAME).document(post.id).set(post.toJson())
             .addOnCompleteListener {
-
             }
 
-//        // Create a new user with a first and last name
-//        val user = hashMapOf(
-//            "first" to "Inbar",
-//            "last" to "Lovelace",
-//            "born" to 2003,
-//        )
-//
-//// Add a new document with a generated ID
-//        db.collection("users")
-//            .add(user)
-//            .addOnSuccessListener { documentReference ->
-//                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
-//            }
-//            .addOnFailureListener { e ->
-//                Log.w("TAG", "Error adding document", e)
-//            }
+        var postId: String = post.getId()
+        if (postId == "") {
+            val rootRef = FirebaseFirestore.getInstance()
+            val postRef = rootRef.collection(COLLECTION_NAME)
+            postId = postRef.document().id
+        }
+
+        database.collection(COLLECTION_NAME)
+            .document(postId)
+            .set(post.toJson())
+
     }
 
-    fun delete(postId: String) {
+    fun uploadImage(bitmap: Bitmap, name: String, callback: (String?) -> Unit) {
+//        val storageRef: StorageReference = storage.getReference()
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/$name.jpg")
+//        val imagesRef: StorageReference = storageRef.child("images/$name.jpg")
+
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        val uploadTask = storageRef.putBytes(data)
+        uploadTask.addOnFailureListener(OnFailureListener { callback(null) })
+            .addOnSuccessListener(
+                OnSuccessListener<Any?> {
+                    storageRef.downloadUrl.addOnSuccessListener(OnSuccessListener<Uri> { uri ->
+                        callback(uri.toString())
+                    })
+                })
+    }
+
+    fun delete(postId: Post, callback: (String?) -> Unit) {
 
     }
 

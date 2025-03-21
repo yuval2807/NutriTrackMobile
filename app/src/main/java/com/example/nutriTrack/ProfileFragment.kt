@@ -51,13 +51,6 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun navigateToEditStudent() {
-        val editFragment = EditPostFragment.newInstance(studentId ?: "")
-//        parentFragmentManager.beginTransaction()
-//            .replace(R.id.mainActivity_frameLayout, editFragment)
-//            .addToBackStack(null)
-//            .commit()
-    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_post_details, menu)
     }

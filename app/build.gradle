@@ -17,6 +17,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "CLOUD_NAME", "\"${project.properties["CLOUD_NAME"] ?: ""}\"")
+        buildConfigField("String", "API_KEY", "\"${project.properties["API_KEY"] ?: ""}\"")
+        buildConfigField("String", "API_SECRET", "\"${project.properties["API_SECRET"] ?: ""}\"")
     }
 
     buildTypes {
@@ -35,6 +39,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -48,11 +57,14 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
+    implementation('com.google.firebase:firebase-storage-ktx')
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
+    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.cloudinary:cloudinary-android:2.4.0'
 
     def nav_version = "2.5.3"
     implementation "androidx.navigation:navigation-fragment:$nav_version"

@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriTrack.Model.Post
+import com.squareup.picasso.Picasso
 
 
 interface OnItemClickListener {
@@ -48,7 +49,9 @@ class PostsListViewHolder(
     private val titleTv: TextView = itemView.findViewById(R.id.tv_postlist_post_title)
     private val descriptionTv: TextView = itemView.findViewById(R.id.tv_postlist_post_description)
     private val categoryTv: TextView = itemView.findViewById(R.id.tv_postlist_post_category)
-    private val image: ImageView = itemView.findViewById(R.id.iv_postlist_post_image)
+    private val dateTv: TextView = itemView.findViewById(R.id.tv_postlist_date)
+    private val imageView: ImageView = itemView.findViewById(R.id.iv_postlist_post_image)
+
 
     init {
         itemView.setOnClickListener {
@@ -59,16 +62,29 @@ class PostsListViewHolder(
         }
     }
 
+    fun loadImageIntoImageView(imageView: ImageView, imageUrl: String?) {
+        if (!imageUrl.isNullOrEmpty()) {
+            Picasso.get()
+                .load(imageUrl) // Load from Firebase Storage URL
+                .placeholder(R.drawable.ic_profile) // Optional placeholder
+                .into(imageView) // Set into ImageView
+        } else {
+            imageView.setImageResource(R.drawable.ic_profile) // Default image
+        }
+    }
+
     fun bind(post: Post) {
         titleTv.text = post.getTitle()
         descriptionTv.text = post.getDescription()
         categoryTv.text = post.getCategory().name
+        dateTv.text = post.date
+        loadImageIntoImageView(imageView,post.imageUrl)
 
         // Uncomment this part when you have image loading logic:
         // if (!post.getImageUrl().isNullOrEmpty()) {
         //     Picasso.get().load(post.getImageUrl()).into(image)
         // } else {
-        //     image.setImageResource(R.drawable.no_image_maslul)
+        //     image.setImageResource(R.drawable.no_image)
         // }
     }
 }

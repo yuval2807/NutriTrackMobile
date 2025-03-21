@@ -1,3 +1,5 @@
+package com.example.nutriTrack
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Post
-import com.example.nutriTrack.Model.Post.Category
-import com.example.nutriTrack.PostListAdapter
-import com.example.nutriTrack.R
 class PostsFragment : Fragment() {
 
     private lateinit var postListAdapter: PostListAdapter
