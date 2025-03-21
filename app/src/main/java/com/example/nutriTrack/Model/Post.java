@@ -16,13 +16,18 @@ public class Post {
     String description;
     String imageUrl;
     Boolean isDeleted;
+    String user;
+    String date;
 
-    public Post(@NonNull String id, String title, Category dif, String description) {
+    public Post(@NonNull String id, String title, Category category, String description, String imageUrl,String user, String date) {
         this.id = id;
         this.title = title;
-        this.category = dif;
+        this.category = category;
         this.description = description;
+        this.imageUrl= imageUrl;
         this.isDeleted = false;
+        this.user = user;
+        this.date = date;
     }
 
     public Post() {
@@ -31,6 +36,8 @@ public class Post {
         this.category = Category.Nutrition;
         this.description = "";
         this.isDeleted = false;
+        this.user = "";
+        this.date = "";
     }
 
     public enum Category {
@@ -46,8 +53,10 @@ public class Post {
         String description = (String) postJson.get("description");
         String imageUrl = (String) postJson.get("imageUrl");
         Boolean isDeleted = (Boolean) postJson.get("isDeleted");
+        String user = (String) postJson.get("user");
+        String date = (String) postJson.get("date");
 
-        Post postItem = new Post(docId,title,category,description);
+        Post postItem = new Post(docId,title,category,description, imageUrl, user,date);
 
         postItem.setImageUrl(imageUrl);
         postItem.setId(docId);
@@ -63,6 +72,8 @@ public class Post {
         json.put("description", description);
         json.put("imageUrl", imageUrl);
         json.put("isDeleted", isDeleted);
+        json.put("user", user);
+        json.put("date", date);
 
         return json;
     }
@@ -77,7 +88,7 @@ public class Post {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public void setTitle(String title) {
@@ -85,7 +96,7 @@ public class Post {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
@@ -93,7 +104,7 @@ public class Post {
     }
 
     public Category getCategory() {
-        return category;
+        return this.category;
     }
 
     public void setCategory(Category category) {
@@ -101,19 +112,34 @@ public class Post {
     }
 
     public Boolean getDeleted() {
-        return isDeleted;
+        return this.isDeleted;
     }
 
     public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+        this.isDeleted = deleted;
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return this.imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
+    public String getUser() {
+        return this.user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/postsFragment"
-        android:name="PostsFragment"
+        android:name="com.example.nutriTrack.PostsFragment"
         android:label="Posts"
         tools:layout="@layout/fragment_posts" >
 
