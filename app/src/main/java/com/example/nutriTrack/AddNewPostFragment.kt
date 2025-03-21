@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Model
@@ -96,6 +98,13 @@ class AddNewPostFragment : Fragment() {
         saveButton.setOnClickListener {
             savePost()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Custom back navigation logic
+                findNavController().navigate(R.id.postsFragment)
+            }
+        })
     }
 
     private fun loadPostData(postId: String) {
@@ -151,8 +160,14 @@ class AddNewPostFragment : Fragment() {
             val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
             Model.shared.add(newPost, bitmap, Model.Storage.CLOUDINARY) {
+//                findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
             }
         }
+        Model.shared.add(newPost, null, Model.Storage.CLOUDINARY) {
+}
+        findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
+
+
     }
 }
 

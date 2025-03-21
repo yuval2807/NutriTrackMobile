@@ -23,7 +23,8 @@
         <argument
             android:name="postId"
             app:argType="string"
-            app:nullable="true" />
+            app:nullable="true"
+            android:defaultValue="@null"/>
         <action
             android:id="@+id/action_addNewPost_to_postsFragment"
             app:destination="@id/postsFragment" />
