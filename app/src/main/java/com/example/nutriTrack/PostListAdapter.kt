@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Post
-import com.squareup.picasso.Picasso
 
 
 interface OnItemClickListener {
@@ -42,6 +44,15 @@ class PostListAdapter(private var data: List<Post>, private val navController: N
 
     }
 
+    fun removeItem(position: Int) {
+        if (position >= 0 && position < data.size) {
+            val mutableData = data.toMutableList()
+            mutableData.removeAt(position)
+            data = mutableData
+            notifyItemRemoved(position)
+        }
+    }
+
     override fun getItemCount(): Int = data.size
 }
 
@@ -58,6 +69,7 @@ class PostsListViewHolder(
     private val dateTv: TextView = itemView.findViewById(R.id.tv_postlist_date)
     private val imageView: ImageView = itemView.findViewById(R.id.iv_postlist_post_image)
     private val editButton: ImageButton = itemView.findViewById(R.id.btn_edit)
+    private val deleteButton: ImageButton = itemView.findViewById(R.id.btn_delete)
 
 
     init {
@@ -80,6 +92,14 @@ class PostsListViewHolder(
             }
         }
 
+        deleteButton.setOnClickListener {
+            val pos = adapterPosition
+            if (pos != RecyclerView.NO_POSITION && data != null) {
+                val post = data!![pos]
+                showDeleteConfirmation(post)
+            }
+        }
+
     }
 
     fun bind(post: Post) {
@@ -89,5 +109,27 @@ class PostsListViewHolder(
         dateTv.text = post.date
         loadImageIntoImageView(imageView,post.imageUrl)
 
+    }
+
+    private fun showDeleteConfirmation(post: Post) {
+        val context = itemView.context
+        AlertDialog.Builder(context)
+            .setTitle("Delete Post")
+            .setMessage("Are you sure you want to delete this post?")
+            .setPositiveButton("Delete") { _, _ ->
+                val firebaseModel = FirebaseModel()
+                firebaseModel.deletePost(post.getId()) { success ->
+                    if (success) {
+                        if (position != RecyclerView.NO_POSITION) {
+                            (bindingAdapter as? PostListAdapter)?.removeItem(position)
+                        }
+                        Toast.makeText(context, "Post deleted successfully", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Failed to delete post", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }
