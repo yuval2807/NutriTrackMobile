@@ -41,7 +41,7 @@ class FirebaseModel {
 
                     for (document in task.result!!) {
 
-                        val post = Post.createPost(document.data, "123")
+                        val post = Post.createPost(document.data)
                         posts.add(post)
                     }
 
@@ -52,8 +52,6 @@ class FirebaseModel {
                 }
                 false -> {
                     //callback(MutableList())
-                    returnValue.add(Post("1234", "Healthy Eating", Category.Nutrition,"Tips for balanced meals","","User1", "3.3.25"))
-
                 }
 
             }
@@ -79,10 +77,7 @@ class FirebaseModel {
     }
 
     fun uploadImage(bitmap: Bitmap, name: String, callback: (String?) -> Unit) {
-//        val storageRef: StorageReference = storage.getReference()
         val storageRef = FirebaseStorage.getInstance().reference.child("images/$name.jpg")
-
-//        val imagesRef: StorageReference = storageRef.child("images/$name.jpg")
 
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -102,5 +97,22 @@ class FirebaseModel {
 
     }
 
+    fun getPostById(postId: String, callback: (Post?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("posts").document(postId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val post = document.toObject(Post::class.java)
+                    post?.setId(document.id)
+                    callback(post)
+                } else {
+                    callback(null)
+                }
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
+    }
 
 }

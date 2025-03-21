@@ -10,35 +10,34 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
+import com.example.nutriTrack.utils.getCurrDate
 import com.google.android.material.textfield.TextInputEditText
-import java.sql.Timestamp
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 class AddNewPostFragment : Fragment() {
+    public enum class PostMode {
+        Edit,
+        Add
+    }
+
     private lateinit var titleEditText: TextInputEditText
     private lateinit var descriptionEditText: TextInputEditText
+    private lateinit var dateTextView: TextView
     private lateinit var categoryDropdown: AutoCompleteTextView
     private lateinit var saveButton: Button
     private lateinit var takePictureButton: Button
     private lateinit var pickImageButton: Button
     private lateinit var postImageView: ImageView
+    private lateinit var categories: Array<String>
     private var postImageBitmap: Bitmap? = null
     private var postImageUri: Uri? = null
-
-    // Camera Launcher
-//    private val cameraLauncher =
-//        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-//            bitmap?.let {
-//                postImageBitmap = it
-//                postImageView.setImageBitmap(it)
-//            } ?: Toast.makeText(requireContext(), "Failed to capture photo", Toast.LENGTH_SHORT).show()
-//        }
+    private var mode :PostMode = PostMode.Add
+    private var postId: String? = null
+    private var currPost: Post? = null
 
     private val cameraLauncher =
     registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
@@ -57,6 +56,15 @@ class AddNewPostFragment : Fragment() {
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        super.onCreate(savedInstanceState)
+
+        val args: AddNewPostFragmentArgs by navArgs()
+        postId = args.postId
+        if (postId != null) {
+                mode = PostMode.Edit
+                loadPostData(postId!!)
+        }
+
         return inflater.inflate(R.layout.fragment_add_new_post, container, false)
     }
 
@@ -65,17 +73,18 @@ class AddNewPostFragment : Fragment() {
 
         titleEditText = view.findViewById(R.id.et_post_title)
         descriptionEditText = view.findViewById(R.id.et_post_description)
+        dateTextView = view.findViewById(R.id.tv_date)
         categoryDropdown = view.findViewById(R.id.et_category)
         postImageView = view.findViewById(R.id.iv_post_image)
         saveButton = view.findViewById(R.id.btn_save_post)
         takePictureButton = view.findViewById(R.id.btn_take_picture)
         pickImageButton = view.findViewById(R.id.btn_pick_image)
-        val categories = resources.getStringArray(R.array.categories_array)
+        categories = resources.getStringArray(R.array.categories_array)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
         categoryDropdown.setAdapter(adapter)
         categoryDropdown.setOnClickListener { categoryDropdown.showDropDown() }
 
-        // Picture
+
         takePictureButton.setOnClickListener {
             cameraLauncher.launch(null)
         }
@@ -89,11 +98,25 @@ class AddNewPostFragment : Fragment() {
         }
     }
 
+    private fun loadPostData(postId: String) {
+        val firebaseModel = FirebaseModel()
+        firebaseModel.getPostById(postId) { post ->
+            if (post != null) {
+                currPost = post
+
+                 titleEditText.setText(post.getTitle())
+                 descriptionEditText.setText(post.getDescription())
+                categoryDropdown.setText(post.category.name, false)
+                dateTextView.text = post.getDate()
+                loadImageIntoImageView(postImageView,post.imageUrl)
+            }
+        }
+    }
+
     private fun savePost() {
         val title = titleEditText.text.toString().trim()
         val description = descriptionEditText.text.toString().trim()
         val categoryText = categoryDropdown.text.toString().trim()
-        val imgId: String = title + "_" + Timestamp(System.currentTimeMillis())
 
         val category = try {
             Post.Category.valueOf(categoryText)
@@ -107,34 +130,30 @@ class AddNewPostFragment : Fragment() {
             return
         }
 
-        val postId = UUID.randomUUID().toString()
-        val current = LocalDateTime.now()
+         var postId =  UUID.randomUUID().toString()
 
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        val formatted = current.format(formatter)
-        val newPost = Post(postId, title, category, description, postImageUri?.toString() ?: "","user1",formatted)
+        if (mode == PostMode.Edit && currPost != null) {
+            postId = currPost!!.id
+        }
 
-        val firebaseModel = FirebaseModel()
 
-        if ( postImageBitmap  != null) {
+        val newPost = Post(
+            postId,
+            title,
+            category,
+            description,
+            postImageUri?.toString() ?: "",
+            "user1",
+            getCurrDate()
+        )
+
+        if (postImageBitmap != null) {
             val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
             Model.shared.add(newPost, bitmap, Model.Storage.CLOUDINARY) {
-//                binding?.progressBar?.visibility = View.GONE
-//                Navigation.findNavController(view).popBackStack()
             }
-
-//            firebaseModel.uploadImage(imgId, bitmap) { imageUrl ->
-//                if (imageUrl != null) {
-//                    newPost.setImageUrl(imageUrl)
-//                }
-//                firebaseModel.addPost(newPost)
-//
-//            }
-//        } else {
-//            firebaseModel.addPost(newPost)
-//        }
         }
     }
 }
+
 
