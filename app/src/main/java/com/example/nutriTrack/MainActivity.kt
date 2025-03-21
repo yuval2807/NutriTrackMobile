@@ -1,6 +1,7 @@
 package com.example.nutriTrack
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -25,5 +26,16 @@ class MainActivity : AppCompatActivity() {
             navController
         )
 
+        // Hide bottom nav bar when in loginFragment or splashFragment
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.loginFragment, R.id.splashFragment -> {
+                    bottomNavView.visibility = View.GONE
+                }
+                else -> {
+                    bottomNavView.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 }
