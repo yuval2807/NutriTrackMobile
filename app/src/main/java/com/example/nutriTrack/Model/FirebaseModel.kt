@@ -93,10 +93,6 @@ class FirebaseModel {
                 })
     }
 
-    fun delete(postId: Post, callback: (String?) -> Unit) {
-
-    }
-
     fun getPostById(postId: String, callback: (Post?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("posts").document(postId)
@@ -112,6 +108,28 @@ class FirebaseModel {
             }
             .addOnFailureListener {
                 callback(null)
+            }
+    }
+
+    fun deletePost(postId: String, callback: (Boolean) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("posts").document(postId).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    db.collection("posts").document(postId).delete()
+                        .addOnSuccessListener {
+                                callback(true)
+                        }
+                        .addOnFailureListener {
+                            callback(false)
+                        }
+                } else {
+                    callback(false)
+                }
+            }
+            .addOnFailureListener {
+                callback(false)
             }
     }
 
