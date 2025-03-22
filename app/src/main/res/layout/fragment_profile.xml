@@ -2,9 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main"
     tools:context=".ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,167 +13,92 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="146dp"
-            android:layout_height="93dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="80dp"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_user_avatar" />
+            app:srcCompat="@drawable/ic_user_avatar"
+            android:contentDescription="@string/profile_img" />
 
         <TextView
-            android:id="@+id/studentNameTextView"
+            android:id="@+id/userNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="30dp"
-            android:text="Name: "
+            android:labelFor="@id/userNameView"
+            android:text="@string/name"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <TextView
-            android:id="@+id/studentNameView"
+            android:id="@+id/userNameView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
+            android:textSize="15sp"
             android:inputType="text"
-            app:layout_constraintBaseline_toBaselineOf="@+id/studentNameTextView"
+            app:layout_constraintBaseline_toBaselineOf="@+id/userNameTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/studentNameTextView" />
+            app:layout_constraintStart_toEndOf="@+id/userNameTextView" />
 
         <TextView
-            android:id="@+id/studentIdTextView"
+            android:id="@+id/userIdTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="40dp"
-            android:text="ID: "
+            android:labelFor="@id/userIdView"
+            android:text="@string/id"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/studentNameView" />
+            app:layout_constraintTop_toBottomOf="@+id/userNameView" />
 
         <TextView
-            android:id="@+id/studentIdView"
+            android:id="@+id/userIdView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
+            android:textSize="15sp"
             android:inputType="text"
-            app:layout_constraintBaseline_toBaselineOf="@+id/studentIdTextView"
+            app:layout_constraintBaseline_toBaselineOf="@+id/userIdTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/studentIdTextView" />
+            app:layout_constraintStart_toEndOf="@+id/userIdTextView" />
 
         <TextView
-            android:id="@+id/studentPhoneTextView"
+            android:id="@+id/userPhoneTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="40dp"
-            android:text="Phone: "
+            android:labelFor="@id/userPhoneView"
+            android:text="@string/phone_number"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/studentIdView" />
+            app:layout_constraintTop_toBottomOf="@+id/userIdView" />
 
         <TextView
-            android:id="@+id/studentPhoneView"
+            android:id="@+id/userPhoneView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
+            android:textSize="15sp"
             android:inputType="phone"
-            app:layout_constraintBaseline_toBaselineOf="@+id/studentPhoneTextView"
+            app:layout_constraintBaseline_toBaselineOf="@+id/userPhoneTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/studentPhoneTextView" />
-
-        <TextView
-            android:id="@+id/studentAddressTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:text="Address: "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/studentPhoneView" />
-
-        <TextView
-            android:id="@+id/studentAddressView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintBaseline_toBaselineOf="@+id/studentAddressTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/studentAddressTextView" />
-
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:text="Back"
-            app:layout_constraintBaseline_toBaselineOf="@+id/editButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/editButton" />
-        <TextView
-            android:id="@+id/studentBirthDateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:text="Birth Date: "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/studentAddressView" />
-
-        <TextView
-            android:id="@+id/studentBirthDateView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintBaseline_toBaselineOf="@+id/studentBirthDateTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/studentBirthDateTextView" />
-        <TextView
-            android:id="@+id/studentBirthTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:text="Birth Time: "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/studentBirthDateView" />
-
-        <TextView
-            android:id="@+id/studentBirthTimeView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintBaseline_toBaselineOf="@+id/studentBirthTimeTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/studentBirthTimeTextView" />
-
-        <CheckBox
-            android:id="@+id/student_checked_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="28dp"
-            android:text="Checked"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/studentBirthTimeView" />
+            app:layout_constraintStart_toEndOf="@+id/userPhoneTextView" />
 
         <TextView
             android:id="@+id/add_student_success_saved_text_view"
@@ -194,6 +119,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="125dp"
+            android:text="@string/logout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

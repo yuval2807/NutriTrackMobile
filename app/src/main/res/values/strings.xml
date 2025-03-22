@@ -1,11 +1,24 @@
 <resources>
     <string name="app_name">nutriTrack</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="student_photo">Student photo</string>
-    <string name="create_user">Create user</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="pick_from_gallery">Pick from Gallery</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="register">Register</string>
+    <string name="no_account_msg">Don\'t have an account? Register Here</string>
+
+
     <string name="address">Address</string>
+    <string name="name">Name:</string>
+    <string name="id">ID:</string>
+    <string name="email">Email:</string>
+    <string name="password">Password:</string>
+    <string name="phone_number">Phone number:</string>
+
     <string name="new_student">New Student</string>
+    <string name="profile_img">Profile Image</string>
     <string name="students_list">Students List</string>
     <string name="students_details">Student Details</string>
     <string name="edit_student">Edit Student</string>
