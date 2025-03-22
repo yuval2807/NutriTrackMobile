@@ -1,27 +1,34 @@
 package com.example.nutriTrack
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
+import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Student
+import com.example.nutriTrack.Model.User
+import com.example.nutriTrack.utils.loadImageIntoImageView
+import com.google.firebase.auth.FirebaseUser
+import com.squareup.picasso.Picasso
 
 class ProfileFragment : Fragment() {
 
-    private var studentId: String? = null
+    private var userEmail: String? = null
+    private var user: User? = null
+    private val firebaseModel = FirebaseModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            studentId = it.getString("student_id")
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,23 +39,38 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        setHasOptionsMenu(true) // Enable menu for this fragment
 
-        val student = studentId?.let { Student.getStudentById(it) }
+        val imageView: ImageView = view.findViewById(R.id.imageView)
 
-        student?.let {
-            // Populate views with student data
-            view.findViewById<TextView>(R.id.studentNameView).text = it.name
-            view.findViewById<TextView>(R.id.studentIdView).text = it.id
-            view.findViewById<TextView>(R.id.studentPhoneView).text = it.phone
-            view.findViewById<TextView>(R.id.studentAddressView).text = it.address
-            view.findViewById<CheckBox>(R.id.student_checked_input).isChecked = it.isChecked
-            view.findViewById<TextView>(R.id.studentBirthDateView).text = it.birthDate
-            view.findViewById<TextView>(R.id.studentBirthTimeView).text = it.birthTime
+        userEmail = firebaseModel.getUserEmail()
+
+        User.getUserByEmail(userEmail!!) { fullUser ->
+            if (fullUser != null) {
+                user = fullUser
+                user?.let {
+                    view.findViewById<TextView>(R.id.userNameView).text = it.name
+                    view.findViewById<TextView>(R.id.userIdView).text = it.id
+                    view.findViewById<TextView>(R.id.userPhoneView).text = it.phone
+                    loadImageIntoImageView(imageView, it.imageUrl)
+                }
+
+            } else {
+                Log.d("userInfo", "User not found")
+            }
         }
 
-        // Back button click handler
-        view.findViewById<Button>(R.id.backButton).setOnClickListener {
-            parentFragmentManager.popBackStack()
+        // Logout button click handler
+        view.findViewById<Button>(R.id.logout_button).setOnClickListener {
+            logout()
         }
+    }
+
+    private fun logout() {
+        firebaseModel.signOut()
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.nav_graph, true) // clears back stack
+            .build()
+
+        findNavController().navigate(R.id.action_profileFragment_to_splashFragment, null, navOptions)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -67,10 +89,6 @@ class ProfileFragment : Fragment() {
 //    }
 
     companion object {
-        fun newInstance(studentId: String) = ProfileFragment().apply {
-            arguments = Bundle().apply {
-                putString("student_id", studentId)
-            }
-        }
+        fun newInstance() = ProfileFragment()
     }
 }

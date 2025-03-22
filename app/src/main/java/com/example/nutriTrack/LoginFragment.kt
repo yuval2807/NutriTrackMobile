@@ -25,40 +25,42 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val firebaseModel = FirebaseModel()
 
-        val loginButton: Button = view.findViewById(R.id.saveButton)
+        val loginButton: Button = view.findViewById(R.id.loginButton)
+        val registerButton: Button = view.findViewById(R.id.nav_register_button)
         val emailTextField: TextView = view.findViewById(R.id.userEmailView)
         val passwordTextField: TextView = view.findViewById(R.id.userPasswordView)
 
+        var email: String
+        var password: String
+
         loginButton.setOnClickListener {
-            val email = emailTextField.text.toString().trim()
-            val password = passwordTextField.text.toString().trim()
+            email = emailTextField.text.toString().trim()
+            password = passwordTextField.text.toString().trim()
 
             firebaseModel.login(email, password) { user ->
                 if (user != null) {
                     currentUser = user
-                    Log.d("LoginFragment", "Login successful: ${user.email}")
                     navigateToHome()
-                } else {
-                    // Try to register instead
-                    firebaseModel.register(email, password) { newUser ->
-                        if (newUser != null) {
-                            Log.d("LoginFragment", "Registered new user: ${newUser.email}")
-                            navigateToHome()
-                        } else {
-                            Log.d("LoginFragment", "Login and registration both failed.")
-                        }
-                    }
                 }
             }
         }
+
+        registerButton.setOnClickListener {
+            navigateToRegister()
+        }
     }
+
 
     private fun navigateToHome() {
         val navOptions = NavOptions.Builder()
-            .setPopUpTo(R.id.nav_graph, true) // clears back history
+            .setPopUpTo(R.id.nav_graph, true) // clears back stack
             .build()
 
         findNavController().navigate(R.id.action_loginFragment_to_homeFragment, null, navOptions)
+    }
+
+    private fun navigateToRegister() {
+        findNavController().navigate(R.id.action_loginFragment_to_registerFragment, null)
     }
 
     companion object {
