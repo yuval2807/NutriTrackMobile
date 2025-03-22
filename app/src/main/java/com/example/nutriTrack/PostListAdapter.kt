@@ -1,10 +1,13 @@
 package com.example.nutriTrack
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriTrack.Model.Post
 import com.squareup.picasso.Picasso
@@ -13,7 +16,8 @@ import com.squareup.picasso.Picasso
 interface OnItemClickListener {
     fun onItemClick(v: View?, position: Int)
 }
-class PostListAdapter(private var data: List<Post>) :
+
+class PostListAdapter(private var data: List<Post>, private val navController: NavController) :
     RecyclerView.Adapter<PostsListViewHolder>() {
 
     private var listener: OnItemClickListener? = null
@@ -29,12 +33,13 @@ class PostListAdapter(private var data: List<Post>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_list_row, parent, false)
-        return PostsListViewHolder(view, listener, data)
+        return PostsListViewHolder(view, listener, data, navController)
     }
 
     override fun onBindViewHolder(holder: PostsListViewHolder, position: Int) {
         val post = data[position]
         holder.bind(post)
+
     }
 
     override fun getItemCount(): Int = data.size
@@ -43,7 +48,8 @@ class PostListAdapter(private var data: List<Post>) :
 class PostsListViewHolder(
     itemView: View,
     private val listener: OnItemClickListener?,
-    private var data: List<Post>?
+    private var data: List<Post>?,
+    private val navController: NavController
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val titleTv: TextView = itemView.findViewById(R.id.tv_postlist_post_title)
@@ -51,6 +57,7 @@ class PostsListViewHolder(
     private val categoryTv: TextView = itemView.findViewById(R.id.tv_postlist_post_category)
     private val dateTv: TextView = itemView.findViewById(R.id.tv_postlist_date)
     private val imageView: ImageView = itemView.findViewById(R.id.iv_postlist_post_image)
+    private val editButton: ImageButton = itemView.findViewById(R.id.btn_edit)
 
 
     init {
@@ -60,17 +67,19 @@ class PostsListViewHolder(
                 listener?.onItemClick(it, pos)
             }
         }
-    }
 
-    fun loadImageIntoImageView(imageView: ImageView, imageUrl: String?) {
-        if (!imageUrl.isNullOrEmpty()) {
-            Picasso.get()
-                .load(imageUrl) // Load from Firebase Storage URL
-                .placeholder(R.drawable.image_placeholder) // Optional placeholder
-                .into(imageView) // Set into ImageView
-        } else {
-            imageView.setImageResource(R.drawable.image_placeholder) // Default image
+        editButton.setOnClickListener {
+            val pos = adapterPosition
+            if (pos != RecyclerView.NO_POSITION && data != null) {
+                val post = data!![pos]
+
+                val bundle = Bundle().apply {
+                    putString("postId", post.getId())
+                }
+                navController.navigate(R.id.action_postsFragment_to_addNewPost,bundle )
+            }
         }
+
     }
 
     fun bind(post: Post) {
@@ -80,11 +89,5 @@ class PostsListViewHolder(
         dateTv.text = post.date
         loadImageIntoImageView(imageView,post.imageUrl)
 
-        // Uncomment this part when you have image loading logic:
-        // if (!post.getImageUrl().isNullOrEmpty()) {
-        //     Picasso.get().load(post.getImageUrl()).into(image)
-        // } else {
-        //     image.setImageResource(R.drawable.no_image)
-        // }
     }
 }

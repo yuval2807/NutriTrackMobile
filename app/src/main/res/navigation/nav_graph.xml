@@ -7,22 +7,33 @@
 
     <fragment
         android:id="@+id/postsFragment"
-        android:name="com.example.nutriTrack.PostsFragment"
+        android:name="com.example.nutriTrack.postListFragment"
         android:label="Posts"
         tools:layout="@layout/fragment_posts" >
-
+        <action
+            android:id="@+id/action_postsFragment_to_addNewPost"
+            app:destination="@id/addNewPost" />
     </fragment>
+
     <fragment
         android:id="@+id/addNewPost"
         android:name="com.example.nutriTrack.AddNewPostFragment"
         android:label="My Profile"
         tools:layout="@layout/fragment_add_new_post" >
+        <argument
+            android:name="postId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+        <action
+            android:id="@+id/action_addNewPost_to_postsFragment"
+            app:destination="@id/postsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.nutriTrack.ProfileFragment"
         android:label="My Profile"
         tools:layout="@layout/fragment_profile" >
     </fragment>
-
 </navigation>
