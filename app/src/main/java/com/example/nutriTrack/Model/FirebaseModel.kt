@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.nutriTrack.Model.Post.COLLECTION_NAME
 import com.example.nutriTrack.Model.Post.Category
+import com.example.nutriTrack.base.MyApplication
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.FirebaseFirestore
@@ -119,17 +120,16 @@ class FirebaseModel {
     }
 
     fun register(email: String?, password: String?, callback: (FirebaseUser?) -> Unit) {
+
         auth.createUserWithEmailAndPassword(email!!, password!!)
             .addOnCompleteListener { task: Task<AuthResult?> ->
                 if (task.isSuccessful) {
                     callback(auth.currentUser)
-                    //  listener.onComplete(auth.currentUser)
                 } else {
-//                    Toast.makeText(
-//                        MyApplication.getContext(), task.exception!!.message,
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-                 //   listener.onComplete(null)
+                    Toast.makeText(
+                        MyApplication.Globals.context, task.exception!!.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }
@@ -140,16 +140,56 @@ class FirebaseModel {
                 if (task.isSuccessful) {
                     callback(auth.currentUser)
                 } else {
-//                    Toast.makeText(
-//                        //MyApplication.getContext(), task.exception!!.message,
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-                   // listener.onComplete(null)
+                    Toast.makeText(
+                        MyApplication.Globals.context, task.exception!!.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }
 
     fun signOut() {
         auth.signOut()
+    }
+
+    fun addUser(user: User) {
+        database.collection("users").document(user.id).set(user)
+            .addOnCompleteListener {documentReference ->
+                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("TAG", "Error adding document", e)
+            }
+    }
+
+    fun updateUser(user: User, document: String) {
+        database.collection("users").document(document).set(user)
+            .addOnCompleteListener {documentReference ->
+                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("TAG", "Error adding document", e)
+            }
+    }
+
+    fun getUserInfoByEmail(email: String, callback: (User?) -> Unit) {
+        database.collection("users")
+            .whereEqualTo("email", email)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { task ->
+                if (!task.isEmpty) {
+                    val document = task.documents[0]
+                    val user = document.toObject(User::class.java)
+                    Log.d("userInfo", "user: $user")
+                    callback(user)
+                } else {
+                    callback(null) // No user found
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FirebaseModel", "Error getting user info: ${exception.message}")
+                callback(null)
+            }
     }
 }

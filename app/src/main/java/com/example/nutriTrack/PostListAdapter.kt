@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriTrack.Model.Post
+import com.example.nutriTrack.utils.loadImageIntoImageView
 import com.squareup.picasso.Picasso
 
 
@@ -59,17 +60,6 @@ class PostsListViewHolder(
             if (pos != RecyclerView.NO_POSITION) {
                 listener?.onItemClick(it, pos)
             }
-        }
-    }
-
-    fun loadImageIntoImageView(imageView: ImageView, imageUrl: String?) {
-        if (!imageUrl.isNullOrEmpty()) {
-            Picasso.get()
-                .load(imageUrl) // Load from Firebase Storage URL
-                .placeholder(R.drawable.ic_profile) // Optional placeholder
-                .into(imageView) // Set into ImageView
-        } else {
-            imageView.setImageResource(R.drawable.ic_profile) // Default image
         }
     }
 
