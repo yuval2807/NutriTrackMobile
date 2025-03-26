@@ -48,7 +48,7 @@ class FirebaseModel {
 
                     for (document in task.result!!) {
 
-                        val post = Post.createPost(document.data, "123")
+                        val post = Post.createPost(document.data)
                         posts.add(post)
                     }
 
@@ -59,8 +59,6 @@ class FirebaseModel {
                 }
                 false -> {
                     //callback(MutableList())
-                    returnValue.add(Post("1234", "Healthy Eating", Category.Nutrition,"Tips for balanced meals","","User1", "3.3.25"))
-
                 }
 
             }
@@ -87,9 +85,7 @@ class FirebaseModel {
     }
 
     fun uploadImage(bitmap: Bitmap, name: String, callback: (String?) -> Unit) {
-//        val storageRef: StorageReference = storage.getReference()
         val storageRef = FirebaseStorage.getInstance().reference.child("images/$name.jpg")
-//        val imagesRef: StorageReference = storageRef.child("images/$name.jpg")
 
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -105,10 +101,45 @@ class FirebaseModel {
                 })
     }
 
-    fun delete(postId: Post, callback: (String?) -> Unit) {
-
+    fun getPostById(postId: String, callback: (Post?) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("posts").document(postId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val post = document.toObject(Post::class.java)
+                    post?.setId(document.id)
+                    callback(post)
+                } else {
+                    callback(null)
+                }
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
     }
 
+    fun deletePost(postId: String, callback: (Boolean) -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("posts").document(postId).get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    db.collection("posts").document(postId).delete()
+                        .addOnSuccessListener {
+                                callback(true)
+                        }
+                        .addOnFailureListener {
+                            callback(false)
+                        }
+                } else {
+                    callback(false)
+                }
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
+    }
     fun isSignedIn(): Boolean {
         val currentUser = auth.currentUser
         return currentUser != null
@@ -127,7 +158,8 @@ class FirebaseModel {
                     callback(auth.currentUser)
                 } else {
                     Toast.makeText(
-                        MyApplication.Globals.context, task.exception!!.message,
+                        MyApplication.Globals.context,
+                        "Something went wrong...",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -141,7 +173,8 @@ class FirebaseModel {
                     callback(auth.currentUser)
                 } else {
                     Toast.makeText(
-                        MyApplication.Globals.context, task.exception!!.message,
+                        MyApplication.Globals.context,
+                        "Something went wrong...",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

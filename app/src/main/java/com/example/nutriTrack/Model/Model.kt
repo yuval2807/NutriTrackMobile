@@ -75,8 +75,8 @@ class Model private constructor() {
         }
     }
 
-    fun delete(post: Post, callback: (String?) -> Unit) {
-        firebaseModel.delete(post, callback)
+    fun deletePost(postId: String, callback: (Boolean) -> Unit) {
+        firebaseModel.deletePost(postId, callback)
     }
 
     private fun uploadImageToFirebase(

@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Post
-class PostsFragment : Fragment() {
+
+class postListFragment : Fragment() {
 
     private lateinit var postListAdapter: PostListAdapter
     private lateinit var postList: MutableList<Post>
@@ -21,8 +23,15 @@ class PostsFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.postsList_rv)
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.postsListRv_swipeRefresh)
 
+        val navController = findNavController()
+
         postList = mutableListOf()
-        postListAdapter = PostListAdapter(postList)
+        postListAdapter = PostListAdapter(postList, navController)
+
+        postListAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+            }
+        })
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = postListAdapter
@@ -31,6 +40,7 @@ class PostsFragment : Fragment() {
             loadPosts()
             swipeRefreshLayout.isRefreshing = false
         }
+
 
         loadPosts()
 

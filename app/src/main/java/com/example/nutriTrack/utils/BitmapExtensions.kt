@@ -1,7 +1,9 @@
-package com.idz.colman24class1.utils.extensions
+package com.example.nutriTrack
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.widget.ImageView
+import com.squareup.picasso.Picasso
 import java.io.File
 import java.io.FileOutputStream
 
@@ -12,4 +14,16 @@ fun Bitmap.toFile(context: Context, name: String): File {
     }
 
     return file
+}
+
+
+fun loadImageIntoImageView(imageView: ImageView, imageUrl: String?) {
+    if (!imageUrl.isNullOrEmpty()) {
+        Picasso.get()
+            .load(imageUrl) // Load from Firebase Storage URL
+            .placeholder(R.drawable.image_placeholder) // Optional placeholder
+            .into(imageView) // Set into ImageView
+    } else {
+        imageView.setImageResource(R.drawable.image_placeholder) // Default image
+    }
 }

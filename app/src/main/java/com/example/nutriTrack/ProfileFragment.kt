@@ -8,18 +8,13 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.nutriTrack.Model.FirebaseModel
-import com.example.nutriTrack.Model.Student
 import com.example.nutriTrack.Model.User
-import com.example.nutriTrack.utils.loadImageIntoImageView
-import com.google.firebase.auth.FirebaseUser
-import com.squareup.picasso.Picasso
 
 class ProfileFragment : Fragment() {
 

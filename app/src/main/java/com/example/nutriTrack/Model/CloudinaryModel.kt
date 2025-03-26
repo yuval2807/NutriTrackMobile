@@ -8,7 +8,7 @@ import com.cloudinary.android.callback.UploadCallback
 import com.cloudinary.android.policy.GlobalUploadPolicy
 import com.example.nutriTrack.BuildConfig
 import com.example.nutriTrack.base.MyApplication
-import com.idz.colman24class1.utils.extensions.toFile
+import com.example.nutriTrack.toFile
 import java.io.File
 
 

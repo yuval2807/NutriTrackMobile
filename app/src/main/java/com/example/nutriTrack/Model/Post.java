@@ -47,7 +47,8 @@ public class Post {
         Health
     }
 
-    public static Post createPost(Map<String, Object> postJson, String docId) {
+    public static Post createPost(Map<String, Object> postJson) {
+        String id = (String) postJson.get("id");
         String title = (String) postJson.get("title");
         Category category = Category.valueOf((String) postJson.get("category"));
         String description = (String) postJson.get("description");
@@ -56,10 +57,10 @@ public class Post {
         String user = (String) postJson.get("user");
         String date = (String) postJson.get("date");
 
-        Post postItem = new Post(docId,title,category,description, imageUrl, user,date);
+        Post postItem = new Post(id,title,category,description, imageUrl, user,date);
 
         postItem.setImageUrl(imageUrl);
-        postItem.setId(docId);
+        postItem.setId(id);
         postItem.setDeleted(isDeleted);
         return postItem;
     }
