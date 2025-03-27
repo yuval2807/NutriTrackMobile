@@ -159,11 +159,11 @@ class AddNewPostFragment : Fragment() {
         if (postImageBitmap != null) {
             val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
-            Model.shared.add(newPost, bitmap, Model.Storage.CLOUDINARY) {
+            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {
 //                findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
             }
         }
-        Model.shared.add(newPost, null, Model.Storage.CLOUDINARY) {
+        Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {
 }
         findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
 
