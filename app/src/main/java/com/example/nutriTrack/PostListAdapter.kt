@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Post
 
-
 interface OnItemClickListener {
     fun onItemClick(v: View?, position: Int)
 }
