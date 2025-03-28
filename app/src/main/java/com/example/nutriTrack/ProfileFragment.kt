@@ -15,26 +15,33 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.User
+import com.example.nutriTrack.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
 
     private var userEmail: String? = null
     private var user: User? = null
     private val firebaseModel = FirebaseModel()
+    private lateinit var binding: FragmentProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        setHasOptionsMenu(true) // Enable menu for this fragment
 
-        val imageView: ImageView = view.findViewById(R.id.imageView)
+        val imageView: ImageView? = binding?.imageView
 
         userEmail = firebaseModel.getUserEmail()
 
@@ -42,10 +49,13 @@ class ProfileFragment : Fragment() {
             if (fullUser != null) {
                 user = fullUser
                 user?.let {
-                    view.findViewById<TextView>(R.id.userNameView).text = it.name
-                    view.findViewById<TextView>(R.id.userIdView).text = it.id
-                    view.findViewById<TextView>(R.id.userPhoneView).text = it.phone
-                    loadImageIntoImageView(imageView, it.imageUrl)
+
+                    binding.userNameView.text = it.name
+                    binding.userIdView.text = it.id
+                    binding.userPhoneView.text = it.phone
+//                    view.findViewById<TextView>(R.id.userIdView).text = it.id
+//                    view.findViewById<TextView>(R.id.userPhoneView).text = it.phone
+                    loadImageIntoImageView(imageView!!, it.imageUrl)
                 }
 
             } else {
@@ -53,10 +63,31 @@ class ProfileFragment : Fragment() {
             }
         }
 
+//        // Logout button click handler
+//        view.findViewById<Button>(R.id.logout_button).setOnClickListener {
+//            logout()
+//        }
+
         // Logout button click handler
-        view.findViewById<Button>(R.id.logout_button).setOnClickListener {
+        binding.logoutButton.setOnClickListener {
             logout()
         }
+
+        // Edit button click handler
+        binding.editButton.setOnClickListener {
+            navigateEditProfile()
+        }
+    }
+
+    private fun navigateEditProfile() {
+        val bundle = Bundle().apply {
+            putString("user_email", userEmail)
+        }
+
+        findNavController().navigate(
+            R.id.action_profileFragment_to_editProfileFragment,
+            bundle
+        )
     }
 
     private fun logout() {

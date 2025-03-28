@@ -195,10 +195,12 @@ class FirebaseModel {
             }
     }
 
-    fun updateUser(user: User, document: String) {
-        database.collection("users").document(document).set(user)
-            .addOnCompleteListener {documentReference ->
-                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference}")
+    fun updateUser(user: User, document: String, callback: (User?) -> Unit) {
+        database.collection("users").document(document)
+            .update("name", user.name, "phone", user.phone)
+            .addOnSuccessListener {task ->
+                Log.d("TAG", "DocumentSnapshot updated with ID: ${task}")
+                callback(user)
             }
             .addOnFailureListener { e ->
                 Log.w("TAG", "Error adding document", e)
