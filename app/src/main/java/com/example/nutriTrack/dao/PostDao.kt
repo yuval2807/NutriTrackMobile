@@ -12,13 +12,14 @@ import com.example.nutriTrack.Model.Post
 interface PostDao {
 
     @Query("SELECT * FROM Post")
-    fun getAllPost(): LiveData<List<Post>>
+//    fun getAllPost(): LiveData<List<Post>>
+    fun getAllPost(): List<Post>
 
     @Query("SELECT * FROM Post WHERE id =:id")
     fun getPostById(id: String): Post
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg student: Post)
+    fun insertAll(vararg post: Post)
 
     @Delete
     fun delete(student: Post)

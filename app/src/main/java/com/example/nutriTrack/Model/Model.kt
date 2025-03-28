@@ -1,6 +1,13 @@
 package com.example.nutriTrack.Model
 
 import android.graphics.Bitmap
+import android.os.Looper
+import android.util.Log
+import androidx.core.os.HandlerCompat
+import androidx.lifecycle.LiveData
+import com.example.nutriTrack.dao.AppLocalDb
+import com.example.nutriTrack.dao.AppLocalDbRepository
+import java.util.concurrent.Executors
 
 class Model private constructor() {
 
@@ -10,13 +17,19 @@ class Model private constructor() {
         CLOUDINARY
     }
 
+    private val database: AppLocalDbRepository = AppLocalDb.database
+//    val posts: LiveData<List<Post>> = database.postDao().getAllPost()
+
+    private var executor = Executors.newSingleThreadExecutor()
+    private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
+
     private val firebaseModel = FirebaseModel()
     private val cloudinaryModel = CloudinaryModel()
     companion object {
         val shared = Model()
     }
 
-    fun add(post: Post, image: Bitmap?, storage: Storage, callback: (String?) -> Unit) {
+    fun addPost(post: Post, image: Bitmap?, storage: Storage, callback: (String?) -> Unit) {
         firebaseModel.addPost(post)
             image?.let {
                 uploadTo(
@@ -79,4 +92,18 @@ class Model private constructor() {
         )
     }
 
+    fun refreshAllPosts() {
+        firebaseModel.getAllPosts  { posts ->
+            executor.execute {
+                Log.d("getAllPosts", "After work: ${posts}")
+
+                for (post in posts) {
+                    Log.d("getAllPosts insert", "After work: ${post}")
+
+                    database.postDao().insertAll(post)
+
+                }
+            }
+        }
+    }
 }

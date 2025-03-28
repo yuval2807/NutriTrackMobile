@@ -1,14 +1,17 @@
 package com.example.nutriTrack.Model;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.HashMap;
 import java.util.Map;
 
-//@Entity
+@Entity(tableName = "Post")
 public class Post {
     public static final String COLLECTION_NAME = "posts";
 
-//    @PrimaryKey
+    @PrimaryKey
     @NonNull
     String id;
     String title;
