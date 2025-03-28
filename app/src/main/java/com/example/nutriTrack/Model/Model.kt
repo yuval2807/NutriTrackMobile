@@ -18,7 +18,8 @@ class Model private constructor() {
     }
 
     private val database: AppLocalDbRepository = AppLocalDb.database
-//    val posts: LiveData<List<Post>> = database.postDao().getAllPost()
+    val posts: LiveData<List<Post>> = database.postDao().getAllPost()
+//    val posts: List<Post> = database.postDao().getAllPost()
 
     private var executor = Executors.newSingleThreadExecutor()
     private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
