@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 import java.util.HashMap;
 import java.util.Map;
 
-@Entity(tableName = "Post")
+@Entity
 public class Post {
     public static final String COLLECTION_NAME = "posts";
 

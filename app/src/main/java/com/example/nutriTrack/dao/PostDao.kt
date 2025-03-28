@@ -12,8 +12,7 @@ import com.example.nutriTrack.Model.Post
 interface PostDao {
 
     @Query("SELECT * FROM Post")
-//    fun getAllPost(): LiveData<List<Post>>
-    fun getAllPost(): List<Post>
+    fun getAllPost(): LiveData<List<Post>>
 
     @Query("SELECT * FROM Post WHERE id =:id")
     fun getPostById(id: String): Post

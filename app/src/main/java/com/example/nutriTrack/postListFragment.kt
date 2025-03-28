@@ -63,8 +63,10 @@ class PostListFragment : Fragment() {
         // Use lifecycleScope to launch coroutine
         viewLifecycleOwner.lifecycleScope.launch {
             try {
+                Log.d("PostListFragment", "before refreshAllPost")
+
                 // Assuming your ViewModel has a method to fetch posts
-                viewModel.fetchPosts()
+                viewModel.refreshAllPost()
             } catch (e: Exception) {
                 Log.e("PostListFragment", "Error fetching posts", e)
             }
