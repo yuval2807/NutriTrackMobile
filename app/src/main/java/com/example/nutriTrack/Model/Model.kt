@@ -51,6 +51,28 @@ class Model private constructor() {
 
     }
 
+    fun addUser(user: User, image: Bitmap?, storage: Storage, callback: (String?) -> Unit) {
+        firebaseModel.addUser(user)
+        image?.let {
+            uploadTo(
+                storage,
+                image = image,
+                name = user.id,
+                callback = { uri ->
+                    if (!uri.isNullOrBlank()) {
+                        user.imageUrl = uri
+
+                        firebaseModel.addUser(user)
+                    } else {
+                        callback("")
+                    }
+                },
+            )
+        } ?: callback("")
+    }
+
+
+
     private fun uploadTo(storage: Storage, image: Bitmap, name: String, callback: (String?) -> Unit) {
         when (storage) {
             Storage.FIREBASE -> {
