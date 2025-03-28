@@ -7,9 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -17,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.nutriTrack.Model.FirebaseModel
+import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.Model.User
 import com.example.nutriTrack.databinding.FragmentProfileBinding
@@ -63,7 +62,6 @@ class ProfileFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
         }
 
-
         loadPosts()
 
         return view
@@ -85,8 +83,6 @@ class ProfileFragment : Fragment() {
                     binding.userNameView.text = it.name
                     binding.userIdView.text = it.id
                     binding.userPhoneView.text = it.phone
-//                    view.findViewById<TextView>(R.id.userIdView).text = it.id
-//                    view.findViewById<TextView>(R.id.userPhoneView).text = it.phone
                     loadImageIntoImageView(imageView!!, it.imageUrl)
                 }
 
@@ -128,8 +124,7 @@ class ProfileFragment : Fragment() {
 
     private fun loadPosts() {
         postList.clear()
-        val firebaseModel = FirebaseModel()
-        firebaseModel.getAllPosts { posts ->
+        Model.shared.getPostsByUser { posts ->
             postList = posts
             postListAdapter.setData(postList)
         }

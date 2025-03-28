@@ -65,6 +65,34 @@ class FirebaseModel {
         }
     }
 
+    fun getPostsByUser(userId: String, callback: (MutableList<Post>) -> Unit) {
+        database.collection("posts")
+            .whereEqualTo("user", userId)
+            .get().addOnCompleteListener {task ->
+            when (task.isSuccessful) {
+                true -> {
+                    val posts = mutableListOf<Post>()
+
+                    for (document in task.result!!) {
+
+                        val post = Post.createPost(document.data)
+                        posts.add(post)
+                    }
+
+                    callback(posts)
+                }
+                false -> {
+                    Toast.makeText(
+                        MyApplication.Globals.context,
+                        "We couldn't get your posts...",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+        }
+    }
+
     fun addPost(post: Post) {
 
         database.collection(COLLECTION_NAME).document(post.id).set(post.toJson())
@@ -143,6 +171,11 @@ class FirebaseModel {
     fun isSignedIn(): Boolean {
         val currentUser = auth.currentUser
         return currentUser != null
+    }
+
+    fun getUserDocumentNumber(): String {
+        val currentUser = auth.currentUser
+        return currentUser!!.uid
     }
 
     fun getUserEmail(): String? {

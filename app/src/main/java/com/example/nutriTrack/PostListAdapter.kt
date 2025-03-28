@@ -87,7 +87,7 @@ class PostsListViewHolder(
                 val bundle = Bundle().apply {
                     putString("postId", post.getId())
                 }
-                navController.navigate(R.id.action_postsFragment_to_addNewPost,bundle )
+                navController.navigate(R.id.action_fragment_to_addNewPost,bundle )
             }
         }
 

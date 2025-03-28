@@ -123,6 +123,9 @@ class AddNewPostFragment : Fragment() {
     }
 
     private fun savePost() {
+        val firebaseModel = FirebaseModel()
+        val userDocNum = firebaseModel.getUserDocumentNumber()
+
         val title = titleEditText.text.toString().trim()
         val description = descriptionEditText.text.toString().trim()
         val categoryText = categoryDropdown.text.toString().trim()
@@ -145,14 +148,13 @@ class AddNewPostFragment : Fragment() {
             postId = currPost!!.id
         }
 
-
         val newPost = Post(
             postId,
             title,
             category,
             description,
             postImageUri?.toString() ?: "",
-            "user1",
+            userDocNum,
             getCurrDate()
         )
 

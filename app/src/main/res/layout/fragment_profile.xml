@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -26,7 +27,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="192dp"
+                android:layout_height="195dp"
                 android:padding="16dp">
 
                 <ImageView
@@ -34,7 +35,7 @@
                     android:layout_width="101dp"
                     android:layout_height="96dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     android:contentDescription="@string/profile_img"
                     android:scaleType="fitCenter"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="124dp"
-                    android:layout_marginTop="35dp"
+                    android:layout_marginTop="25dp"
                     android:text="@string/name"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -117,6 +118,16 @@
                     android:src="@drawable/ic_edit"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/logout_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="3dp"
+                    android:text="@string/logout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/userPhoneView" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
@@ -124,28 +135,20 @@
             android:id="@+id/postsListRv_swipeRefresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/postsList_rv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <Button
-        android:id="@+id/logout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="125dp"
-        android:text="@string/logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
