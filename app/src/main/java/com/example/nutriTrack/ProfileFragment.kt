@@ -13,7 +13,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.nutriTrack.Model.FirebaseModel
+import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.Model.User
 import com.example.nutriTrack.databinding.FragmentProfileBinding
 
@@ -23,6 +27,8 @@ class ProfileFragment : Fragment() {
     private var user: User? = null
     private val firebaseModel = FirebaseModel()
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var postListAdapter: PostListAdapter
+    private lateinit var postList: MutableList<Post>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +40,33 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        return binding.root
+        val view = binding.root
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.postsList_rv)
+        val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.postsListRv_swipeRefresh)
+
+        val navController = findNavController()
+
+        postList = mutableListOf()
+        postListAdapter = PostListAdapter(postList, navController)
+
+        postListAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(v: View?, position: Int) {
+            }
+        })
+
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = postListAdapter
+
+        swipeRefreshLayout.setOnRefreshListener {
+            loadPosts()
+            swipeRefreshLayout.isRefreshing = false
+        }
+
+
+        loadPosts()
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,11 +94,6 @@ class ProfileFragment : Fragment() {
                 Log.d("userInfo", "User not found")
             }
         }
-
-//        // Logout button click handler
-//        view.findViewById<Button>(R.id.logout_button).setOnClickListener {
-//            logout()
-//        }
 
         // Logout button click handler
         binding.logoutButton.setOnClickListener {
@@ -97,6 +124,15 @@ class ProfileFragment : Fragment() {
             .build()
 
         findNavController().navigate(R.id.action_profileFragment_to_splashFragment, null, navOptions)
+    }
+
+    private fun loadPosts() {
+        postList.clear()
+        val firebaseModel = FirebaseModel()
+        firebaseModel.getAllPosts { posts ->
+            postList = posts
+            postListAdapter.setData(postList)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

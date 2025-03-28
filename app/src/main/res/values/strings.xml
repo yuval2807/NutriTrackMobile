@@ -15,7 +15,7 @@
     <string name="id">ID:</string>
     <string name="email">Email:</string>
     <string name="password">Password:</string>
-    <string name="phone_number">Phone number:</string>
+    <string name="phone_number">Phone:</string>
 
     <string name="new_student">New Student</string>
     <string name="profile_img">Profile Image</string>
