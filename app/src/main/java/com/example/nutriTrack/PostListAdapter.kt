@@ -18,7 +18,7 @@ interface OnItemClickListener {
     fun onItemClick(v: View?, position: Int)
 }
 
-class PostListAdapter(private var data: List<Post>, private val navController: NavController) :
+class PostListAdapter(private var posts: List<Post>?, private val navController: NavController) :
     RecyclerView.Adapter<PostsListViewHolder>() {
 
     private var listener: OnItemClickListener? = null
@@ -27,32 +27,36 @@ class PostListAdapter(private var data: List<Post>, private val navController: N
         this.listener = listener
     }
 
-    fun setData(newData: List<Post>) {
-        data = newData
+    fun setData(newPosts: List<Post>) {
+        posts = newPosts
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_list_row, parent, false)
-        return PostsListViewHolder(view, listener, data, navController)
+        return PostsListViewHolder(view, listener, posts, navController)
     }
 
     override fun onBindViewHolder(holder: PostsListViewHolder, position: Int) {
-        val post = data[position]
-        holder.bind(post)
+        val post = posts?.get(position)
+        if (post != null) {
+            holder.bind(post)
+        }
 
     }
 
     fun removeItem(position: Int) {
-        if (position >= 0 && position < data.size) {
-            val mutableData = data.toMutableList()
-            mutableData.removeAt(position)
-            data = mutableData
-            notifyItemRemoved(position)
+        if(posts!=null){
+            if (position >= 0 && position < posts!!.size) {
+                val mutableData = posts!!.toMutableList()
+                mutableData.removeAt(position)
+                posts = mutableData
+                notifyItemRemoved(position)
+            }
         }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = if(posts!=null){ posts!!.size} else {0}
 }
 
 class PostsListViewHolder(
