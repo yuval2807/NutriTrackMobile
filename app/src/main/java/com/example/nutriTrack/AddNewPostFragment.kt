@@ -103,7 +103,7 @@ class AddNewPostFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Custom back navigation logic
-                findNavController().navigate(R.id.postsFragment)
+                findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
             }
         })
     }
@@ -162,15 +162,15 @@ class AddNewPostFragment : Fragment() {
         if (postImageBitmap != null) {
             val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
-            Model.shared.add(newPost, bitmap, Model.Storage.CLOUDINARY) {}
+            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {}
         }
-        Model.shared.add(newPost, null, Model.Storage.CLOUDINARY) {}
+        Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {}
 
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.nav_graph, true) // clears back stack
             .build()
 
-        findNavController().navigate(R.id.action_addNewPost_to_postsFragment, null, navOptions)
+        findNavController().navigate(R.id.action_addNewPost_to_homeFragment, null, navOptions)
     }
 }
 
