@@ -61,28 +61,7 @@ class Model private constructor() {
             }
         }
     }
-//
-//    fun addUser(user: User, image: Bitmap?, storage: Storage, callback: (String?) -> Unit) {
-//        firebaseModel.addUser(user)
-//        image?.let {
-//            uploadTo(
-//                storage,
-//                image = image,
-//                name = user.id,
-//                callback = { uri ->
-//                    if (!uri.isNullOrBlank()) {
-//                        user.imageUrl = uri
-//                        Log.d("Image", "addUser after image:  uri ${uri} , user.imageUrl :${user.imageUrl }")
-//
-//                        firebaseModel.addUser(user)
-//                    } else {
-//                        callback("")
-//                    }
-//                },
-//            )
-//        } ?: callback("")
-//    }
-//
+
     fun addUser(user: User, image: Bitmap?, storage: Storage, callback: (String?) -> Unit) {
         if (image != null) {
             uploadTo(
