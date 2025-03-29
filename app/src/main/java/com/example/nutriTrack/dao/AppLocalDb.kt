@@ -7,7 +7,7 @@
     import com.example.nutriTrack.Model.Post
     import com.example.nutriTrack.base.MyApplication
 
-    @Database(entities = [Post::class], version = 1)
+    @Database(entities = [Post::class], version = 2)
     abstract class AppLocalDbRepository: RoomDatabase() {
         abstract fun postDao(): PostDao
     }

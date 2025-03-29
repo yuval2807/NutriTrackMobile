@@ -10,9 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -21,11 +18,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.User
+import com.example.nutriTrack.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
 
+    private var _binding: FragmentRegisterBinding? = null
+    private val binding get() = _binding!!
+
     private val firebaseModel = FirebaseModel()
-    private lateinit var postImageView: ImageView
     private var postImageBitmap: Bitmap? = null
     private var postImageUri: Uri? = null
 
@@ -33,7 +33,7 @@ class RegisterFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             bitmap?.let {
                 postImageBitmap = bitmap
-                postImageView.setImageBitmap(bitmap)
+                binding.imageView.setImageBitmap(bitmap)
             } ?: Toast.makeText(requireContext(), "Failed to capture photo", Toast.LENGTH_SHORT).show()
         }
 
@@ -41,7 +41,7 @@ class RegisterFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 postImageUri = it
-                postImageView.setImageURI(it)
+                binding.imageView.setImageURI(it)
             } ?: Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
         }
 
@@ -50,27 +50,16 @@ class RegisterFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_register, container, false)
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val registerButton: Button = view.findViewById(R.id.registerButton)
-        val takePictureButton: Button = view.findViewById(R.id.register_picture_btn)
-        val pickImageButton: Button = view.findViewById(R.id.register_gallery_btn)
-
-        postImageView = view.findViewById(R.id.imageView)
-        val nameTextField: EditText = view.findViewById(R.id.userNameInput)
-        val idTextField: EditText = view.findViewById(R.id.userIdInput)
-        val emailTextField: EditText = view.findViewById(R.id.userEmailInput)
-        val passwordTextField: EditText = view.findViewById(R.id.userPasswordInput)
-        val phoneTextField: EditText = view.findViewById(R.id.userPhoneInput)
-
-//        registerButton.isEnabled = false
-
-        idTextField.addTextChangedListener(object : TextWatcher {
+        binding.userIdInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
                 // No action needed here
             }
@@ -84,15 +73,15 @@ class RegisterFragment : Fragment() {
 
                 if (id.isNotEmpty()) {
                     if (isValidId(id)) {
-                        //registerButton.isEnabled = true
+                        //binding.registerButton.isEnabled = true
                     } else {
-                        idTextField.error = "ID must be 9 digits long and contain only numbers"
+                        binding.userIdInput.error = "ID must be 9 digits long and contain only numbers"
                     }
                 }
             }
         })
 
-        phoneTextField.addTextChangedListener(object : TextWatcher {
+        binding.userPhoneInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
                 // No action needed here
             }
@@ -106,28 +95,28 @@ class RegisterFragment : Fragment() {
 
                 if (phoneNumber.isNotEmpty()) {
                     if (isValidPhoneNumber(phoneNumber)) {
-                        //registerButton.isEnabled = true
+                        //binding.registerButton.isEnabled = true
                     } else {
-                        phoneTextField.error = "Phone number must be 10 digits long and contain only numbers"
+                        binding.userPhoneInput.error = "Phone number must be 10 digits long and contain only numbers"
                     }
                 }
             }
         })
 
-        takePictureButton.setOnClickListener {
+        binding.registerPictureBtn.setOnClickListener {
             cameraLauncher.launch(null)
         }
 
-        pickImageButton.setOnClickListener {
+        binding.registerGalleryBtn.setOnClickListener {
             galleryLauncher.launch("image/*")
         }
 
-        registerButton.setOnClickListener {
-            val email = emailTextField.text.toString().trim()
-            val password = passwordTextField.text.toString().trim()
-            val name = nameTextField.text.toString().trim()
-            val id = idTextField.text.toString().trim()
-            val phone = phoneTextField.text.toString().trim()
+        binding.registerButton.setOnClickListener {
+            val email = binding.userEmailInput.text.toString().trim()
+            val password = binding.userPasswordInput.text.toString().trim()
+            val name = binding.userNameInput.text.toString().trim()
+            val id = binding.userIdInput.text.toString().trim()
+            val phone = binding.userPhoneInput.text.toString().trim()
 
             register(email, password, name, id, phone)
         }
@@ -137,8 +126,8 @@ class RegisterFragment : Fragment() {
         firebaseModel.register(email, password) { user ->
             if (user != null) {
                 val newUser = User(id, email, name, phone, postImageUri?.toString() ?: "")
-                if ( postImageBitmap  != null) {
-                    val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
+                if (postImageBitmap != null) {
+                    val bitmap = (binding.imageView.drawable as BitmapDrawable).bitmap
 
                     Model.shared.addUser(newUser, bitmap, Model.Storage.CLOUDINARY) {}
                 } else {
@@ -160,6 +149,11 @@ class RegisterFragment : Fragment() {
             .build()
 
         findNavController().navigate(R.id.action_registerFragment_to_homeFragment, null, navOptions)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Avoid memory leaks
     }
 
     private fun isValidPhoneNumber(phone: String): Boolean {

@@ -20,6 +20,6 @@ interface PostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg post: Post)
 
-    @Delete
-    fun delete(student: Post)
+    @Query("DELETE FROM Post WHERE id = :postId")
+    fun deletePostById(postId: String)
 }

@@ -23,8 +23,9 @@
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_fragment_to_addNewPost"
+            android:id="@+id/action_homeFragment_to_addNewPost"
             app:destination="@id/addNewPost" />
+
     </fragment>
 
     <fragment
@@ -54,7 +55,7 @@
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
         <action
-            android:id="@+id/action_fragment_to_addNewPost"
+            android:id="@+id/action_homeFragment_to_addNewPost"
             app:destination="@id/addNewPost" />
     </fragment>
     <fragment

@@ -11,7 +11,6 @@ import java.util.concurrent.Executors
 
 class Model private constructor() {
 
-
     enum class Storage {
         FIREBASE,
         CLOUDINARY
@@ -19,7 +18,6 @@ class Model private constructor() {
 
     private val database: AppLocalDbRepository = AppLocalDb.database
     val posts: LiveData<List<Post>> = database.postDao().getAllPost()
-//    val posts: List<Post> = database.postDao().getAllPost()
 
     private var executor = Executors.newSingleThreadExecutor()
     private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
@@ -48,7 +46,7 @@ class Model private constructor() {
                     },
                 )
             } ?: callback("")
-
+        refreshAllPosts()
     }
 
     fun addUser(user: User, image: Bitmap?, storage: Storage, callback: (String?) -> Unit) {
@@ -96,7 +94,14 @@ class Model private constructor() {
     }
 
     fun deletePost(postId: String, callback: (Boolean) -> Unit) {
-        firebaseModel.deletePost(postId, callback)
+        firebaseModel.deletePost(postId) { success ->
+            if (success) {
+                executor.execute {
+                    database.postDao().deletePostById(postId)
+                }
+            }
+            callback(success)
+        }
     }
 
     private fun uploadImageToFirebase(
