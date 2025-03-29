@@ -37,12 +37,15 @@ class LoginFragment : Fragment() {
         binding.userPasswordView.addTextChangedListener(createTextWatcher())
 
         binding.loginButton.setOnClickListener {
+            binding.progressSpinner.visibility = View.VISIBLE
+
             val email = binding.userEmailView.text.toString().trim()
             val password = binding.userPasswordView.text.toString().trim()
 
             firebaseModel.login(email, password) { user ->
                 if (user != null) {
                     currentUser = user
+                    binding.progressSpinner.visibility = View.GONE
                     navigateToHome()
                 }
             }

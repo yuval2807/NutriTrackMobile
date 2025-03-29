@@ -4,9 +4,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
-import com.example.nutriTrack.Model.Post.COLLECTION_NAME
-import com.example.nutriTrack.Model.Post.Category
 import com.example.nutriTrack.base.MyApplication
+import com.example.nutriTrack.dao.AppLocalDb
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 
@@ -24,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
 import java.io.ByteArrayOutputStream
+import java.sql.Timestamp
 
 class FirebaseModel {
 
@@ -42,7 +42,8 @@ class FirebaseModel {
 
     fun getAllPosts(callback: (MutableList<Post>) -> Unit) {
         var returnValue: MutableList<Post> = mutableListOf()
-        database.collection("posts").get().addOnCompleteListener { task ->
+        database.collection(Post.COLLECTION_NAME).get().addOnCompleteListener { task ->
+
             when (task.isSuccessful) {
                 true -> {
                     val posts = mutableListOf<Post>()
@@ -95,7 +96,7 @@ class FirebaseModel {
     }
 
     fun addPost(post: Post, callback: (Boolean) -> Unit = {}) {
-        database.collection(COLLECTION_NAME)
+        database.collection(Post.COLLECTION_NAME)
             .document(post.id)
             .set(post.toJson())
             .addOnSuccessListener {
@@ -213,18 +214,20 @@ class FirebaseModel {
     }
 
     fun addUser(user: User) {
-        database.collection("users").document(user.id).set(user)
+        database.collection(User.COLLECTION_NAME).document(user.id).set(user)
             .addOnCompleteListener {documentReference ->
-                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference}")
+                Log.d("ADD-USER", "DocumentSnapshot added with ID: ${documentReference}")
             }
             .addOnFailureListener { e ->
-                Log.w("TAG", "Error adding document", e)
+                Log.w("ADD-USER", "Error adding document", e)
             }
     }
 
     fun updateUser(user: User, document: String, callback: (User?) -> Unit) {
-        database.collection("users").document(document)
-            .update("name", user.name, "phone", user.phone)
+        Log.d("UPDATE-USER", "Image url: ${user.imageUrl}")
+
+        database.collection(User.COLLECTION_NAME).document(document)
+            .update("name", user.name, "phone", user.phone, "imageUrl", user.imageUrl)
             .addOnSuccessListener {task ->
                 Log.d("TAG", "DocumentSnapshot updated with ID: ${task}")
                 callback(user)
@@ -235,7 +238,7 @@ class FirebaseModel {
     }
 
     fun getUserInfoByEmail(email: String, callback: (User?) -> Unit) {
-        database.collection("users")
+        database.collection(User.COLLECTION_NAME)
             .whereEqualTo("email", email)
             .limit(1)
             .get()
