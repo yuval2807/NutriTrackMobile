@@ -132,7 +132,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/postsListRv_swipeRefresh"
+            android:id="@+id/profile_postsListRv_swipeRefresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
@@ -143,7 +143,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/postsList_rv"
+                android:id="@+id/profile_postsList_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

@@ -12,8 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
@@ -41,13 +39,14 @@ class ProfileFragment : Fragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.postsList_rv)
-        val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.postsListRv_swipeRefresh)
+
+        val recyclerView = binding.profilePostsListRv
+        val swipeRefreshLayout = binding.profilePostsListRvSwipeRefresh
 
         val navController = findNavController()
 
         postList = mutableListOf()
-        postListAdapter = PostListAdapter(postList, navController)
+        postListAdapter = PostListAdapter(postList, navController,true)
 
         postListAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {
@@ -71,7 +70,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        setHasOptionsMenu(true) // Enable menu for this fragment
 
-        val imageView: ImageView? = binding?.imageView
+        val imageView: ImageView = binding.imageView
 
         userEmail = firebaseModel.getUserEmail()
 
@@ -83,7 +82,7 @@ class ProfileFragment : Fragment() {
                     binding.userNameView.text = it.name
                     binding.userIdView.text = it.id
                     binding.userPhoneView.text = it.phone
-                    loadImageIntoImageView(imageView!!, it.imageUrl)
+                    loadImageIntoImageView(imageView, it.imageUrl)
                 }
 
             } else {

@@ -26,7 +26,7 @@ class postListFragment : Fragment() {
         val navController = findNavController()
 
         postList = mutableListOf()
-        postListAdapter = PostListAdapter(postList, navController)
+        postListAdapter = PostListAdapter(postList, navController, false)
 
         postListAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(v: View?, position: Int) {

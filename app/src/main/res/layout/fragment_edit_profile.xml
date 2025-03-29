@@ -22,7 +22,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_user_avatar" />
+            app:srcCompat="@drawable/ic_user_avatar"
+            android:contentDescription="@string/profile_img" />
 
         <Button
             android:id="@+id/take_picture_btn"
@@ -50,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="50dp"
+            android:labelFor="@id/userNameView"
             android:text="@string/name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -67,35 +69,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/userNameTextView" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/userIdTextView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginTop="40dp"-->
-<!--            android:text="@string/id"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/userNameView" />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/userIdView"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="4dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:ems="10"-->
-<!--            android:inputType="text"-->
-<!--            android:text=""-->
-<!--            app:layout_constraintBaseline_toBaselineOf="@+id/userIdTextView"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/userIdTextView" />-->
-
         <TextView
             android:id="@+id/userPhoneTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
+            android:labelFor="@id/userPhoneView"
             android:text="@string/phone_number"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userNameView" />

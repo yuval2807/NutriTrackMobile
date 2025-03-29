@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.nutriTrack.Model.FirebaseModel
@@ -161,15 +162,15 @@ class AddNewPostFragment : Fragment() {
         if (postImageBitmap != null) {
             val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
-            Model.shared.add(newPost, bitmap, Model.Storage.CLOUDINARY) {
-//                findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
-            }
+            Model.shared.add(newPost, bitmap, Model.Storage.CLOUDINARY) {}
         }
-        Model.shared.add(newPost, null, Model.Storage.CLOUDINARY) {
-}
-        findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
+        Model.shared.add(newPost, null, Model.Storage.CLOUDINARY) {}
 
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.nav_graph, true) // clears back stack
+            .build()
 
+        findNavController().navigate(R.id.action_addNewPost_to_postsFragment, null, navOptions)
     }
 }
 
