@@ -14,16 +14,16 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
-            app:destination="@id/postsFragment" />
+            app:destination="@id/HomeFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/postsFragment"
-        android:name="com.example.nutriTrack.PostListFragment"
-        android:label="Posts"
-        tools:layout="@layout/fragment_posts" >
+        android:id="@+id/HomeFragment"
+        android:name="com.example.nutriTrack.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_postsFragment_to_addNewPost"
+            android:id="@+id/action_homeFragment_to_addNewPost"
             app:destination="@id/addNewPost" />
     </fragment>
 
@@ -38,8 +38,8 @@
             app:nullable="true"
             android:defaultValue="@null"/>
         <action
-            android:id="@+id/action_addNewPost_to_postsFragment"
-            app:destination="@id/postsFragment" />
+            android:id="@+id/action_addNewPost_to_homeFragment"
+            app:destination="@id/HomeFragment" />
     </fragment>
 
     <fragment
@@ -58,7 +58,7 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/postsFragment" />
+            app:destination="@id/HomeFragment" />
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
@@ -71,6 +71,6 @@
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_homeFragment"
-            app:destination="@id/postsFragment" />
+            app:destination="@id/HomeFragment" />
     </fragment>
 </navigation>

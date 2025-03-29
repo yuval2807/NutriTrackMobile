@@ -19,15 +19,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-//        javaCompileOptions {
-//            annotationProcessorOptions {
-//                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-//            }
-//        }
-
         buildConfigField("String", "CLOUD_NAME", "\"${project.properties["CLOUD_NAME"] ?: ""}\"")
         buildConfigField("String", "API_KEY", "\"${project.properties["API_KEY"] ?: ""}\"")
         buildConfigField("String", "API_SECRET", "\"${project.properties["API_SECRET"] ?: ""}\"")
+        buildConfigField("String", "GEMINI_API_KEY", "\"${project.properties["GEMINI_API_KEY"] ?: ""}\"")
+
     }
 
     buildTypes {
@@ -81,4 +77,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }

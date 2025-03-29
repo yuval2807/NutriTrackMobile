@@ -24,6 +24,7 @@
     <string name="edit_student">Edit Student</string>
     <string name="enter_post_description">Enter post description</string>
     <string name="enter_post_title">Enter post title</string>
+    <string name="get_nutrition_fact_text">Get Nutrition Fact</string>
     <string-array name="categories_array">
         <item>Nutrition</item>
         <item>Sports</item>
