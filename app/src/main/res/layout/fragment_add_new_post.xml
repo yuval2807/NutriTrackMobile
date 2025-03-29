@@ -59,7 +59,6 @@
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="29.1.25"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -143,6 +142,7 @@
                 android:id="@+id/et_post_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:minHeight="30dp"
                 android:textColorHint="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 

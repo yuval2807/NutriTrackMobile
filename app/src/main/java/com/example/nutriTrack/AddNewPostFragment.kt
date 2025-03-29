@@ -19,7 +19,6 @@ import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.databinding.FragmentAddNewPostBinding
 import com.example.nutriTrack.utils.getCurrDate
-import com.google.android.material.textfield.TextInputEditText
 import java.util.UUID
 
 class AddNewPostFragment : Fragment() {
@@ -74,6 +73,7 @@ class AddNewPostFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
         binding.etCategory.setAdapter(adapter)
         binding.etCategory.setOnClickListener { binding.etCategory.showDropDown() }
+        binding.tvDate.text = getCurrDate()
 
         binding.btnTakePicture.setOnClickListener {
             cameraLauncher.launch(null)
@@ -158,24 +158,15 @@ class AddNewPostFragment : Fragment() {
             System.currentTimeMillis()
         )
 
-        if (postImageBitmap != null) {
             val bitmap = (binding.ivPostImage.drawable as BitmapDrawable).bitmap
+            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {}
 
-            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {
-                binding.progressSpinner.visibility = View.GONE
-                val navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.nav_graph, true) // clears back stack
-                    .build()
-                findNavController().navigate(R.id.action_addNewPost_to_homeFragment, null, navOptions)
-            }
-        }
-        Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {
-            binding.progressSpinner.visibility = View.GONE
-            val navOptions = NavOptions.Builder()
-                .setPopUpTo(R.id.nav_graph, true) // clears back stack
-                .build()
-            findNavController().navigate(R.id.action_addNewPost_to_homeFragment, null, navOptions)
-        }
+        binding.progressSpinner.visibility = View.GONE
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.nav_graph, true) // clears back stack
+            .build()
+
+        findNavController().navigate(R.id.action_addNewPost_to_homeFragment, null, navOptions)
     }
 
     override fun onDestroyView() {

@@ -95,23 +95,16 @@ class FirebaseModel {
         }
     }
 
-    fun addPost(post: Post) {
-
-        database.collection(Post.COLLECTION_NAME).document(post.id).set(post.toJson())
-            .addOnCompleteListener {
-            }
-
-        var postId: String = post.getId()
-        if (postId == "") {
-            val rootRef = FirebaseFirestore.getInstance()
-            val postRef = rootRef.collection(Post.COLLECTION_NAME)
-            postId = postRef.document().id
-        }
-
+    fun addPost(post: Post, callback: (Boolean) -> Unit = {}) {
         database.collection(Post.COLLECTION_NAME)
-            .document(postId)
+            .document(post.id)
             .set(post.toJson())
-
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
     }
 
     fun uploadImage(bitmap: Bitmap, name: String, callback: (String?) -> Unit) {
