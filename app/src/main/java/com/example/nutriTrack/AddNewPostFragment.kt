@@ -102,7 +102,7 @@ class AddNewPostFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // Custom back navigation logic
-                findNavController().navigate(R.id.postsFragment)
+                findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
             }
         })
     }
@@ -165,7 +165,7 @@ class AddNewPostFragment : Fragment() {
         }
         Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {
 }
-        findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
+        findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
 
 
     }

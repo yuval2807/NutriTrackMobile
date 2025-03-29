@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.ViewModel.PostsListViewModel
 import kotlinx.coroutines.launch
 
@@ -53,22 +52,17 @@ class PostListFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
         }
 
-        // Initial posts load
         getAllPosts()
 
         return view
     }
 
     private fun getAllPosts() {
-        // Use lifecycleScope to launch coroutine
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                Log.d("PostListFragment", "before refreshAllPost")
-
-                // Assuming your ViewModel has a method to fetch posts
                 viewModel.refreshAllPost()
             } catch (e: Exception) {
-                Log.e("PostListFragment", "Error fetching posts", e)
+                Log.e("getAllPosts", "Error fetching posts", e)
             }
         }
     }
