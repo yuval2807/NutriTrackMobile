@@ -21,9 +21,9 @@ fun loadImageIntoImageView(imageView: ImageView, imageUrl: String?) {
     if (!imageUrl.isNullOrEmpty()) {
         Picasso.get()
             .load(imageUrl) // Load from Firebase Storage URL
-            .placeholder(R.drawable.ic_profile) // Optional placeholder
+            .placeholder(R.drawable.image_placeholder) // Optional placeholder
             .into(imageView) // Set into ImageView
     } else {
-        imageView.setImageResource(R.drawable.ic_profile) // Default image
+        imageView.setImageResource(R.drawable.image_placeholder) // Default image
     }
 }
