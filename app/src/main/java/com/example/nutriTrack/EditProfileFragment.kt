@@ -115,13 +115,6 @@ class EditProfileFragment: Fragment() {
                 findNavController().navigate(
                     R.id.action_editProfileFragment_to_profileFragment, null
                 )
-//                Model.shared.addUser(updatedUser) {
-//                    binding.progressSpinner.visibility = View.GONE
-//
-//                    findNavController().navigate(
-//                        R.id.action_editProfileFragment_to_profileFragment, null
-//                    )
-//                }
             }
 
         }
