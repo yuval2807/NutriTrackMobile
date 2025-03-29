@@ -122,15 +122,32 @@ class Model private constructor() {
     }
 
     fun refreshAllPosts() {
+        val lastLocalUpdate = AppLocalDb.getLastUpdateDate() // Get last local update date
+        Log.d("getAllPosts insert", "lastLocalUpdate: ${lastLocalUpdate}")
+
         firebaseModel.getAllPosts  { posts ->
             executor.execute {
                 Log.d("getAllPosts", "After work: ${posts}")
 
-                for (post in posts) {
-                    Log.d("getAllPosts insert", "After work: ${post}")
+                // Filter posts based on last update
+                val newPosts = posts.filter { post ->
+                    val postLastUpdate = post.getLastUpdated()
+                    Log.d("getAllPosts insert", "post last Update: ${postLastUpdate}")
 
-                    database.postDao().insertAll(post)
+                    postLastUpdate == null || postLastUpdate > lastLocalUpdate
+                }
 
+                if (newPosts.isNotEmpty()) {
+                    for (post in newPosts) {
+                        Log.d("getAllPosts insert", "After work: ${post.title}")
+
+                        database.postDao().insertAll(post)
+                    }
+
+                    // Update last local update date
+                    val latestUpdate = newPosts.maxOf { it.getLastUpdated() }
+                    AppLocalDb.saveLastUpdateDate(latestUpdate)
+                    Log.d("refreshAllPosts", "Last update date saved: $latestUpdate")
                 }
             }
         }
