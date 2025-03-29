@@ -33,19 +33,29 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.funFactButton.setOnClickListener {
+            binding.progressSpinner.visibility = View.VISIBLE
+
             binding.funFactButton.isEnabled = false
 
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     lifecycleScope.launch {
                         val funFact = generateAIFunFact()
+                        binding.progressSpinner.visibility = View.GONE
                         createFunFactDialog(funFact)
                     }
                 } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "Could not load nutrition fact", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Could not load nutrition fact",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     Log.e("FunFact", "Error getting fun fact", e)
+                    binding.progressSpinner.visibility = View.GONE
+
                 } finally {
                     binding.funFactButton.isEnabled = true
+
                 }
             }
         }

@@ -47,14 +47,14 @@
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false" />
 
-<!--            <Button-->
-<!--                android:id="@+id/take_picture_btn"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/take_picture"-->
-<!--                android:backgroundTint="#6A4C93"-->
-<!--                android:textColor="#FFFFFF"-->
-<!--                android:textAllCaps="false" />-->
+            <!--            <Button-->
+            <!--                android:id="@+id/take_picture_btn"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/take_picture"-->
+            <!--                android:backgroundTint="#6A4C93"-->
+            <!--                android:textColor="#FFFFFF"-->
+            <!--                android:textAllCaps="false" />-->
         </LinearLayout>
 
         <!-- Name Field -->
@@ -119,7 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Save"
+                android:text="@string/save"
                 android:backgroundTint="#6A4C93"
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false"
@@ -130,7 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:backgroundTint="#6A4C93"
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false"
@@ -149,15 +149,15 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/add_student_success_saved_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/saveButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/add_student_success_saved_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/saveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <ProgressBar

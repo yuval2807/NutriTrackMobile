@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
+import com.example.nutriTrack.Model.User
 import com.example.nutriTrack.databinding.FragmentAddNewPostBinding
 import com.example.nutriTrack.utils.getCurrDate
 import java.util.UUID
@@ -27,6 +29,7 @@ class AddNewPostFragment : Fragment() {
         Add
     }
 
+    private val firebaseModel = FirebaseModel()
     private var _binding: FragmentAddNewPostBinding? = null
     private val binding get() = _binding!!
 
@@ -75,6 +78,19 @@ class AddNewPostFragment : Fragment() {
         binding.etCategory.setOnClickListener { binding.etCategory.showDropDown() }
         binding.tvDate.text = getCurrDate()
 
+        val userEmail = firebaseModel.getUserEmail()
+
+        User.getUserByEmail(userEmail!!) { fullUser ->
+            if (fullUser != null) {
+                fullUser.let {
+                    binding.tvUsername.text = it.name
+                    loadImageIntoImageView(binding.tvUserImage, it.imageUrl, R.drawable.image_placeholder)
+                }
+            } else {
+                Log.d("userInfo", "User not found")
+            }
+        }
+
         binding.btnTakePicture.setOnClickListener {
             cameraLauncher.launch(null)
         }
@@ -95,12 +111,6 @@ class AddNewPostFragment : Fragment() {
             insets
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // Custom back navigation logic
-                findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
-            }
-        })
     }
 
     private fun loadPostData(postId: String) {
@@ -166,11 +176,8 @@ class AddNewPostFragment : Fragment() {
         }
 
         binding.progressSpinner.visibility = View.GONE
-        val navOptions = NavOptions.Builder()
-            .setPopUpTo(R.id.nav_graph, true) // clears back stack
-            .build()
 
-        findNavController().navigate(R.id.action_addNewPost_to_homeFragment, null, navOptions)
+        findNavController().navigate(R.id.action_addNewPost_to_homeFragment, null)
     }
 
     override fun onDestroyView() {
