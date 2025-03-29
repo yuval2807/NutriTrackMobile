@@ -16,86 +16,72 @@ import androidx.navigation.fragment.navArgs
 import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
+import com.example.nutriTrack.databinding.FragmentAddNewPostBinding
 import com.example.nutriTrack.utils.getCurrDate
-import com.google.android.material.textfield.TextInputEditText
 import java.util.UUID
 
 class AddNewPostFragment : Fragment() {
-    public enum class PostMode {
+    enum class PostMode {
         Edit,
         Add
     }
 
-    private lateinit var titleEditText: TextInputEditText
-    private lateinit var descriptionEditText: TextInputEditText
-    private lateinit var dateTextView: TextView
-    private lateinit var categoryDropdown: AutoCompleteTextView
-    private lateinit var saveButton: Button
-    private lateinit var takePictureButton: Button
-    private lateinit var pickImageButton: Button
-    private lateinit var postImageView: ImageView
+    private var _binding: FragmentAddNewPostBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var categories: Array<String>
     private var postImageBitmap: Bitmap? = null
     private var postImageUri: Uri? = null
-    private var mode :PostMode = PostMode.Add
+    private var mode: PostMode = PostMode.Add
     private var postId: String? = null
     private var currPost: Post? = null
 
     private val cameraLauncher =
-    registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-        bitmap?.let {
-            postImageBitmap = bitmap
-            postImageView.setImageBitmap(bitmap)
-        } ?: Toast.makeText(requireContext(), "Failed to capture photo", Toast.LENGTH_SHORT).show()
-    }
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+            bitmap?.let {
+                postImageBitmap = bitmap
+                binding.ivPostImage.setImageBitmap(bitmap)
+            } ?: Toast.makeText(requireContext(), "Failed to capture photo", Toast.LENGTH_SHORT).show()
+        }
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 postImageUri = it
-                postImageView.setImageURI(it)
+                binding.ivPostImage.setImageURI(it)
             } ?: Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        super.onCreate(savedInstanceState)
+        _binding = FragmentAddNewPostBinding.inflate(inflater, container, false)
 
         val args: AddNewPostFragmentArgs by navArgs()
         postId = args.postId
         if (postId != null) {
-                mode = PostMode.Edit
-                loadPostData(postId!!)
+            mode = PostMode.Edit
+            loadPostData(postId!!)
         }
 
-        return inflater.inflate(R.layout.fragment_add_new_post, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        titleEditText = view.findViewById(R.id.et_post_title)
-        descriptionEditText = view.findViewById(R.id.et_post_description)
-        dateTextView = view.findViewById(R.id.tv_date)
-        categoryDropdown = view.findViewById(R.id.et_category)
-        postImageView = view.findViewById(R.id.iv_post_image)
-        saveButton = view.findViewById(R.id.btn_save_post)
-        takePictureButton = view.findViewById(R.id.btn_take_picture)
-        pickImageButton = view.findViewById(R.id.btn_pick_image)
         categories = resources.getStringArray(R.array.categories_array)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
-        categoryDropdown.setAdapter(adapter)
-        categoryDropdown.setOnClickListener { categoryDropdown.showDropDown() }
+        binding.etCategory.setAdapter(adapter)
+        binding.etCategory.setOnClickListener { binding.etCategory.showDropDown() }
 
-
-        takePictureButton.setOnClickListener {
+        binding.btnTakePicture.setOnClickListener {
             cameraLauncher.launch(null)
         }
 
-        pickImageButton.setOnClickListener {
+        binding.btnPickImage.setOnClickListener {
             galleryLauncher.launch("image/*")
         }
 
-        saveButton.setOnClickListener {
+        binding.btnSavePost.setOnClickListener {
             savePost()
         }
 
@@ -113,19 +99,19 @@ class AddNewPostFragment : Fragment() {
             if (post != null) {
                 currPost = post
 
-                 titleEditText.setText(post.getTitle())
-                 descriptionEditText.setText(post.getDescription())
-                categoryDropdown.setText(post.category.name, false)
-                dateTextView.text = post.getDate()
-                loadImageIntoImageView(postImageView,post.imageUrl)
+                binding.etPostTitle.setText(post.getTitle())
+                binding.etPostDescription.setText(post.getDescription())
+                binding.etCategory.setText(post.category.name, false)
+                binding.tvDate.text = post.getDate()
+                loadImageIntoImageView(binding.ivPostImage, post.imageUrl)
             }
         }
     }
 
     private fun savePost() {
-        val title = titleEditText.text.toString().trim()
-        val description = descriptionEditText.text.toString().trim()
-        val categoryText = categoryDropdown.text.toString().trim()
+        val title = binding.etPostTitle.text.toString().trim()
+        val description = binding.etPostDescription.text.toString().trim()
+        val categoryText = binding.etCategory.text.toString().trim()
 
         val category = try {
             Post.Category.valueOf(categoryText)
@@ -139,12 +125,11 @@ class AddNewPostFragment : Fragment() {
             return
         }
 
-         var postId =  UUID.randomUUID().toString()
+        var postId = UUID.randomUUID().toString()
 
         if (mode == PostMode.Edit && currPost != null) {
             postId = currPost!!.id
         }
-
 
         val newPost = Post(
             postId,
@@ -157,18 +142,18 @@ class AddNewPostFragment : Fragment() {
         )
 
         if (postImageBitmap != null) {
-            val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
+            val bitmap = (binding.ivPostImage.drawable as BitmapDrawable).bitmap
 
             Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {
-//                findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
+                // findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
             }
         }
-        Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {
-}
+        Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {}
         findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
+    }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
-
-

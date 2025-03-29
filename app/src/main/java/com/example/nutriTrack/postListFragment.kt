@@ -10,13 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.nutriTrack.ViewModel.PostsListViewModel
+import com.example.nutriTrack.databinding.FragmentPostsBinding
 import kotlinx.coroutines.launch
 
 class PostListFragment : Fragment() {
     private lateinit var postListAdapter: PostListAdapter
+    private var _binding: FragmentPostsBinding? = null
+    private val binding get() = _binding!!
 
     // Use by viewModels() delegate for proper ViewModel creation
     private val viewModel: PostsListViewModel by viewModels()
@@ -26,35 +27,33 @@ class PostListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_posts, container, false)
+        _binding = FragmentPostsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.postsList_rv)
-        val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.postsListRv_swipeRefresh)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val navController = findNavController()
-
         postListAdapter = PostListAdapter(emptyList(), navController)
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = postListAdapter
+        binding.postsListRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.postsListRv.adapter = postListAdapter
 
         // Observe posts from ViewModel
         viewModel.posts.observe(viewLifecycleOwner) { posts ->
             Log.d("PostListFragment", " get posts viewModel ${posts}")
-
             postListAdapter.setData(posts)
         }
 
         // Set up SwipeRefreshLayout
-        swipeRefreshLayout.setOnRefreshListener {
+        binding.postsListRvSwipeRefresh.setOnRefreshListener {
             Log.d("PostListFragment", " get posts re")
-
             getAllPosts()
-            swipeRefreshLayout.isRefreshing = false
+            binding.postsListRvSwipeRefresh.isRefreshing = false
         }
 
         getAllPosts()
-
-        return view
     }
 
     private fun getAllPosts() {
@@ -65,5 +64,10 @@ class PostListFragment : Fragment() {
                 Log.e("getAllPosts", "Error fetching posts", e)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
