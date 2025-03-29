@@ -84,7 +84,7 @@ class AddNewPostFragment : Fragment() {
             if (fullUser != null) {
                 fullUser.let {
                     binding.tvUsername.text = it.name
-                    loadImageIntoImageView(binding.tvUserImage, it.imageUrl)
+                    loadImageIntoImageView(binding.tvUserImage, it.imageUrl, R.drawable.image_placeholder)
                 }
             } else {
                 Log.d("userInfo", "User not found")
@@ -123,7 +123,7 @@ class AddNewPostFragment : Fragment() {
                 binding.etPostDescription.setText(post.getDescription())
                 binding.etCategory.setText(post.category.name, false)
                 binding.tvDate.text = post.getDate()
-                loadImageIntoImageView(binding.ivPostImage, post.imageUrl)
+                loadImageIntoImageView(binding.ivPostImage, post.imageUrl, R.drawable.image_placeholder)
             }
         }
     }
@@ -168,8 +168,12 @@ class AddNewPostFragment : Fragment() {
             System.currentTimeMillis()
         )
 
+        if (postImageBitmap != null) {
             val bitmap = (binding.ivPostImage.drawable as BitmapDrawable).bitmap
             Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {}
+        } else {
+            Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {}
+        }
 
         binding.progressSpinner.visibility = View.GONE
 

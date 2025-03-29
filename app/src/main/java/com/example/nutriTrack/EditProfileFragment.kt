@@ -12,31 +12,19 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.User
-import com.example.nutriTrack.databinding.FragmentAddNewPostBinding
 import com.example.nutriTrack.databinding.FragmentEditProfileBinding
 
 class EditProfileFragment: Fragment() {
 
     private lateinit var userId: String
     private lateinit var user: User
-    private var _binding: FragmentEditProfileBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: FragmentEditProfileBinding
     private lateinit var postImageView: ImageView
     private var postImageBitmap: Bitmap? = null
     private var postImageUri: Uri? = null
-
-    private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            bitmap?.let {
-                postImageBitmap = bitmap
-                postImageView.setImageBitmap(bitmap)
-            } ?: Toast.makeText(requireContext(), "Failed to capture photo", Toast.LENGTH_SHORT).show()
-        }
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -51,14 +39,14 @@ class EditProfileFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+        binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postImageView = binding!!.imageView
+        postImageView = binding.imageView
 
         val userEmail = arguments?.getString("user_email")
 
@@ -67,19 +55,15 @@ class EditProfileFragment: Fragment() {
                 user = fullUser
                 user.let {
 
-                    binding!!.userNameView.setText(it.name)
+                    binding.userNameView.setText(it.name)
                     userId = it.id
-                    binding!!.userPhoneView.setText(it.phone)
-                    loadImageIntoImageView(postImageView, it.imageUrl)
+                    binding.userPhoneView.setText(it.phone)
+                    loadImageIntoImageView(postImageView, it.imageUrl,R.drawable.ic_profile)
                 }
 
             } else {
                 Log.d("userInfo", "User not found")
             }
-        }
-
-        binding.takePictureBtn.setOnClickListener {
-            cameraLauncher.launch(null)
         }
 
         binding.galleryBtn.setOnClickListener {
@@ -125,11 +109,6 @@ class EditProfileFragment: Fragment() {
                 R.id.action_editProfileFragment_to_profileFragment, null
             )
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {

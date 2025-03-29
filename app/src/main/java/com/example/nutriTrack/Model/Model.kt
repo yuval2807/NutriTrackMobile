@@ -63,8 +63,7 @@ class Model private constructor() {
     }
 
     fun addUser(user: User, image: Bitmap?, storage: Storage, callback: (String?) -> Unit) {
-        firebaseModel.addUser(user)
-        image?.let {
+        if (image != null) {
             uploadTo(
                 storage,
                 image = image,
@@ -72,15 +71,21 @@ class Model private constructor() {
                 callback = { uri ->
                     if (!uri.isNullOrBlank()) {
                         user.imageUrl = uri
-                        Log.d("Image", "addUser after image:  uri ${uri} , user.imageUrl :${user.imageUrl }")
 
-                        firebaseModel.addUser(user)
+                        firebaseModel.addUser(user) { success ->
+                            callback(if (success) user.id else "")
+                        }
                     } else {
                         callback("")
                     }
-                },
+                }
             )
-        } ?: callback("")
+        }
+        else {
+            firebaseModel.addUser(user) { success ->
+                callback(if (success) user.id else "")
+            }
+        }
     }
 
     private fun uploadTo(storage: Storage, image: Bitmap, name: String, callback: (String?) -> Unit) {

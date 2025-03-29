@@ -111,7 +111,7 @@ class PostsListViewHolder(
         binding.tvPostlistPostDescription.text = post.getDescription()
         binding.tvPostlistPostCategory.text = post.getCategory().name
         binding.tvPostlistDate.text = post.date
-        loadImageIntoImageView(binding.ivPostlistPostImage, post.imageUrl)
+        loadImageIntoImageView(binding.ivPostlistPostImage, post.imageUrl, R.drawable.image_placeholder)
 
         // Set visibility based on showActions flag
         binding.btnEdit.visibility = if (showActions) View.VISIBLE else View.GONE
@@ -137,6 +137,6 @@ class PostsListViewHolder(
                 })
             }
             .setNegativeButton("Cancel", null)
-            .show()
-    }
+        .show()
+        }
 }

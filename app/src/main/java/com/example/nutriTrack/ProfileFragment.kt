@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
@@ -73,6 +74,8 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val imageView: ImageView = binding.imageView
+
         userEmail = firebaseModel.getUserEmail()
 
         User.getUserByEmail(userEmail!!) { fullUser ->
@@ -83,7 +86,7 @@ class ProfileFragment : Fragment() {
                     binding.userNameView.text = it.name
                     binding.userIdView.text = it.id
                     binding.userPhoneView.text = it.phone
-                    loadImageIntoImageView(binding.imageView, it.imageUrl)
+                    loadImageIntoImageView(imageView, it.imageUrl, R.drawable.ic_profile)
                 }
 
             } else {

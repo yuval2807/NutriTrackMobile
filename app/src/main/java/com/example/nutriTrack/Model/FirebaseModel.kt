@@ -5,7 +5,6 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.example.nutriTrack.base.MyApplication
-import com.example.nutriTrack.dao.AppLocalDb
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 
@@ -23,7 +22,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
 import java.io.ByteArrayOutputStream
-import java.sql.Timestamp
 
 class FirebaseModel {
 
@@ -213,13 +211,15 @@ class FirebaseModel {
         auth.signOut()
     }
 
-    fun addUser(user: User) {
-        database.collection(User.COLLECTION_NAME).document(user.id).set(user)
+    fun addUser(user: User, callback: (Boolean) -> Unit = {}) {
+        database.collection("users").document(user.id).set(user)
             .addOnCompleteListener {documentReference ->
-                Log.d("ADD-USER", "DocumentSnapshot added with ID: ${documentReference}")
+                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference}")
+                callback(true)
             }
             .addOnFailureListener { e ->
-                Log.w("ADD-USER", "Error adding document", e)
+                Log.w("TAG", "Error adding document", e)
+                callback(false)
             }
     }
 
