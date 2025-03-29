@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriTrack.Model.FirebaseModel
+import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.databinding.PostsListRowBinding
 
@@ -106,8 +107,7 @@ class PostsListViewHolder(
             .setTitle("Delete Post")
             .setMessage("Are you sure you want to delete this post?")
             .setPositiveButton("Delete") { _, _ ->
-                val firebaseModel = FirebaseModel()
-                firebaseModel.deletePost(post.getId()) { success ->
+                Model.shared.deletePost(post.getId(),{ success ->
                     if (success) {
                         if (position != RecyclerView.NO_POSITION) {
                             (bindingAdapter as? PostListAdapter)?.removeItem(position)
@@ -116,7 +116,7 @@ class PostsListViewHolder(
                     } else {
                         Toast.makeText(context, "Failed to delete post", Toast.LENGTH_SHORT).show()
                     }
-                }
+                })
             }
             .setNegativeButton("Cancel", null)
             .show()
