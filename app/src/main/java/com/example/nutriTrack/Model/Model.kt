@@ -29,24 +29,37 @@ class Model private constructor() {
     }
 
     fun addPost(post: Post, image: Bitmap?, storage: Storage, callback: (String?) -> Unit) {
-        firebaseModel.addPost(post)
-            image?.let {
-                uploadTo(
-                    storage,
-                    image = image,
-                    name = post.id,
-                    callback = { uri ->
-                        if (!uri.isNullOrBlank()) {
-                            post.setImageUrl(uri)
+        if (image != null) {
+            uploadTo(
+                storage,
+                image = image,
+                name = post.id,
+                callback = { uri ->
+                    if (!uri.isNullOrBlank()) {
+                        post.setImageUrl(uri)
 
-                            firebaseModel.addPost(post)
-                        } else {
-                            callback("")
+                        firebaseModel.addPost(post) { success ->
+                            // Assuming firebaseModel.addPost can take a callback for completion
+                            if (success) {
+                                refreshAllPosts()
+                            }
+                            callback(if (success) post.id else "")
                         }
-                    },
-                )
-            } ?: callback("")
-        refreshAllPosts()
+                    } else {
+                        callback("")
+                    }
+                }
+            )
+        }
+        else {
+            // Handle case with no image
+            firebaseModel.addPost(post) { success ->
+                if (success) {
+                    refreshAllPosts()
+                }
+                callback(if (success) post.id else "")
+            }
+        }
     }
 
     fun addUser(user: User, image: Bitmap?, storage: Storage, callback: (String?) -> Unit) {
@@ -59,6 +72,7 @@ class Model private constructor() {
                 callback = { uri ->
                     if (!uri.isNullOrBlank()) {
                         user.imageUrl = uri
+                        Log.d("Image", "addUser after image:  uri ${uri} , user.imageUrl :${user.imageUrl }")
 
                         firebaseModel.addUser(user)
                     } else {
@@ -67,14 +81,6 @@ class Model private constructor() {
                 },
             )
         } ?: callback("")
-    }
-
-    fun getPostsByUser(callback: (MutableList<Post>) -> Unit) {
-        val userId = firebaseModel.getUserDocumentNumber()
-
-        firebaseModel.getPostsByUser(userId) { posts ->
-            callback(posts)
-        }
     }
 
     private fun uploadTo(storage: Storage, image: Bitmap, name: String, callback: (String?) -> Unit) {
@@ -118,12 +124,24 @@ class Model private constructor() {
         onSuccess: (String?) -> Unit,
         onError: (String?) -> Unit
     ) {
+        Log.d("Image", "uploadImageToCloudinary:  name ${name} , bitmap:${bitmap}")
+
         cloudinaryModel.uploadImage(
             bitmap = bitmap,
             name = name,
             onSuccess = onSuccess,
             onError = onError
         )
+    }
+
+    fun getAllPosts(): LiveData<List<Post>> {
+        refreshAllPosts()
+        return posts
+    }
+
+    fun getPostsByUserId(userId: String): LiveData<List<Post>> {
+        refreshAllPosts()
+        return database.postDao().getPostsByUserId(userId)
     }
 
     fun refreshAllPosts() {
