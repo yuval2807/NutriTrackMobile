@@ -59,8 +59,6 @@ class EditProfileFragment: Fragment() {
                     userId = it.id
                     binding.userPhoneView.setText(it.phone)
                     loadImageIntoImageView(postImageView, it.imageUrl,R.drawable.ic_profile)
-                    binding.userPhoneView.setText(it.phone)
-                    loadImageIntoImageView(postImageView, it.imageUrl, R.drawable.ic_profile)
                 }
 
             } else {
