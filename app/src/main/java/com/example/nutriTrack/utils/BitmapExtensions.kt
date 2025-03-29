@@ -2,6 +2,7 @@ package com.example.nutriTrack
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import java.io.File
@@ -19,6 +20,8 @@ fun Bitmap.toFile(context: Context, name: String): File {
 
 fun loadImageIntoImageView(imageView: ImageView, imageUrl: String?) {
     if (!imageUrl.isNullOrEmpty()) {
+        Log.d("Image", "loadImageIntoImageView:  ImageView ${imageView} , imageUrl:${imageUrl}")
+
         Picasso.get()
             .load(imageUrl) // Load from Firebase Storage URL
             .placeholder(R.drawable.image_placeholder) // Optional placeholder

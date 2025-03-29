@@ -42,7 +42,7 @@ class FirebaseModel {
 
     fun getAllPosts(callback: (MutableList<Post>) -> Unit) {
         var returnValue: MutableList<Post> = mutableListOf()
-        database.collection("posts").get().addOnCompleteListener {task ->
+        database.collection("posts").get().addOnCompleteListener { task ->
             when (task.isSuccessful) {
                 true -> {
                     val posts = mutableListOf<Post>()
@@ -94,23 +94,16 @@ class FirebaseModel {
         }
     }
 
-    fun addPost(post: Post) {
-
-        database.collection(COLLECTION_NAME).document(post.id).set(post.toJson())
-            .addOnCompleteListener {
-            }
-
-        var postId: String = post.getId()
-        if (postId == "") {
-            val rootRef = FirebaseFirestore.getInstance()
-            val postRef = rootRef.collection(COLLECTION_NAME)
-            postId = postRef.document().id
-        }
-
+    fun addPost(post: Post, callback: (Boolean) -> Unit = {}) {
         database.collection(COLLECTION_NAME)
-            .document(postId)
+            .document(post.id)
             .set(post.toJson())
-
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener {
+                callback(false)
+            }
     }
 
     fun uploadImage(bitmap: Bitmap, name: String, callback: (String?) -> Unit) {

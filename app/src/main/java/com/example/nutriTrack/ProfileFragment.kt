@@ -9,13 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nutriTrack.Model.FirebaseModel
-import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.Model.User
+import com.example.nutriTrack.ViewModel.PostsListViewModel
 import com.example.nutriTrack.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -26,6 +27,7 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var postListAdapter: PostListAdapter
     private lateinit var postList: MutableList<Post>
+    private val viewModel: PostsListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +70,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        setHasOptionsMenu(true) // Enable menu for this fragment
 
         val imageView: ImageView = binding.imageView
 
@@ -123,26 +124,16 @@ class ProfileFragment : Fragment() {
 
     private fun loadPosts() {
         postList.clear()
-        Model.shared.getPostsByUser { posts ->
-            postList = posts
-            postListAdapter.setData(postList)
+        viewModel.getPosts(firebaseModel.getUserDocumentNumber()).observe(viewLifecycleOwner) { posts ->
+            Log.d("ProfileFragment", " get posts viewModel ${posts}")
+            postListAdapter.setData(posts)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_post_details, menu)
     }
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.action_edit -> navigateToEditStudent()
-//
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
-//    override fun onResume() {
-//        super.onResume()
-//        (activity as? MainActivity)?.setToolbarTitle("Student Details")
-//    }
 
     companion object {
         fun newInstance() = ProfileFragment()

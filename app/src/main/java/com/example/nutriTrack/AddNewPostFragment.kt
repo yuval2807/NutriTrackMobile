@@ -147,12 +147,9 @@ class AddNewPostFragment : Fragment() {
             System.currentTimeMillis()
         )
 
-        if (postImageBitmap != null) {
             val bitmap = (binding.ivPostImage.drawable as BitmapDrawable).bitmap
-
             Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {}
-        }
-        Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {}
+
         findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
     }
 

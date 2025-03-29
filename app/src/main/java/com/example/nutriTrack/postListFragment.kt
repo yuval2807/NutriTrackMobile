@@ -41,7 +41,7 @@ class PostListFragment : Fragment() {
         binding.postsListRv.adapter = postListAdapter
 
         // Observe posts from ViewModel
-        viewModel.posts.observe(viewLifecycleOwner) { posts ->
+        viewModel.getPosts(null).observe(viewLifecycleOwner) { posts ->
             Log.d("PostListFragment", " get posts viewModel ${posts}")
             postListAdapter.setData(posts)
         }
@@ -58,6 +58,7 @@ class PostListFragment : Fragment() {
     }
 
     private fun getAllPosts() {
+        viewModel.refreshAllPost()
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 viewModel.refreshAllPost()
