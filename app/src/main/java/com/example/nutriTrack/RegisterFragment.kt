@@ -112,6 +112,8 @@ class RegisterFragment : Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
+            binding.progressSpinner.visibility = View.VISIBLE
+
             val email = binding.userEmailInput.text.toString().trim()
             val password = binding.userPasswordInput.text.toString().trim()
             val name = binding.userNameInput.text.toString().trim()
@@ -135,10 +137,12 @@ class RegisterFragment : Fragment() {
                 }
 
                 Log.d("registerFragment", "Registered new user: ${newUser.email}")
+                binding.progressSpinner.visibility = View.GONE
                 navigateToHome()
 
             } else {
                 Log.d("registerFragment", "Login and registration both failed.")
+                binding.progressSpinner.visibility = View.GONE
             }
         }
     }

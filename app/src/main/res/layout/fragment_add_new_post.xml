@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/add_post_root_layout"
     tools:context=".AddNewPostFragment">
 
 <androidx.cardview.widget.CardView
@@ -12,8 +13,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     android:id="@+id/post_card_view"
-    app:cardElevation="4dp"
-    >
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +36,8 @@
                 android:layout_height="40dp"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_user_avatar" />
+                android:src="@drawable/ic_user_avatar"
+                android:contentDescription="@string/profile_img" />
 
             <!-- Username & Date -->
             <LinearLayout
@@ -82,7 +83,8 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:background="@android:color/darker_gray"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:contentDescription="post image" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -97,14 +99,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Take Picture" />
+                android:text="@string/take_picture" />
 
             <Button
                 android:id="@+id/btn_pick_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Pick from Gallery" />
+                android:text="@string/pick_from_gallery" />
         </LinearLayout>
 
 
@@ -201,5 +203,15 @@
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/progress_spinner"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:elevation="10dp"
+        android:visibility="gone" />
 
 </FrameLayout>

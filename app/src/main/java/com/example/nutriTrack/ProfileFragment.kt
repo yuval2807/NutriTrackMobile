@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
@@ -16,6 +17,7 @@ import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.Model.User
+import com.example.nutriTrack.databinding.FragmentEditProfileBinding
 import com.example.nutriTrack.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -23,7 +25,8 @@ class ProfileFragment : Fragment() {
     private var userEmail: String? = null
     private var user: User? = null
     private val firebaseModel = FirebaseModel()
-    private lateinit var binding: FragmentProfileBinding
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
     private lateinit var postListAdapter: PostListAdapter
     private lateinit var postList: MutableList<Post>
 
@@ -35,10 +38,11 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentProfileBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        binding.progressSpinner.visibility = View.VISIBLE
 
         val recyclerView = binding.profilePostsListRv
         val swipeRefreshLayout = binding.profilePostsListRvSwipeRefresh
@@ -68,9 +72,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        setHasOptionsMenu(true) // Enable menu for this fragment
-
-        val imageView: ImageView = binding.imageView
 
         userEmail = firebaseModel.getUserEmail()
 
@@ -82,7 +83,7 @@ class ProfileFragment : Fragment() {
                     binding.userNameView.text = it.name
                     binding.userIdView.text = it.id
                     binding.userPhoneView.text = it.phone
-                    loadImageIntoImageView(imageView, it.imageUrl)
+                    loadImageIntoImageView(binding.imageView, it.imageUrl)
                 }
 
             } else {
@@ -99,6 +100,19 @@ class ProfileFragment : Fragment() {
         binding.editButton.setOnClickListener {
             navigateEditProfile()
         }
+
+        // Adjust layout to avoid cut-off by status bar
+        val rootView = view.findViewById<FrameLayout>(R.id.profile_main)
+        rootView.setOnApplyWindowInsetsListener { v, insets ->
+            val statusBarHeight = insets.systemGestureInsets.top
+            v.setPadding(v.paddingLeft, statusBarHeight, v.paddingRight, v.paddingBottom)
+            insets
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun navigateEditProfile() {
@@ -126,6 +140,7 @@ class ProfileFragment : Fragment() {
         Model.shared.getPostsByUser { posts ->
             postList = posts
             postListAdapter.setData(postList)
+            binding.progressSpinner.visibility = View.GONE
         }
     }
 

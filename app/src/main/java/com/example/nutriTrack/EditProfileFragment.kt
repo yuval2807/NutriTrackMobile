@@ -12,16 +12,20 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.User
+import com.example.nutriTrack.databinding.FragmentAddNewPostBinding
 import com.example.nutriTrack.databinding.FragmentEditProfileBinding
 
 class EditProfileFragment: Fragment() {
 
     private lateinit var userId: String
     private lateinit var user: User
-    private lateinit var binding: FragmentEditProfileBinding
+    private var _binding: FragmentEditProfileBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var postImageView: ImageView
     private var postImageBitmap: Bitmap? = null
     private var postImageUri: Uri? = null
@@ -46,15 +50,15 @@ class EditProfileFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentEditProfileBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postImageView = binding.imageView
+        postImageView = binding!!.imageView
 
         val userEmail = arguments?.getString("user_email")
 
@@ -63,9 +67,9 @@ class EditProfileFragment: Fragment() {
                 user = fullUser
                 user.let {
 
-                    binding.userNameView.setText(it.name)
+                    binding!!.userNameView.setText(it.name)
                     userId = it.id
-                    binding.userPhoneView.setText(it.phone)
+                    binding!!.userPhoneView.setText(it.phone)
                     loadImageIntoImageView(postImageView, it.imageUrl)
                 }
 
@@ -84,6 +88,8 @@ class EditProfileFragment: Fragment() {
 
         // Save button click handler
         binding.saveButton.setOnClickListener {
+            binding.progressSpinner.visibility = View.VISIBLE
+
             val updatedUser = User(
                 user.id,
                 user.email,
@@ -92,21 +98,32 @@ class EditProfileFragment: Fragment() {
                 postImageUri?.toString() ?: user.imageUrl
             )
 
-            if ( postImageBitmap  != null) {
+            if (postImageBitmap != null) {
                 val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
                 Model.shared.addUser(updatedUser, bitmap, Model.Storage.CLOUDINARY) {
-                    findNavController().navigate(
-                        R.id.action_editProfileFragment_to_profileFragment, null
-                    )
-                }
-            } else {
-                User.updateUser(userId, updatedUser) {
+                    binding.progressSpinner.visibility = View.GONE
+
                     findNavController().navigate(
                         R.id.action_editProfileFragment_to_profileFragment, null
                     )
                 }
             }
+            Model.shared.addUser(updatedUser, null, Model.Storage.CLOUDINARY) {
+                binding.progressSpinner.visibility = View.GONE
+
+                findNavController().navigate(
+                    R.id.action_editProfileFragment_to_profileFragment, null
+                )
+//                Model.shared.addUser(updatedUser) {
+//                    binding.progressSpinner.visibility = View.GONE
+//
+//                    findNavController().navigate(
+//                        R.id.action_editProfileFragment_to_profileFragment, null
+//                    )
+//                }
+            }
+
         }
 
         // Cancel button click handler
@@ -115,6 +132,11 @@ class EditProfileFragment: Fragment() {
                 R.id.action_editProfileFragment_to_profileFragment, null
             )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

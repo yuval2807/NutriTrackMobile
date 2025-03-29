@@ -34,6 +34,8 @@ class PostListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.progressSpinner.visibility = View.VISIBLE
+
         val navController = findNavController()
         postListAdapter = PostListAdapter(emptyList(), navController, false)
 
@@ -64,6 +66,8 @@ class PostListFragment : Fragment() {
             } catch (e: Exception) {
                 Log.e("getAllPosts", "Error fetching posts", e)
             }
+
+            binding.progressSpinner.visibility = View.GONE
         }
     }
 
