@@ -17,8 +17,11 @@ interface OnItemClickListener {
     fun onItemClick(v: View?, position: Int)
 }
 
-class PostListAdapter(private var posts: List<Post>?, private val navController: NavController) :
-    RecyclerView.Adapter<PostsListViewHolder>() {
+class PostListAdapter(
+    private var posts: List<Post>?,
+    private val navController: NavController,
+    private val showActions: Boolean
+): RecyclerView.Adapter<PostsListViewHolder>() {
 
     private var listener: OnItemClickListener? = null
 
@@ -61,8 +64,18 @@ class PostsListViewHolder(
     private val binding: PostsListRowBinding,
     private val listener: OnItemClickListener?,
     private var data: List<Post>?,
-    private val navController: NavController
-) : RecyclerView.ViewHolder(binding.root) {
+    private val navController: NavController,
+    private val showActions: Boolean
+) : RecyclerView.ViewHolder(itemView) {
+
+    private val titleTv: TextView = itemView.findViewById(R.id.tv_postlist_post_title)
+    private val descriptionTv: TextView = itemView.findViewById(R.id.tv_postlist_post_description)
+    private val categoryTv: TextView = itemView.findViewById(R.id.tv_postlist_post_category)
+    private val dateTv: TextView = itemView.findViewById(R.id.tv_postlist_date)
+    private val imageView: ImageView = itemView.findViewById(R.id.iv_postlist_post_image)
+    private val editButton: ImageButton = itemView.findViewById(R.id.btn_edit)
+    private val deleteButton: ImageButton = itemView.findViewById(R.id.btn_delete)
+
 
     init {
         binding.root.setOnClickListener {
@@ -99,6 +112,10 @@ class PostsListViewHolder(
         binding.tvPostlistPostCategory.text = post.getCategory().name
         binding.tvPostlistDate.text = post.date
         loadImageIntoImageView(binding.ivPostlistPostImage, post.imageUrl)
+
+        // Set visibility based on showActions flag
+        editButton.visibility = if (showActions) View.VISIBLE else View.GONE
+        deleteButton.visibility = if (showActions) View.VISIBLE else View.GONE
     }
 
     private fun showDeleteConfirmation(post: Post) {

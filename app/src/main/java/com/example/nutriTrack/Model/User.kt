@@ -1,5 +1,7 @@
 package com.example.nutriTrack.Model
 
+import android.util.Log
+
 data class User(
     var id: String = "",
     var email: String = "",
@@ -16,7 +18,11 @@ data class User(
             firebaseModel.addUser(user)
         }
 
-        fun updateUser(userid:String, updateUser: User) {
+        fun updateUser(userId:String, updatedUser: User, callback: (User?) -> Unit) {
+            Log.d("updateUser", "user: $updatedUser")
+            firebaseModel.updateUser(updatedUser, userId) { user ->
+               callback(user)
+            }
         }
 
         fun getUserByEmail(email: String, callback: (User?) -> Unit) {

@@ -4,13 +4,20 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.nutriTrack.Model.FirebaseModel
@@ -109,9 +116,12 @@ class AddNewPostFragment : Fragment() {
     }
 
     private fun savePost() {
-        val title = binding.etPostTitle.text.toString().trim()
-        val description = binding.etPostDescription.text.toString().trim()
-        val categoryText = binding.etCategory.text.toString().trim()
+        val firebaseModel = FirebaseModel()
+        val userDocNum = firebaseModel.getUserDocumentNumber()
+
+        val title = titleEditText.text.toString().trim()
+        val description = descriptionEditText.text.toString().trim()
+        val categoryText = categoryDropdown.text.toString().trim()
 
         val category = try {
             Post.Category.valueOf(categoryText)
@@ -137,19 +147,23 @@ class AddNewPostFragment : Fragment() {
             category,
             description,
             postImageUri?.toString() ?: "",
-            "user1",
-            getCurrDate()
+            userDocNum,
+            getCurrDate(),
+            System.currentTimeMillis()
         )
 
         if (postImageBitmap != null) {
             val bitmap = (binding.ivPostImage.drawable as BitmapDrawable).bitmap
 
-            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {
-                // findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
-            }
+            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {}
         }
         Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {}
-        findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
+
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.nav_graph, true) // clears back stack
+            .build()
+
+        findNavController().navigate(R.id.action_addNewPost_to_homeFragment, null, navOptions)
     }
 
     override fun onDestroyView() {

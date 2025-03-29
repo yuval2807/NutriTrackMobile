@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity() {
         // Hide bottom nav bar when in loginFragment or splashFragment or registerFragment
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.loginFragment, R.id.splashFragment, R.id.registerFragment -> {
-                    binding.mainBottomNavigationView.visibility = View.GONE
+                R.id.loginFragment, R.id.splashFragment, R.id.registerFragment, R.id.editProfileFragment -> {
+                    bottomNavView.visibility = View.GONE
                 }
                 else -> {
                     binding.mainBottomNavigationView.visibility = View.VISIBLE

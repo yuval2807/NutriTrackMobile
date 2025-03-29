@@ -35,7 +35,8 @@ class PostListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
-        postListAdapter = PostListAdapter(emptyList(), navController)
+
+        postListAdapter = PostListAdapter(emptyList(), navController, false)
 
         binding.postsListRv.layoutManager = LinearLayoutManager(requireContext())
         binding.postsListRv.adapter = postListAdapter

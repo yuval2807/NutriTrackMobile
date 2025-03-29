@@ -1,11 +1,17 @@
 package com.example.nutriTrack.Model;
 
+import static com.example.nutriTrack.utils.DateExtensionsKt.getCurrDate;
+import static com.google.firebase.firestore.FieldValue.serverTimestamp;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.firestore.FieldValue;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Entity
 public class Post {
@@ -21,8 +27,9 @@ public class Post {
     Boolean isDeleted;
     String user;
     String date;
+    Long lastUpdated;
 
-    public Post(@NonNull String id, String title, Category category, String description, String imageUrl,String user, String date) {
+    public Post(@NonNull String id, String title, Category category, String description, String imageUrl,String user, String date, Long lastUpdate) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -31,6 +38,7 @@ public class Post {
         this.isDeleted = false;
         this.user = user;
         this.date = date;
+        this.lastUpdated = lastUpdate;
     }
 
     public Post() {
@@ -59,8 +67,9 @@ public class Post {
         Boolean isDeleted = (Boolean) postJson.get("isDeleted");
         String user = (String) postJson.get("user");
         String date = (String) postJson.get("date");
+        Long lastUpdate = (Long) postJson.get("lastUpdated");
 
-        Post postItem = new Post(id,title,category,description, imageUrl, user,date);
+        Post postItem = new Post(id,title,category,description, imageUrl,user,date, lastUpdate);
 
         postItem.setImageUrl(imageUrl);
         postItem.setId(id);
@@ -78,6 +87,7 @@ public class Post {
         json.put("isDeleted", isDeleted);
         json.put("user", user);
         json.put("date", date);
+        json.put("lastUpdated", lastUpdated);
 
         return json;
     }
@@ -145,5 +155,13 @@ public class Post {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Long getLastUpdated() {
+        return this.lastUpdated;
+    }
+
+    public void setLastUpdated(Long lastUpdate) {
+        this.lastUpdated = lastUpdate;
     }
 }
