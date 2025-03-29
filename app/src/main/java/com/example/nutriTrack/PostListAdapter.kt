@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nutriTrack.Model.FirebaseModel
+import androidx.navigation.fragment.findNavController
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.databinding.PostsListRowBinding
@@ -85,7 +87,12 @@ class PostsListViewHolder(
                 val bundle = Bundle().apply {
                     putString("postId", post.getId())
                 }
-                navController.navigate(R.id.action_homeFragment_to_addNewPost, bundle)
+
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.profileFragment, true) // clears back stack
+                    .build()
+
+                navController.navigate(R.id.action_profileFragment_to_addNewPost, bundle, navOptions)
             }
         }
 

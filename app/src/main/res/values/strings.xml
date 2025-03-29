@@ -7,6 +7,8 @@
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="register">Register</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
     <string name="no_account_msg">Don\'t have an account? Register Here</string>
 
 
@@ -16,15 +18,19 @@
     <string name="email">Email:</string>
     <string name="password">Password:</string>
     <string name="phone_number">Phone:</string>
+    <string name="user">User</string>
 
     <string name="new_student">New Student</string>
     <string name="profile_img">Profile Image</string>
+    <string name="post_img">Post Image</string>
     <string name="students_list">Students List</string>
     <string name="students_details">Student Details</string>
     <string name="edit_student">Edit Student</string>
     <string name="enter_post_description">Enter post description</string>
     <string name="enter_post_title">Enter post title</string>
     <string name="get_nutrition_fact_text">Get Nutrition Fact</string>
+
+    <string name="select_category">Select category</string>
     <string-array name="categories_array">
         <item>Nutrition</item>
         <item>Sports</item>
