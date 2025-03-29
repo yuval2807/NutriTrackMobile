@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.nutriTrack.Model.FirebaseModel
@@ -72,6 +73,7 @@ class AddNewPostFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
         binding.etCategory.setAdapter(adapter)
         binding.etCategory.setOnClickListener { binding.etCategory.showDropDown() }
+        binding.tvDate.text = getCurrDate()
 
         binding.btnTakePicture.setOnClickListener {
             cameraLauncher.launch(null)
@@ -83,6 +85,14 @@ class AddNewPostFragment : Fragment() {
 
         binding.btnSavePost.setOnClickListener {
             savePost()
+        }
+
+        // Adjust layout to avoid cut-off by status bar
+        val rootView = view.findViewById<FrameLayout>(R.id.add_post_root_layout)
+        rootView.setOnApplyWindowInsetsListener { v, insets ->
+            val statusBarHeight = insets.systemGestureInsets.top
+            v.setPadding(v.paddingLeft, statusBarHeight, v.paddingRight, v.paddingBottom)
+            insets
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -109,6 +119,8 @@ class AddNewPostFragment : Fragment() {
     }
 
     private fun savePost() {
+        binding.progressSpinner.visibility = View.VISIBLE
+
         val firebaseModel = FirebaseModel()
         val userDocNum = firebaseModel.getUserDocumentNumber()
 
@@ -146,10 +158,19 @@ class AddNewPostFragment : Fragment() {
             System.currentTimeMillis()
         )
 
+        if (postImageBitmap != null) {
             val bitmap = (binding.ivPostImage.drawable as BitmapDrawable).bitmap
             Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {}
+        } else {
+            Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {}
+        }
 
-        findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
+        binding.progressSpinner.visibility = View.GONE
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.nav_graph, true) // clears back stack
+            .build()
+
+        findNavController().navigate(R.id.action_addNewPost_to_homeFragment, null, navOptions)
     }
 
     override fun onDestroyView() {

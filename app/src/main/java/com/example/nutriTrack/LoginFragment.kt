@@ -8,37 +8,46 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.navigation.NavOptions
 import com.example.nutriTrack.Model.FirebaseModel
 import com.google.firebase.auth.FirebaseUser
 import androidx.navigation.fragment.findNavController
-import com.example.nutriTrack.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding!!
-
     private lateinit var currentUser: FirebaseUser
+    private lateinit var loginButton: Button
+    private lateinit var emailInputField: EditText
+    private lateinit var passwordInputField: EditText
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val firebaseModel = FirebaseModel()
 
-        binding.loginButton.isEnabled = false
+        loginButton = view.findViewById(R.id.loginButton)
+        val registerButton: Button = view.findViewById(R.id.nav_register_button)
+        emailInputField = view.findViewById(R.id.userEmailView)
+        passwordInputField = view.findViewById(R.id.userPasswordView)
 
-        binding.userEmailView.addTextChangedListener(createTextWatcher())
-        binding.userPasswordView.addTextChangedListener(createTextWatcher())
+        var email: String
+        var password: String
+        loginButton.isEnabled = false
 
-        binding.loginButton.setOnClickListener {
-            val email = binding.userEmailView.text.toString().trim()
-            val password = binding.userPasswordView.text.toString().trim()
+        emailInputField.addTextChangedListener(createTextWatcher())
+        passwordInputField.addTextChangedListener(createTextWatcher())
+
+        loginButton.setOnClickListener {
+            email = emailInputField.text.toString().trim()
+            password = passwordInputField.text.toString().trim()
 
             firebaseModel.login(email, password) { user ->
                 if (user != null) {
@@ -48,11 +57,10 @@ class LoginFragment : Fragment() {
             }
         }
 
-        binding.navRegisterButton.setOnClickListener {
+        registerButton.setOnClickListener {
             navigateToRegister()
         }
     }
-
     private fun createTextWatcher() = object : TextWatcher {
         override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -60,10 +68,10 @@ class LoginFragment : Fragment() {
 
         override fun afterTextChanged(editable: Editable?) {
             // Check both fields aren't empty
-            val email = binding.userEmailView.text.toString().trim()
-            val password = binding.userPasswordView.text.toString().trim()
+            val email = emailInputField.text.toString().trim()
+            val password = passwordInputField.text.toString().trim()
 
-            binding.loginButton.isEnabled = email.isNotEmpty() && password.isNotEmpty()
+            loginButton.isEnabled = email.isNotEmpty() && password.isNotEmpty()
         }
     }
 
@@ -79,13 +87,9 @@ class LoginFragment : Fragment() {
         findNavController().navigate(R.id.action_loginFragment_to_registerFragment, null)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     companion object {
         @JvmStatic
         fun newInstance() = LoginFragment()
+
     }
 }

@@ -26,14 +26,6 @@ class EditProfileFragment: Fragment() {
     private var postImageBitmap: Bitmap? = null
     private var postImageUri: Uri? = null
 
-    private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            bitmap?.let {
-                postImageBitmap = bitmap
-                postImageView.setImageBitmap(bitmap)
-            } ?: Toast.makeText(requireContext(), "Failed to capture photo", Toast.LENGTH_SHORT).show()
-        }
-
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
@@ -46,7 +38,7 @@ class EditProfileFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -66,6 +58,8 @@ class EditProfileFragment: Fragment() {
                     binding.userNameView.setText(it.name)
                     userId = it.id
                     binding.userPhoneView.setText(it.phone)
+                    loadImageIntoImageView(postImageView, it.imageUrl,R.drawable.ic_profile)
+                    binding.userPhoneView.setText(it.phone)
                     loadImageIntoImageView(postImageView, it.imageUrl, R.drawable.ic_profile)
                 }
 
@@ -74,16 +68,14 @@ class EditProfileFragment: Fragment() {
             }
         }
 
-        binding.takePictureBtn.setOnClickListener {
-            cameraLauncher.launch(null)
-        }
-
         binding.galleryBtn.setOnClickListener {
             galleryLauncher.launch("image/*")
         }
 
         // Save button click handler
         binding.saveButton.setOnClickListener {
+            binding.progressSpinner.visibility = View.VISIBLE
+
             val updatedUser = User(
                 user.id,
                 user.email,
@@ -92,18 +84,25 @@ class EditProfileFragment: Fragment() {
                 postImageUri?.toString() ?: user.imageUrl
             )
 
+            if (postImageBitmap != null) {
                 val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
+                Model.shared.addUser(updatedUser, bitmap, Model.Storage.CLOUDINARY) {
+                    binding.progressSpinner.visibility = View.GONE
 
-            Model.shared.addUser(updatedUser, bitmap, Model.Storage.CLOUDINARY) { userId ->
-                if (userId != null && userId.isNotEmpty()) {
                     findNavController().navigate(
                         R.id.action_editProfileFragment_to_profileFragment, null
                     )
-                } else {
-                    Toast.makeText(requireContext(), "Failed to update profile", Toast.LENGTH_SHORT).show()
                 }
             }
+            Model.shared.addUser(updatedUser, null, Model.Storage.CLOUDINARY) {
+                binding.progressSpinner.visibility = View.GONE
+
+                findNavController().navigate(
+                    R.id.action_editProfileFragment_to_profileFragment, null
+                )
+            }
+
         }
 
         // Cancel button click handler

@@ -47,14 +47,14 @@
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false" />
 
-            <Button
-                android:id="@+id/take_picture_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/take_picture"
-                android:backgroundTint="#6A4C93"
-                android:textColor="#FFFFFF"
-                android:textAllCaps="false" />
+<!--            <Button-->
+<!--                android:id="@+id/take_picture_btn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/take_picture"-->
+<!--                android:backgroundTint="#6A4C93"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textAllCaps="false" />-->
         </LinearLayout>
 
         <!-- Name Field -->
@@ -113,28 +113,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userPhoneView">
 
-        <!-- Save Button -->
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Save"
-            android:backgroundTint="#6A4C93"
-            android:textColor="#FFFFFF"
-            android:textAllCaps="false"
-            app:layout_constraintTop_toBottomOf="@+id/userPhoneView" />
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Save"
+                android:backgroundTint="#6A4C93"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                app:layout_constraintTop_toBottomOf="@+id/userPhoneView" />
 
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Cancel"
-            android:backgroundTint="#6A4C93"
-            android:textColor="#FFFFFF"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Cancel"
+                android:backgroundTint="#6A4C93"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
         <!-- Progress Bar -->
         <ProgressBar
@@ -148,4 +148,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/add_student_success_saved_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/saveButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ProgressBar
+        android:id="@+id/progress_spinner"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:elevation="10dp"
+        android:visibility="gone" />
+
 </FrameLayout>

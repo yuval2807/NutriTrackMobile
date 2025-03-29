@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,7 +25,8 @@ class ProfileFragment : Fragment() {
     private var userEmail: String? = null
     private var user: User? = null
     private val firebaseModel = FirebaseModel()
-    private lateinit var binding: FragmentProfileBinding
+    private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!
     private lateinit var postListAdapter: PostListAdapter
     private lateinit var postList: MutableList<Post>
     private val viewModel: PostsListViewModel by viewModels()
@@ -37,10 +39,11 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentProfileBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        binding.progressSpinner.visibility = View.VISIBLE
 
         val recyclerView = binding.profilePostsListRv
         val swipeRefreshLayout = binding.profilePostsListRvSwipeRefresh
@@ -100,6 +103,19 @@ class ProfileFragment : Fragment() {
         binding.editButton.setOnClickListener {
             navigateEditProfile()
         }
+
+        // Adjust layout to avoid cut-off by status bar
+        val rootView = view.findViewById<FrameLayout>(R.id.profile_main)
+        rootView.setOnApplyWindowInsetsListener { v, insets ->
+            val statusBarHeight = insets.systemGestureInsets.top
+            v.setPadding(v.paddingLeft, statusBarHeight, v.paddingRight, v.paddingBottom)
+            insets
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun navigateEditProfile() {
@@ -127,6 +143,7 @@ class ProfileFragment : Fragment() {
         viewModel.getPosts(firebaseModel.getUserDocumentNumber()).observe(viewLifecycleOwner) { posts ->
             Log.d("ProfileFragment", " get posts viewModel ${posts}")
             postListAdapter.setData(posts)
+            binding.progressSpinner.visibility = View.GONE
         }
 
     }
