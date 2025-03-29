@@ -71,7 +71,13 @@ class Model private constructor() {
         } ?: callback("")
     }
 
+    fun getPostsByUser(callback: (MutableList<Post>) -> Unit) {
+        val userId = firebaseModel.getUserDocumentNumber()
 
+        firebaseModel.getPostsByUser(userId) { posts ->
+            callback(posts)
+        }
+    }
 
     private fun uploadTo(storage: Storage, image: Bitmap, name: String, callback: (String?) -> Unit) {
         when (storage) {

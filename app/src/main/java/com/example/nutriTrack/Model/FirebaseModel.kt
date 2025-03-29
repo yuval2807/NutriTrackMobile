@@ -66,6 +66,34 @@ class FirebaseModel {
         }
     }
 
+    fun getPostsByUser(userId: String, callback: (MutableList<Post>) -> Unit) {
+        database.collection("posts")
+            .whereEqualTo("user", userId)
+            .get().addOnCompleteListener {task ->
+            when (task.isSuccessful) {
+                true -> {
+                    val posts = mutableListOf<Post>()
+
+                    for (document in task.result!!) {
+
+                        val post = Post.createPost(document.data)
+                        posts.add(post)
+                    }
+
+                    callback(posts)
+                }
+                false -> {
+                    Toast.makeText(
+                        MyApplication.Globals.context,
+                        "We couldn't get your posts...",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+        }
+    }
+
     fun addPost(post: Post) {
 
         database.collection(COLLECTION_NAME).document(post.id).set(post.toJson())
@@ -146,6 +174,11 @@ class FirebaseModel {
         return currentUser != null
     }
 
+    fun getUserDocumentNumber(): String {
+        val currentUser = auth.currentUser
+        return currentUser!!.uid
+    }
+
     fun getUserEmail(): String? {
         val currentUser = auth.currentUser
         return currentUser!!.email
@@ -196,10 +229,12 @@ class FirebaseModel {
             }
     }
 
-    fun updateUser(user: User, document: String) {
-        database.collection("users").document(document).set(user)
-            .addOnCompleteListener {documentReference ->
-                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference}")
+    fun updateUser(user: User, document: String, callback: (User?) -> Unit) {
+        database.collection("users").document(document)
+            .update("name", user.name, "phone", user.phone)
+            .addOnSuccessListener {task ->
+                Log.d("TAG", "DocumentSnapshot updated with ID: ${task}")
+                callback(user)
             }
             .addOnFailureListener { e ->
                 Log.w("TAG", "Error adding document", e)

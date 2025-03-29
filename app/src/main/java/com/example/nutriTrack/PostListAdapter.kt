@@ -18,8 +18,11 @@ interface OnItemClickListener {
     fun onItemClick(v: View?, position: Int)
 }
 
-class PostListAdapter(private var posts: List<Post>?, private val navController: NavController) :
-    RecyclerView.Adapter<PostsListViewHolder>() {
+class PostListAdapter(
+    private var posts: List<Post>?,
+    private val navController: NavController,
+    private val showActions: Boolean
+): RecyclerView.Adapter<PostsListViewHolder>() {
 
     private var listener: OnItemClickListener? = null
 
@@ -34,7 +37,7 @@ class PostListAdapter(private var posts: List<Post>?, private val navController:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.posts_list_row, parent, false)
-        return PostsListViewHolder(view, listener, posts, navController)
+        return PostsListViewHolder(view, listener, posts, navController, showActions)
     }
 
     override fun onBindViewHolder(holder: PostsListViewHolder, position: Int) {
@@ -63,7 +66,8 @@ class PostsListViewHolder(
     itemView: View,
     private val listener: OnItemClickListener?,
     private var data: List<Post>?,
-    private val navController: NavController
+    private val navController: NavController,
+    private val showActions: Boolean
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val titleTv: TextView = itemView.findViewById(R.id.tv_postlist_post_title)
@@ -91,7 +95,7 @@ class PostsListViewHolder(
                 val bundle = Bundle().apply {
                     putString("postId", post.getId())
                 }
-                navController.navigate(R.id.action_homeFragment_to_addNewPost,bundle )
+                navController.navigate(R.id.action_fragment_to_addNewPost,bundle )
             }
         }
 
@@ -112,6 +116,9 @@ class PostsListViewHolder(
         dateTv.text = post.date
         loadImageIntoImageView(imageView,post.imageUrl)
 
+        // Set visibility based on showActions flag
+        editButton.visibility = if (showActions) View.VISIBLE else View.GONE
+        deleteButton.visibility = if (showActions) View.VISIBLE else View.GONE
     }
 
     private fun showDeleteConfirmation(post: Post) {

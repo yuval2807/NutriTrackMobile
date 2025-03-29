@@ -32,7 +32,7 @@ class PostListFragment : Fragment() {
         val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.postsListRv_swipeRefresh)
         val navController = findNavController()
 
-        postListAdapter = PostListAdapter(emptyList(), navController)
+        postListAdapter = PostListAdapter(emptyList(), navController, false)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = postListAdapter
