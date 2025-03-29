@@ -35,7 +35,7 @@ class PostListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
-        postListAdapter = PostListAdapter(emptyList(), navController)
+        postListAdapter = PostListAdapter(emptyList(), navController, false)
 
         binding.postsListRv.layoutManager = LinearLayoutManager(requireContext())
         binding.postsListRv.adapter = postListAdapter
@@ -49,6 +49,7 @@ class PostListFragment : Fragment() {
         // Set up SwipeRefreshLayout
         binding.postsListRvSwipeRefresh.setOnRefreshListener {
             Log.d("PostListFragment", " get posts re")
+
             getAllPosts()
             binding.postsListRvSwipeRefresh.isRefreshing = false
         }

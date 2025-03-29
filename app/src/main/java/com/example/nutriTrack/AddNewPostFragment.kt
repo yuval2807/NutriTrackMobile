@@ -18,10 +18,11 @@ import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.databinding.FragmentAddNewPostBinding
 import com.example.nutriTrack.utils.getCurrDate
+import com.google.android.material.textfield.TextInputEditText
 import java.util.UUID
 
 class AddNewPostFragment : Fragment() {
-    enum class PostMode {
+    public enum class PostMode {
         Edit,
         Add
     }
@@ -109,6 +110,9 @@ class AddNewPostFragment : Fragment() {
     }
 
     private fun savePost() {
+        val firebaseModel = FirebaseModel()
+        val userDocNum = firebaseModel.getUserDocumentNumber()
+
         val title = binding.etPostTitle.text.toString().trim()
         val description = binding.etPostDescription.text.toString().trim()
         val categoryText = binding.etCategory.text.toString().trim()
@@ -131,22 +135,22 @@ class AddNewPostFragment : Fragment() {
             postId = currPost!!.id
         }
 
+
         val newPost = Post(
             postId,
             title,
             category,
             description,
             postImageUri?.toString() ?: "",
-            "user1",
-            getCurrDate()
+            userDocNum,
+            getCurrDate(),
+            System.currentTimeMillis()
         )
 
         if (postImageBitmap != null) {
             val bitmap = (binding.ivPostImage.drawable as BitmapDrawable).bitmap
 
-            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {
-                // findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
-            }
+            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {}
         }
         Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {}
         findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
@@ -157,3 +161,5 @@ class AddNewPostFragment : Fragment() {
         _binding = null
     }
 }
+
+

@@ -25,6 +25,7 @@
         <action
             android:id="@+id/action_homeFragment_to_addNewPost"
             app:destination="@id/addNewPost" />
+
     </fragment>
 
     <fragment
@@ -50,6 +51,25 @@
         <action
             android:id="@+id/action_profileFragment_to_splashFragment"
             app:destination="@id/splashFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addNewPost"
+            app:destination="@id/addNewPost" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.nutriTrack.EditProfileFragment"
+        android:label="Edit"
+        tools:layout="@layout/fragment_edit_profile" >
+        <argument
+            android:name="user_email"
+            app:argType="string"
+            app:nullable="false"/>
+        <action
+            android:id="@+id/action_editProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

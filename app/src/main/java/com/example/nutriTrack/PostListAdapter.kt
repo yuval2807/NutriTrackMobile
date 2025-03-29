@@ -17,8 +17,11 @@ interface OnItemClickListener {
     fun onItemClick(v: View?, position: Int)
 }
 
-class PostListAdapter(private var posts: List<Post>?, private val navController: NavController) :
-    RecyclerView.Adapter<PostsListViewHolder>() {
+class PostListAdapter(
+    private var posts: List<Post>?,
+    private val navController: NavController,
+    private val showActions: Boolean
+): RecyclerView.Adapter<PostsListViewHolder>() {
 
     private var listener: OnItemClickListener? = null
 
@@ -33,7 +36,7 @@ class PostListAdapter(private var posts: List<Post>?, private val navController:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsListViewHolder {
         val binding = PostsListRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostsListViewHolder(binding, listener, posts, navController)
+        return PostsListViewHolder(binding, listener, posts, navController, showActions)
     }
 
     override fun onBindViewHolder(holder: PostsListViewHolder, position: Int) {
@@ -41,6 +44,7 @@ class PostListAdapter(private var posts: List<Post>?, private val navController:
         if (post != null) {
             holder.bind(post)
         }
+
     }
 
     fun removeItem(position: Int) {
@@ -61,7 +65,8 @@ class PostsListViewHolder(
     private val binding: PostsListRowBinding,
     private val listener: OnItemClickListener?,
     private var data: List<Post>?,
-    private val navController: NavController
+    private val navController: NavController,
+    private val showActions: Boolean
 ) : RecyclerView.ViewHolder(binding.root) {
 
     init {
@@ -91,6 +96,7 @@ class PostsListViewHolder(
                 showDeleteConfirmation(post)
             }
         }
+
     }
 
     fun bind(post: Post) {
@@ -99,6 +105,11 @@ class PostsListViewHolder(
         binding.tvPostlistPostCategory.text = post.getCategory().name
         binding.tvPostlistDate.text = post.date
         loadImageIntoImageView(binding.ivPostlistPostImage, post.imageUrl)
+
+        // Set visibility based on showActions flag
+        binding.btnEdit.visibility = if (showActions) View.VISIBLE else View.GONE
+        binding.btnDelete.visibility = if (showActions) View.VISIBLE else View.GONE
+
     }
 
     private fun showDeleteConfirmation(post: Post) {
