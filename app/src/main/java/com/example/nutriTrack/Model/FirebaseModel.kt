@@ -212,13 +212,15 @@ class FirebaseModel {
         auth.signOut()
     }
 
-    fun addUser(user: User) {
+    fun addUser(user: User, callback: (Boolean) -> Unit = {}) {
         database.collection("users").document(user.id).set(user)
             .addOnCompleteListener {documentReference ->
                 Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference}")
+                callback(true)
             }
             .addOnFailureListener { e ->
                 Log.w("TAG", "Error adding document", e)
+                callback(false)
             }
     }
 

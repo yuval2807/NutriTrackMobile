@@ -83,7 +83,7 @@ class ProfileFragment : Fragment() {
                     binding.userNameView.text = it.name
                     binding.userIdView.text = it.id
                     binding.userPhoneView.text = it.phone
-                    loadImageIntoImageView(imageView, it.imageUrl)
+                    loadImageIntoImageView(imageView, it.imageUrl, R.drawable.ic_profile)
                 }
 
             } else {

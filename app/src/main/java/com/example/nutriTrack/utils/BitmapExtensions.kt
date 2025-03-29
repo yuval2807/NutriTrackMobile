@@ -18,15 +18,15 @@ fun Bitmap.toFile(context: Context, name: String): File {
 }
 
 
-fun loadImageIntoImageView(imageView: ImageView, imageUrl: String?) {
+fun loadImageIntoImageView(imageView: ImageView, imageUrl: String?, image_placeholder: Int) {
     if (!imageUrl.isNullOrEmpty()) {
         Log.d("Image", "loadImageIntoImageView:  ImageView ${imageView} , imageUrl:${imageUrl}")
 
         Picasso.get()
             .load(imageUrl) // Load from Firebase Storage URL
-            .placeholder(R.drawable.image_placeholder) // Optional placeholder
+            .placeholder(image_placeholder) // Optional placeholder
             .into(imageView) // Set into ImageView
     } else {
-        imageView.setImageResource(R.drawable.image_placeholder) // Default image
+        imageView.setImageResource(image_placeholder) // Default image
     }
 }

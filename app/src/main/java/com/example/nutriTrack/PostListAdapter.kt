@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.nutriTrack.Model.FirebaseModel
 import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.databinding.PostsListRowBinding
@@ -104,7 +103,7 @@ class PostsListViewHolder(
         binding.tvPostlistPostDescription.text = post.getDescription()
         binding.tvPostlistPostCategory.text = post.getCategory().name
         binding.tvPostlistDate.text = post.date
-        loadImageIntoImageView(binding.ivPostlistPostImage, post.imageUrl)
+        loadImageIntoImageView(binding.ivPostlistPostImage, post.imageUrl, R.drawable.image_placeholder)
 
         // Set visibility based on showActions flag
         binding.btnEdit.visibility = if (showActions) View.VISIBLE else View.GONE

@@ -18,7 +18,6 @@ import com.example.nutriTrack.Model.Model
 import com.example.nutriTrack.Model.Post
 import com.example.nutriTrack.databinding.FragmentAddNewPostBinding
 import com.example.nutriTrack.utils.getCurrDate
-import com.google.android.material.textfield.TextInputEditText
 import java.util.UUID
 
 class AddNewPostFragment : Fragment() {
@@ -104,7 +103,7 @@ class AddNewPostFragment : Fragment() {
                 binding.etPostDescription.setText(post.getDescription())
                 binding.etCategory.setText(post.category.name, false)
                 binding.tvDate.text = post.getDate()
-                loadImageIntoImageView(binding.ivPostImage, post.imageUrl)
+                loadImageIntoImageView(binding.ivPostImage, post.imageUrl, R.drawable.image_placeholder)
             }
         }
     }
