@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.nutriTrack.Model.FirebaseModel
@@ -123,6 +124,9 @@ class AddNewPostFragment : Fragment() {
     }
 
     private fun savePost() {
+        val firebaseModel = FirebaseModel()
+        val userDocNum = firebaseModel.getUserDocumentNumber()
+
         val title = titleEditText.text.toString().trim()
         val description = descriptionEditText.text.toString().trim()
         val categoryText = categoryDropdown.text.toString().trim()
@@ -145,29 +149,28 @@ class AddNewPostFragment : Fragment() {
             postId = currPost!!.id
         }
 
-
         val newPost = Post(
             postId,
             title,
             category,
             description,
             postImageUri?.toString() ?: "",
-            "user1",
+            userDocNum,
             getCurrDate()
         )
 
         if (postImageBitmap != null) {
             val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
-            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {
-//                findNavController().navigate(R.id.action_addNewPost_to_postsFragment)
-            }
+            Model.shared.addPost(newPost, bitmap, Model.Storage.CLOUDINARY) {}
         }
-        Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {
-}
-        findNavController().navigate(R.id.action_addNewPost_to_homeFragment)
+        Model.shared.addPost(newPost, null, Model.Storage.CLOUDINARY) {}
 
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.nav_graph, true) // clears back stack
+            .build()
 
+        findNavController().navigate(R.id.action_addNewPost_to_homeFragment, null, navOptions)
     }
 }
 
