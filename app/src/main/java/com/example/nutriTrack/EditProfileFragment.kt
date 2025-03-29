@@ -66,7 +66,7 @@ class EditProfileFragment: Fragment() {
                     binding.userNameView.setText(it.name)
                     userId = it.id
                     binding.userPhoneView.setText(it.phone)
-                    loadImageIntoImageView(postImageView, it.imageUrl)
+                    loadImageIntoImageView(postImageView, it.imageUrl, R.drawable.ic_profile)
                 }
 
             } else {
@@ -92,19 +92,16 @@ class EditProfileFragment: Fragment() {
                 postImageUri?.toString() ?: user.imageUrl
             )
 
-            if ( postImageBitmap  != null) {
                 val bitmap = (postImageView.drawable as BitmapDrawable).bitmap
 
-                Model.shared.addUser(updatedUser, bitmap, Model.Storage.CLOUDINARY) {
+
+            Model.shared.addUser(updatedUser, bitmap, Model.Storage.CLOUDINARY) { userId ->
+                if (userId != null && userId.isNotEmpty()) {
                     findNavController().navigate(
                         R.id.action_editProfileFragment_to_profileFragment, null
                     )
-                }
-            } else {
-                User.updateUser(userId, updatedUser) {
-                    findNavController().navigate(
-                        R.id.action_editProfileFragment_to_profileFragment, null
-                    )
+                } else {
+                    Toast.makeText(requireContext(), "Failed to update profile", Toast.LENGTH_SHORT).show()
                 }
             }
         }
